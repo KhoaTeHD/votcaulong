@@ -1,0 +1,278 @@
+{
+  "program_name": "Flashsale Tháng 10",
+  "end_date": "2025-10-31",
+  "product_list": [
+    {
+      "id": 1,
+      "sku": "SKU-33036",
+      "category_id": 101,
+      "category_name": "Giày cầu lông",
+      "brand": "Lining",
+      "title": "Giày cầu lông Yonex Thunder Blade Z",
+      "price": 1163225,
+      "original_price": 4611618,
+      "discount": "41%",
+      "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product1.jpg",
+      "labels": [
+        "Giá mới siêu tốc",
+        "Chính hãng"
+      ],
+      "badge": "Siêu sale|20/10",
+      "sold": "Đã bán 4090",
+      "branch": {
+        "id": 4,
+        "name": "CN. Thủ Đức"
+      },
+      "attributes": {
+        "color": "Trắng",
+        "weight": "85g"
+      },
+      "quantity_for_program": 100,
+      "quantity_sold": 50
+    },
+    {
+      "id": 2,
+      "sku": "SKU-49768",
+      "category_id": 104,
+      "category_name": "Áo cầu lông",
+      "brand": "Lining",
+      "title": "Áo cầu lông Lining Performance Fit",
+      "price": 663986,
+      "original_price": 4076882,
+      "discount": "20%",
+      "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product2.jpg",
+      "labels": [
+        "Giá mới siêu tốc",
+        "Giảm giá mạnh"
+      ],
+      "badge": "Sản phẩm cao cấp",
+      "sold": "Đã bán 617",
+      "branch": {
+        "id": 1,
+        "name": "CN. Tân Phú 1"
+      },
+      "attributes": {
+        "color": "Vàng",
+        "weight": "70g"
+      },
+      "quantity_for_program": 80,
+      "quantity_sold": 30
+    },
+    {
+      "id": 3,
+      "sku": "SKU-83157",
+      "category_id": 104,
+      "category_name": "Áo cầu lông",
+      "brand": "Lining",
+      "title": "Áo cầu lông Yonex Dryfit Pro",
+      "price": 508910,
+      "original_price": 4717225,
+      "discount": "34%",
+      "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product3.jpg",
+      "labels": [],
+      "badge": null,
+      "sold": null,
+      "branch": {
+        "id": 2,
+        "name": "CN. Phú Thọ"
+      },
+      "attributes": {
+        "color": "Đen",
+        "weight": "75g"
+      },
+      "quantity_for_program": 60,
+      "quantity_sold": 20
+    },
+    {
+      "id": 4,
+      "sku": "SKU-94211",
+      "category_id": 104,
+      "category_name": "Áo cầu lông",
+      "brand": "Yonex",
+      "title": "Áo cầu lông Yonex Dryfit Pro",
+      "price": 1369155,
+      "original_price": 4347561,
+      "discount": "27%",
+      "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product4.jpg",
+      "labels": [
+        "Giá mới siêu tốc"
+      ],
+      "badge": "Sản phẩm cao cấp",
+      "sold": null,
+      "branch": {
+        "id": 1,
+        "name": "CN. Tân Phú 1"
+      },
+      "attributes": {
+        "color": "Vàng",
+        "weight": "65g"
+      },
+      "quantity_for_program": 70,
+      "quantity_sold": 25
+    },
+    {
+      "id": 5,
+      "sku": "SKU-49869",
+      "category_id": 101,
+      "category_name": "Giày cầu lông",
+      "brand": "Yonex",
+      "title": "Giày cầu lông Yonex Turbo Pro",
+      "price": 1799316,
+      "original_price": 4952959,
+      "discount": "28%",
+      "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product5.jpg",
+      "labels": [
+        "Chính hãng",
+        "Giảm giá mạnh"
+      ],
+      "badge": "Sản phẩm cao cấp",
+      "sold": null,
+      "branch": {
+        "id": 1,
+        "name": "CN. Tân Phú 1"
+      },
+      "attributes": {
+        "color": "Trắng",
+        "weight": "75g"
+      },
+      "quantity_for_program": 90,
+      "quantity_sold": 40
+    },
+    {
+      "id": 6,
+      "sku": "SKU-28457",
+      "category_id": 101,
+      "category_name": "Giày cầu lông",
+      "brand": "Mizuno",
+      "title": "Giày cầu lông Lining Thunder Blade Z",
+      "price": 1709719,
+      "original_price": 2539246,
+      "discount": "28%",
+      "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product6.jpg",
+      "labels": [
+        "Giảm giá mạnh",
+        "Chính hãng"
+      ],
+      "badge": "Sản phẩm cao cấp",
+      "sold": null,
+      "branch": {
+        "id": 1,
+        "name": "CN. Tân Phú 1"
+      },
+      "attributes": {
+        "color": "Vàng",
+        "weight": "75g"
+      },
+      "quantity_for_program": 85,
+      "quantity_sold": 35
+    },
+    {
+      "id": 7,
+      "sku": "SKU-52552",
+      "category_id": 101,
+      "category_name": "Giày cầu lông",
+      "brand": "Yonex",
+      "title": "Giày cầu lông Victor Turbo Pro",
+      "price": 559510,
+      "original_price": 3406189,
+      "discount": "35%",
+      "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product7.jpg",
+      "labels": [
+        "Giảm giá mạnh",
+        "Chính hãng"
+      ],
+      "badge": "Sản phẩm cao cấp",
+      "sold": null,
+      "branch": {
+        "id": 2,
+        "name": "CN. Phú Thọ"
+      },
+      "attributes": {
+        "color": "Vàng",
+        "weight": "70g"
+      },
+      "quantity_for_program": 75,
+      "quantity_sold": 30
+    },
+    {
+      "id": 8,
+      "sku": "SKU-51306",
+      "category_id": 103,
+      "category_name": "Túi cầu lông",
+      "brand": "Lining",
+      "title": "Túi cầu lông Victor Pro Edition",
+      "price": 1434557,
+      "original_price": 4067559,
+      "discount": "31%",
+      "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product8.jpg",
+      "labels": [],
+      "badge": null,
+      "sold": null,
+      "branch": {
+        "id": 1,
+        "name": "CN. Tân Phú 1"
+      },
+      "attributes": {
+        "color": "Xanh",
+        "weight": "75g"
+      },
+      "quantity_for_program": 65,
+      "quantity_sold": 20
+    },
+    {
+      "id": 9,
+      "sku": "SKU-54931",
+      "category_id": 103,
+      "category_name": "Túi cầu lông",
+      "brand": "Yonex",
+      "title": "Túi cầu lông Yonex Double Layer",
+      "price": 1238017,
+      "original_price": 2996971,
+      "discount": "36%",
+      "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product9.jpg",
+      "labels": [
+        "Giảm giá mạnh",
+        "Chính hãng"
+      ],
+      "badge": null,
+      "sold": null,
+      "branch": {
+        "id": 2,
+        "name": "CN. Phú Thọ"
+      },
+      "attributes": {
+        "color": "Vàng",
+        "weight": "65g"
+      },
+      "quantity_for_program": 70,
+      "quantity_sold": 25
+    },
+    {
+      "id": 10,
+      "sku": "SKU-30169",
+      "category_id": 104,
+      "category_name": "Áo cầu lông",
+      "brand": "Mizuno",
+      "title": "Áo cầu lông Yonex Performance Fit",
+      "price": 1476666,
+      "original_price": 4258200,
+      "discount": "31%",
+      "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product10.jpg",
+      "labels": [
+        "Giảm giá mạnh"
+      ],
+      "badge": "Sản phẩm cao cấp",
+      "sold": null,
+      "branch": {
+        "id": 2,
+        "name": "CN. Phú Thọ"
+      },
+      "attributes": {
+        "color": "Đỏ",
+        "weight": "80g"
+      },
+      "quantity_for_program": 80,
+      "quantity_sold": 35
+    }
+  ]
+}

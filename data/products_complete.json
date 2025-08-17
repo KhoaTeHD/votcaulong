@@ -1,0 +1,1762 @@
+[
+  {
+    "id": 1,
+    "sku": "SKU-33036",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Lining",
+    "title": "Giày cầu lông Yonex Thunder Blade Z",
+    "price": 1163225,
+    "original_price": 4611618,
+    "discount": "41%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product1.jpg",
+    "labels": [
+      "Giá mới siêu tốc",
+      "Chính hãng"
+    ],
+    "badge": "Siêu sale|20/10",
+    "sold": "Đã bán 4090",
+    "branch": [
+      {
+        "id": 5,
+        "name": "CN. Bình Thạnh",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Trắng",
+      "weight": "85g"
+    }
+  },
+  {
+    "id": 2,
+    "sku": "SKU-49768",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Lining",
+    "title": "Áo cầu lông Lining Performance Fit",
+    "price": 663986,
+    "original_price": 4076882,
+    "discount": "20%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product2.jpg",
+    "labels": [
+      "Giá mới siêu tốc",
+      "Giảm giá mạnh"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": "Đã bán 617",
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "70g"
+    }
+  },
+  {
+    "id": 3,
+    "sku": "SKU-83157",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Lining",
+    "title": "Áo cầu lông Yonex Dryfit Pro",
+    "price": 508910,
+    "original_price": 4717225,
+    "discount": "34%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product3.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": null,
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "75g"
+    }
+  },
+  {
+    "id": 4,
+    "sku": "SKU-94211",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Yonex",
+    "title": "Áo cầu lông Yonex Dryfit Pro",
+    "price": 1369155,
+    "original_price": 4347561,
+    "discount": "27%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product4.jpg",
+    "labels": [
+      "Giá mới siêu tốc"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "65g"
+    }
+  },
+  {
+    "id": 5,
+    "sku": "SKU-49869",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Yonex",
+    "title": "Giày cầu lông Yonex Turbo Pro",
+    "price": 1799316,
+    "original_price": 4952959,
+    "discount": "28%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product5.jpg",
+    "labels": [
+      "Chính hãng",
+      "Giảm giá mạnh"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Trắng",
+      "weight": "75g"
+    }
+  },
+  {
+    "id": 6,
+    "sku": "SKU-28457",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Mizuno",
+    "title": "Giày cầu lông Lining Thunder Blade Z",
+    "price": 1709719,
+    "original_price": 2539246,
+    "discount": "28%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product6.jpg",
+    "labels": [
+      "Giảm giá mạnh",
+      "Chính hãng"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "75g"
+    }
+  },
+  {
+    "id": 7,
+    "sku": "SKU-52552",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Yonex",
+    "title": "Giày cầu lông Victor Turbo Pro",
+    "price": 559510,
+    "original_price": 3406189,
+    "discount": "35%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product7.jpg",
+    "labels": [
+      "Giảm giá mạnh",
+      "Chính hãng"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "70g"
+    }
+  },
+  {
+    "id": 8,
+    "sku": "SKU-51306",
+    "category_id": 103,
+    "category_name": "Túi cầu lông",
+    "brand": "Lining",
+    "title": "Túi cầu lông Victor Pro Edition",
+    "price": 1434557,
+    "original_price": 4067559,
+    "discount": "31%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product8.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": null,
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      }
+    ],
+    "attributes": {
+      "color": "Xanh",
+      "weight": "75g"
+    }
+  },
+  {
+    "id": 9,
+    "sku": "SKU-54931",
+    "category_id": 103,
+    "category_name": "Túi cầu lông",
+    "brand": "Yonex",
+    "title": "Túi cầu lông Yonex Double Layer",
+    "price": 1238017,
+    "original_price": 2996971,
+    "discount": "36%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product9.jpg",
+    "labels": [
+      "Giảm giá mạnh",
+      "Chính hãng"
+    ],
+    "badge": null,
+    "sold": null,
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "65g"
+    }
+  },
+  {
+    "id": 10,
+    "sku": "SKU-30169",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Mizuno",
+    "title": "Áo cầu lông Yonex Performance Fit",
+    "price": 1476666,
+    "original_price": 4258200,
+    "discount": "31%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product10.jpg",
+    "labels": [
+      "Giảm giá mạnh"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Đỏ",
+      "weight": "80g"
+    }
+  },
+  {
+    "id": 11,
+    "sku": "SKU-91914",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Lining",
+    "title": "Vợt cầu lông Mizuno Astrox 77",
+    "price": 711126,
+    "original_price": 4717179,
+    "discount": "44%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product-photo.png",
+    "labels": [],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "65g",
+      "play_style": "Công thủ toàn diện",
+      "play_mode": "Cả Đơn và đôi",
+      "skill_level": "Trung bình"
+    }
+  },
+  {
+    "id": 12,
+    "sku": "SKU-63347",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Lining",
+    "title": "Áo cầu lông Yonex Performance Fit",
+    "price": 1202853,
+    "original_price": 3297506,
+    "discount": "32%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product12.jpg",
+    "labels": [],
+    "badge": "Sản phẩm cao cấp",
+    "sold": "Đã bán 802",
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "75g"
+    }
+  },
+  {
+    "id": 13,
+    "sku": "SKU-49190",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Yonex",
+    "title": "Giày cầu lông Mizuno Thunder Blade Z",
+    "price": 1692104,
+    "original_price": 2130569,
+    "discount": "50%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product13.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": null,
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Xanh",
+      "weight": "85g"
+    }
+  },
+  {
+    "id": 14,
+    "sku": "SKU-39868",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Victor",
+    "title": "Giày cầu lông Lining SHB65",
+    "price": 1092789,
+    "original_price": 4219586,
+    "discount": "11%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product14.jpg",
+    "labels": [],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "85g"
+    }
+  },
+  {
+    "id": 15,
+    "sku": "SKU-82593",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Victor",
+    "title": "Vợt cầu lông Lining Thruster F",
+    "price": 1783116,
+    "original_price": 4710251,
+    "discount": "41%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product-photo.png",
+    "labels": [
+      "Giảm giá mạnh"
+    ],
+    "badge": "Siêu sale|20/10",
+    "sold": null,
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "70g",
+      "play_style": "Phản tạt phòng thủ",
+      "play_mode": "Cả Đơn và đôi",
+      "skill_level": "Mới chơi"
+    }
+  },
+  {
+    "id": 16,
+    "sku": "SKU-74192",
+    "category_id": 103,
+    "category_name": "Túi cầu lông",
+    "brand": "Lining",
+    "title": "Túi cầu lông Mizuno Double Layer",
+    "price": 1257248,
+    "original_price": 2073193,
+    "discount": "25%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product16.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": "Đã bán 3302",
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "80g"
+    }
+  },
+  {
+    "id": 17,
+    "sku": "SKU-55522",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Mizuno",
+    "title": "Áo cầu lông Lining Classic Polo",
+    "price": 1312015,
+    "original_price": 2936726,
+    "discount": "47%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product17.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": null,
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      }
+    ],
+    "attributes": {
+      "color": "Xanh",
+      "weight": "75g"
+    }
+  },
+  {
+    "id": 18,
+    "sku": "SKU-30363",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Mizuno",
+    "title": "Vợt cầu lông Mizuno Thruster F",
+    "price": 1200000,
+    "original_price": null,
+    "discount": null,
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product18.jpg",
+    "labels": [],
+    "badge": "Siêu sale|10/10",
+    "sold": null,
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "70g",
+      "play_style": "Công thủ toàn diện",
+      "play_mode": "Cả Đơn và đôi",
+      "skill_level": "Khá tốt"
+    }
+  },
+  {
+    "id": 19,
+    "sku": "SKU-55030",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Lining",
+    "title": "Giày cầu lông Victor Thunder Blade Z",
+    "price": 1158337,
+    "original_price": 3570444,
+    "discount": "29%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product19.jpg",
+    "labels": [
+      "Chính hãng"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": "Đã bán 2171",
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "65g"
+    }
+  },
+  {
+    "id": 20,
+    "sku": "SKU-89109",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Lining",
+    "title": "Giày cầu lông Victor Thunder Blade Z",
+    "price": 1467366,
+    "original_price": 3511686,
+    "discount": "23%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product20.jpg",
+    "labels": [
+      "Giảm giá mạnh"
+    ],
+    "badge": null,
+    "sold": "Đã bán 1404",
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Trắng",
+      "weight": "80g"
+    }
+  },
+  {
+    "id": 21,
+    "sku": "SKU-63982",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Victor",
+    "title": "Áo cầu lông Victor Dryfit Pro",
+    "price": 1485211,
+    "original_price": 2763207,
+    "discount": "48%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product21.jpg",
+    "labels": [],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Xanh",
+      "weight": "80g"
+    }
+  },
+  {
+    "id": 22,
+    "sku": "SKU-35106",
+    "category_id": 103,
+    "category_name": "Túi cầu lông",
+    "brand": "Yonex",
+    "title": "Túi cầu lông Victor Pro Edition",
+    "price": 1769971,
+    "original_price": 3505282,
+    "discount": "33%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product22.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": "Đã bán 4560",
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      }
+    ],
+    "attributes": {
+      "color": "Đỏ",
+      "weight": "85g"
+    }
+  },
+  {
+    "id": 23,
+    "sku": "SKU-68243",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Yonex",
+    "title": "Vợt cầu lông Lining Aeronaut 9000",
+    "price": 911810,
+    "original_price": 3976100,
+    "discount": "14%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product23.jpg",
+    "labels": [
+      "Giá mới siêu tốc",
+      "Chính hãng"
+    ],
+    "badge": null,
+    "sold": "Đã bán 432",
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "70g",
+      "play_style": "Phản tạt phòng thủ",
+      "play_mode": "Cả Đơn và đôi",
+      "skill_level": "Trung bình"
+    }
+  },
+  {
+    "id": 24,
+    "sku": "SKU-52490",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Mizuno",
+    "title": "Áo cầu lông Yonex Classic Polo",
+    "price": 1742860,
+    "original_price": 3479509,
+    "discount": "27%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product24.jpg",
+    "labels": [
+      "Giá mới siêu tốc",
+      "Giảm giá mạnh"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": "Đã bán 4054",
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      }
+    ],
+    "attributes": {
+      "color": "Đỏ",
+      "weight": "80g"
+    }
+  },
+  {
+    "id": 25,
+    "sku": "SKU-25344",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Victor",
+    "title": "Vợt cầu lông Mizuno Astrox 77",
+    "price": 1286535,
+    "original_price": 2825902,
+    "discount": "34%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product25.jpg",
+    "labels": [
+      "Chính hãng"
+    ],
+    "badge": null,
+    "sold": "Đã bán 2089",
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "85g",
+      "play_style": "Phản tạt phòng thủ",
+      "play_mode": "Đánh đơn",
+      "skill_level": "Khá tốt"
+    }
+  },
+  {
+    "id": 26,
+    "sku": "SKU-39175",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Victor",
+    "title": "Giày cầu lông Victor SHB65",
+    "price": 1410298,
+    "original_price": 3608900,
+    "discount": "32%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product26.jpg",
+    "labels": [
+      "Chính hãng"
+    ],
+    "badge": null,
+    "sold": null,
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "75g"
+    }
+  },
+  {
+    "id": 27,
+    "sku": "SKU-28460",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Mizuno",
+    "title": "Áo cầu lông Mizuno Dryfit Pro",
+    "price": 675093,
+    "original_price": 4084533,
+    "discount": "19%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product27.jpg",
+    "labels": [
+      "Chính hãng",
+      "Giảm giá mạnh"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": "Đã bán 2597",
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Trắng",
+      "weight": "85g"
+    }
+  },
+  {
+    "id": 28,
+    "sku": "SKU-66488",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Lining",
+    "title": "Giày cầu lông Yonex SHB65",
+    "price": 1316741,
+    "original_price": 3452680,
+    "discount": "34%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product28.jpg",
+    "labels": [
+      "Chính hãng"
+    ],
+    "badge": null,
+    "sold": "Đã bán 2318",
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "80g"
+    }
+  },
+  {
+    "id": 29,
+    "sku": "SKU-68921",
+    "category_id": 103,
+    "category_name": "Túi cầu lông",
+    "brand": "Lining",
+    "title": "Túi cầu lông Victor Double Layer",
+    "price": 1445933,
+    "original_price": 3152421,
+    "discount": "33%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product29.jpg",
+    "labels": [
+      "Chính hãng",
+      "Giá mới siêu tốc"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Đỏ",
+      "weight": "70g"
+    }
+  },
+  {
+    "id": 30,
+    "sku": "SKU-84603",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Yonex",
+    "title": "Giày cầu lông Victor SHB65",
+    "price": 1411908,
+    "original_price": 2915967,
+    "discount": "24%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product30.jpg",
+    "labels": [
+      "Chính hãng"
+    ],
+    "badge": null,
+    "sold": "Đã bán 1615",
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "65g"
+    }
+  },
+  {
+    "id": 31,
+    "sku": "SKU-83513",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Mizuno",
+    "title": "Vợt cầu lông Victor Aeronaut 9000",
+    "price": 1601208,
+    "status": "Còn hàng",
+    "original_price": 4287734,
+    "discount": "21%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product31.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": null,
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Trắng",
+      "weight": "65g",
+      "play_style": "Tấn công",
+      "play_mode": "Đánh đơn",
+      "skill_level": "Trung bình"
+    }
+  },
+  {
+    "id": 32,
+    "sku": "SKU-71214",
+    "category_id": 103,
+    "category_name": "Túi cầu lông",
+    "brand": "Mizuno",
+    "title": "Túi cầu lông Victor Tournament",
+    "price": 1283495,
+    "original_price": 2746306,
+    "discount": "31%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product32.jpg",
+    "labels": [],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Xanh",
+      "weight": "80g"
+    }
+  },
+  {
+    "id": 33,
+    "sku": "SKU-35651",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Yonex",
+    "title": "Vợt cầu lông Lining Aeronaut 9000",
+    "price": 1733758,
+    "original_price": 3550839,
+    "discount": "41%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product33.jpg",
+    "labels": [
+      "Giá mới siêu tốc"
+    ],
+    "badge": null,
+    "sold": "Đã bán 1930",
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "70g",
+      "play_style": "Công thủ toàn diện",
+      "play_mode": "Đánh đôi",
+      "skill_level": "Trung bình"
+    }
+  },
+  {
+    "id": 34,
+    "sku": "SKU-53253",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Yonex",
+    "title": "Giày cầu lông Mizuno Thunder Blade Z",
+    "price": 1757349,
+    "original_price": 3457437,
+    "discount": "29%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product34.jpg",
+    "labels": [
+      "Giá mới siêu tốc",
+      "Giảm giá mạnh"
+    ],
+    "badge": null,
+    "sold": null,
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "80g"
+    }
+  },
+  {
+    "id": 35,
+    "sku": "SKU-61143",
+    "category_id": 103,
+    "category_name": "Túi cầu lông",
+    "brand": "Victor",
+    "title": "Túi cầu lông Lining Pro Edition",
+    "price": 1131168,
+    "original_price": 3442571,
+    "discount": "32%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product35.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": null,
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      }
+    ],
+    "attributes": {
+      "color": "Trắng",
+      "weight": "70g"
+    }
+  },
+  {
+    "id": 36,
+    "sku": "SKU-92230",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Victor",
+    "title": "Vợt cầu lông Mizuno Aeronaut 9000",
+    "price": 1401295,
+    "original_price": 2941677,
+    "discount": "50%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product36.jpg",
+    "labels": [
+      "Giá mới siêu tốc"
+    ],
+    "badge": null,
+    "sold": "Đã bán 2119",
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Đỏ",
+      "weight": "80g",
+      "play_style": "Công thủ toàn diện",
+      "play_mode": "Cả Đơn và đôi",
+      "skill_level": "Trung bình"
+    }
+  },
+  {
+    "id": 37,
+    "sku": "SKU-11108",
+    "category_id": 103,
+    "category_name": "Túi cầu lông",
+    "brand": "Mizuno",
+    "title": "Túi cầu lông Mizuno Pro Edition",
+    "price": 1290895,
+    "original_price": 3709817,
+    "discount": "41%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product37.jpg",
+    "labels": [
+      "Giảm giá mạnh",
+      "Giá mới siêu tốc"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": "Đã bán 1717",
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "70g"
+    }
+  },
+  {
+    "id": 38,
+    "sku": "SKU-72467",
+    "category_id": 103,
+    "category_name": "Túi cầu lông",
+    "brand": "Lining",
+    "title": "Túi cầu lông Lining Tournament",
+    "price": 1901185,
+    "original_price": 4628645,
+    "discount": "47%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product38.jpg",
+    "labels": [
+      "Giảm giá mạnh",
+      "Chính hãng"
+    ],
+    "badge": null,
+    "sold": "Đã bán 1505",
+    "branch": [
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Trắng",
+      "weight": "65g"
+    }
+  },
+  {
+    "id": 39,
+    "sku": "SKU-57237",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Lining",
+    "title": "Áo cầu lông Lining Classic Polo",
+    "price": 1623324,
+    "original_price": 3021049,
+    "discount": "20%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product39.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": "Đã bán 4166",
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "80g"
+    }
+  },
+  {
+    "id": 40,
+    "sku": "SKU-18784",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Victor",
+    "title": "Vợt cầu lông Victor Thruster F",
+    "price": 1599261,
+    "original_price": 2443693,
+    "discount": "34%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product40.jpg",
+    "labels": [
+      "Giảm giá mạnh",
+      "Giá mới siêu tốc"
+    ],
+    "badge": "Siêu sale|20/10",
+    "sold": "Đã bán 3271",
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Trắng",
+      "weight": "80g",
+      "play_style": "Phản tạt phòng thủ",
+      "play_mode": "Cả Đơn và đôi",
+      "skill_level": "Khá tốt"
+    }
+  },
+  {
+    "id": 41,
+    "sku": "SKU-18712",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Mizuno",
+    "title": "Giày cầu lông Lining SHB65",
+    "price": 1300084,
+    "original_price": 2631600,
+    "discount": "43%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product41.jpg",
+    "labels": [
+      "Giảm giá mạnh"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "75g"
+    }
+  },
+  {
+    "id": 42,
+    "sku": "SKU-41771",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Lining",
+    "title": "Giày cầu lông Victor Thunder Blade Z",
+    "price": 1272219,
+    "original_price": 2669024,
+    "discount": "18%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product42.jpg",
+    "labels": [],
+    "badge": "Sản phẩm cao cấp",
+    "sold": "Đã bán 2924",
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      }
+    ],
+    "attributes": {
+      "color": "Xanh",
+      "weight": "80g"
+    }
+  },
+  {
+    "id": 43,
+    "sku": "SKU-32301",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Victor",
+    "title": "Vợt cầu lông Yonex Aeronaut 9000",
+    "price": 1496616,
+    "original_price": 2570360,
+    "discount": "43%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product43.jpg",
+    "labels": [
+      "Giá mới siêu tốc",
+      "Chính hãng"
+    ],
+    "badge": null,
+    "sold": "Đã bán 1863",
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "75g",
+      "play_style": "Công thủ toàn diện",
+      "play_mode": "Cả Đơn và đôi",
+      "skill_level": "Mới chơi"
+    }
+  },
+  {
+    "id": 44,
+    "sku": "SKU-74955",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Victor",
+    "title": "Áo cầu lông Mizuno Performance Fit",
+    "price": 1219525,
+    "original_price": 2231256,
+    "discount": "46%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product44.jpg",
+    "labels": [
+      "Chính hãng",
+      "Giá mới siêu tốc"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      }
+    ],
+    "attributes": {
+      "color": "Đỏ",
+      "weight": "75g"
+    }
+  },
+  {
+    "id": 45,
+    "sku": "SKU-92010",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Victor",
+    "title": "Vợt cầu lông Mizuno Thruster F",
+    "price": 607585,
+    "original_price": 2344782,
+    "discount": "31%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product45.jpg",
+    "labels": [
+      "Chính hãng",
+      "Giảm giá mạnh"
+    ],
+    "badge": "Sản phẩm cao cấp",
+    "sold": "Đã bán 1412",
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "70g",
+      "play_style": "Tấn công",
+      "play_mode": "Đánh đôi",
+      "skill_level": "Khá tốt"
+    }
+  },
+  {
+    "id": 46,
+    "sku": "SKU-38026",
+    "category_id": 104,
+    "category_name": "Áo cầu lông",
+    "brand": "Yonex",
+    "title": "Áo cầu lông Victor Performance Fit",
+    "price": 819956,
+    "original_price": 3386364,
+    "discount": "10%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product46.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": "Đã bán 3403",
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Đỏ",
+      "weight": "75g"
+    }
+  },
+  {
+    "id": 47,
+    "sku": "SKU-18804",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Yonex",
+    "title": "Vợt cầu lông Yonex Astrox 77",
+    "price": 1070187,
+    "original_price": 4619687,
+    "discount": "15%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product47.jpg",
+    "labels": [],
+    "badge": "Sản phẩm cao cấp",
+    "sold": null,
+    "branch": [
+      {
+        "id": 2,
+        "name": "CN. Phú Thọ",
+        "stock": 1
+      },
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      },
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "80g",
+      "play_style": "Phản tạt phòng thủ",
+      "play_mode": "Cả Đơn và đôi",
+      "skill_level": "Mới chơi"
+    }
+  },
+  {
+    "id": 48,
+    "sku": "SKU-28642",
+    "category_id": 101,
+    "category_name": "Giày cầu lông",
+    "brand": "Lining",
+    "title": "Giày cầu lông Victor Turbo Pro",
+    "price": 525133,
+    "original_price": 4112561,
+    "discount": "10%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product48.jpg",
+    "labels": [],
+    "badge": "Sản phẩm cao cấp",
+    "sold": "Đã bán 687",
+    "branch": [
+      {
+        "id": 4,
+        "name": "CN. Thủ Đức",
+        "stock": 9
+      },
+      {
+        "id": 1,
+        "name": "CN. Tân Phú 1",
+        "stock": 2
+      }
+    ],
+    "attributes": {
+      "color": "Vàng",
+      "weight": "65g"
+    }
+  },
+  {
+    "id": 49,
+    "sku": "SKU-57889",
+    "category_id": 102,
+    "category_name": "Vợt cầu lông",
+    "brand": "Victor",
+    "title": "Vợt cầu lông Yonex Astrox 77",
+    "price": 802449,
+    "original_price": 4715229,
+    "discount": "39%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product49.jpg",
+    "labels": [],
+    "badge": "Sản phẩm cao cấp",
+    "sold": "Đã bán 3539",
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Trắng",
+      "weight": "75g",
+      "play_style": "Phản tạt phòng thủ",
+      "play_mode": "Đánh đôi",
+      "skill_level": "Trung bình"
+    }
+  },
+  {
+    "id": 50,
+    "sku": "SKU-20427",
+    "category_id": 103,
+    "category_name": "Túi cầu lông",
+    "brand": "Yonex",
+    "title": "Túi cầu lông Victor Tournament",
+    "price": 1060642,
+    "original_price": 4894468,
+    "discount": "35%",
+    "image_url": "https://votcaulong-dev.tadalabs.vn/wp-content/themes/votcaulong-shop/assets/images/product50.jpg",
+    "labels": [],
+    "badge": null,
+    "sold": "Đã bán 1341",
+    "branch": [
+      {
+        "id": 3,
+        "name": "CN. Tân Bình",
+        "stock": 12
+      }
+    ],
+    "attributes": {
+      "color": "Đen",
+      "weight": "80g"
+    }
+  }
+]

@@ -1,0 +1,34 @@
+:root {
+    --top-color: #1759ca;
+    --top-menu-hover: #0033a0;
+    --bg-color: #f1f1f1;
+    --item-color: #000000;
+    --icon-color-active: #000000;
+    --bg-submenu: #dbdbdb;
+    --bg-submenu2: #000000;
+    --url-link: #810202;
+    --submenu-hover: #000000;
+    --text-color: #52575d;
+    --button-bg-color: #f1f1f1;
+    --active-menu: #ffba30;
+}
+
+#wpadminbar .quicklinks .menupop ul.ab-sub-secondary,
+#wpadminbar .quicklinks .menupop ul.ab-sub-secondary .ab-submenu {
+    background: var(--top-menu-hover);
+}
+
+#wpadminbar {
+    background-color: var(--top-menu-hover) !important;
+}
+#adminmenu, #adminmenu .wp-submenu, #adminmenuback, #adminmenuwrap{
+    background-color: var(--top-menu-hover);
+}
+#wpadminbar ul#wp-admin-bar-root-default li#wp-admin-bar-wp-logo,
+#footer-left
+{
+    display: none;
+}
+#adminmenu .opensub .wp-submenu li.current a, #adminmenu .wp-submenu li.current, #adminmenu .wp-submenu li.current a, #adminmenu .wp-submenu li.current a:focus, #adminmenu .wp-submenu li.current a:hover, #adminmenu a.wp-has-current-submenu:focus+.wp-submenu li.current a {
+    color: var(--active-menu);
+}

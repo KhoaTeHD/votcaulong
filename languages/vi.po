@@ -1,0 +1,1736 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: vcl-shop\n"
+"POT-Creation-Date: 2025-07-09 14:54+0700\n"
+"PO-Revision-Date: 2025-07-09 14:58+0700\n"
+"Last-Translator: \n"
+"Language-Team: TadaLabs\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: ./assets\n"
+"X-Poedit-SearchPathExcluded-1: assets\n"
+
+#: backend/pro_cate_management.php:85 template-parts/account-address.php:50
+msgid "Edit"
+msgstr "Sửa"
+
+#: backend/pro_cate_management.php:195
+msgid "Edit Product category"
+msgstr "Sửa danh mục"
+
+#: backend/pro_cate_management.php:197
+msgid "Name"
+msgstr "Tên"
+
+#: backend/pro_cate_management.php:201
+#: template-parts/account-edit-profile.php:109
+msgid "Select"
+msgstr "Lựa chọn"
+
+#: backend/pro_cate_management.php:223
+#: template-parts/account-edit-profile.php:101
+msgid "Save"
+msgstr "Lưu"
+
+#: backend/pro_cate_management.php:224 footer.php:149
+msgid "Close"
+msgstr "Đóng"
+
+#: backend/product-reviews-admin.php:21
+msgid "Review approved."
+msgstr "Đánh giá được duyệt"
+
+#: backend/product-reviews-admin.php:25
+msgid "The review has been moved to pending approval."
+msgstr "Đánh giá đã được chuyển sang trạng thái đang chờ phê duyệt."
+
+#: backend/product-reviews-admin.php:29
+msgid "The review has been deleted."
+msgstr "Đánh giá đã bị xóa."
+
+#: backend/product-reviews-admin.php:41
+msgid "Product Review Management"
+msgstr "Quản lý đánh giá sản phẩm"
+
+#: backend/product-reviews-admin.php:46
+msgid "Product ID"
+msgstr "Mã sản phẩm"
+
+#: backend/product-reviews-admin.php:47 includes/inc_theme_support.php:208
+msgid "Customer"
+msgstr "Khách hàng"
+
+#: backend/product-reviews-admin.php:48 page-shopping-cart.php:72
+msgid "Email"
+msgstr ""
+
+#: backend/product-reviews-admin.php:49
+msgid "Rating"
+msgstr "Đánh giá"
+
+#: backend/product-reviews-admin.php:50
+msgid "Content"
+msgstr "Nội dung"
+
+#: backend/product-reviews-admin.php:51
+msgid "Date created"
+msgstr "Ngày tạo"
+
+#: backend/product-reviews-admin.php:52 template-parts/account-orders.php:223
+#: template-parts/account-orders.php:246 template-parts/product-detail.php:199
+msgid "Status"
+msgstr "Trạng thái"
+
+#: backend/product-reviews-admin.php:53 template-parts/account-orders.php:225
+#: template-parts/account-orders.php:259
+msgid "Action"
+msgstr "Hành động"
+
+#: backend/product-reviews-admin.php:74
+msgid "Approve"
+msgstr "Phê duyệt"
+
+#: backend/product-reviews-admin.php:77
+msgid "Unapprove"
+msgstr "Không phê duyệt"
+
+#: backend/product-reviews-admin.php:79
+msgid "Are you sure you want to delete this review?"
+msgstr "Bạn có chắc chắn muốn xóa đánh giá này?"
+
+#: backend/product-reviews-admin.php:79 template-parts/cart-item.php:47
+msgid "Xóa"
+msgstr "Xóa"
+
+#: backend/product-reviews-admin.php:85 template-parts/product-reviews.php:45
+msgid "There are no reviews yet."
+msgstr "Chưa có đánh giá nào."
+
+#: category.php:75
+msgid "Không có bài viết nào trong chuyên mục này."
+msgstr ""
+
+#: footer.php:98 includes/class_Product.php:485
+#: includes/inc_theme_support.php:161 template-parts/product-detail.php:183
+#: template-parts/product-item.php:87
+msgid "Compare"
+msgstr "So sánh"
+
+#: footer.php:102
+msgid "Collapse"
+msgstr "Thu gọn"
+
+#: footer.php:106 footer.php:110 footer.php:114
+#: includes/inc_theme_support.php:159
+msgid "Add product"
+msgstr "Thêm sản phẩm"
+
+#: footer.php:118
+msgid "Compare now"
+msgstr "So sánh ngay"
+
+#: footer.php:119 footer.php:160
+msgid "Quick compare"
+msgstr "So sánh nhanh"
+
+#: footer.php:120
+msgid "Clear all"
+msgstr "Xoá hết"
+
+#: footer.php:129
+msgid "Enter name/sku to search"
+msgstr "Nhập tên/sku để tìm kiếm"
+
+#: footer.php:130
+msgid "Minimum 3 characters"
+msgstr "Tối thiểu 3 ký tự"
+
+#: footer.php:139
+msgid "Loading..."
+msgstr "Đang tải..."
+
+#: footer.php:169 template-parts/compare-products.php:13
+msgid "Loading product information..."
+msgstr "Đang tải thông tin sản phẩm..."
+
+#: footer.php:186
+msgid "Notification"
+msgstr "Thông báo"
+
+#: functions.php:18
+msgid "Pending"
+msgstr "Đang chờ xử lý"
+
+#: functions.php:19
+msgid "Processing"
+msgstr "Đang xử lý"
+
+#: functions.php:20
+msgid "On hold"
+msgstr "Tạm giữ"
+
+#: functions.php:21
+msgid "Completed"
+msgstr "Đã hoàn thành"
+
+#: functions.php:22
+msgid "Cancelled"
+msgstr "Đã hủy"
+
+#: functions.php:23
+msgid "Paid"
+msgstr "Đã thanh toán"
+
+#: functions.php:24
+msgid "Failed"
+msgstr "Thất bại"
+
+#: functions.php:25
+msgid "Refunded"
+msgstr "Đã hoàn tiền"
+
+#: functions.php:26
+msgid "Pending payment"
+msgstr "Chờ thanh toán"
+
+#: functions.php:100
+msgid "You must agree to the privacy policy to continue."
+msgstr "Bạn phải đồng ý với chính sách quyền riêng tư để tiếp tục."
+
+#: functions.php:101
+msgid ""
+"Please enter complete shipping address information (Province/City, District, "
+"Ward/Commune, Detailed address)."
+msgstr ""
+"Vui lòng nhập đầy đủ thông tin địa chỉ giao hàng (Tỉnh/Thành phố, Huyện, "
+"Phường/Xã, Địa chỉ chi tiết)."
+
+#: functions.php:102
+msgid "Please enter your full name and phone number."
+msgstr "Vui lòng nhập tên đầy đủ và số điện thoại của bạn."
+
+#: functions.php:103
+msgid "Please select a store for pickup."
+msgstr "Vui lòng chọn một cửa hàng để lấy hàng."
+
+#: functions.php:104
+msgid "Please enter complete information for the other recipient."
+msgstr "Vui lòng nhập đầy đủ thông tin cho người nhận khác."
+
+#: functions.php:105
+msgid "Please enter complete company invoice information."
+msgstr "Vui lòng nhập đầy đủ chi tiết hóa đơn của công ty."
+
+#: functions.php:131
+msgid "Footer-menu-1"
+msgstr ""
+
+#: functions.php:132
+msgid "Footer-menu-2"
+msgstr ""
+
+#: functions.php:133
+msgid "Footer-menu-3"
+msgstr ""
+
+#: functions.php:134
+msgid "Footer-menu-4"
+msgstr ""
+
+#: functions.php:135
+msgid "Footer-menu-5"
+msgstr ""
+
+#: includes/class_Customer.php:82
+msgid "You must enter a valid email or phone number."
+msgstr "Bạn phải nhập email hoặc số điện thoại hợp lệ."
+
+#: includes/class_Customer.php:86
+msgid "Password is required."
+msgstr "Mật khẩu là bắt buộc."
+
+#: includes/class_Customer.php:327 includes/inc_product_reviews.php:234
+msgid "Invalid email address."
+msgstr "Email không hợp lệ."
+
+#: includes/class_Customer.php:349
+msgid "Invalid avatar attachment ID."
+msgstr ""
+
+#: includes/class_ERP_API_Client.php:299
+#: includes/class_ERP_API_Handler.php:935
+msgid "Không tìm thấy danh mục của sản phẩm"
+msgstr ""
+
+#: includes/class_ERP_API_Handler.php:216 includes/inc_ajaxcall.php:712
+#: includes/inc_ajaxcall.php:748
+msgid "Product not found!"
+msgstr "Không tim thấy sản phẩm!"
+
+#: includes/class_Product.php:351
+msgid "Only from"
+msgstr "Chỉ từ"
+
+#: includes/class_Product.php:496
+msgid "Add to Cart"
+msgstr "Thêm vào Giỏ"
+
+#: includes/class_payoo_handler.php:83
+msgid "Payoo gateway is not configured correctly."
+msgstr "Cổng Payoo không được định cấu hình chính xác."
+
+#: includes/class_payoo_handler.php:93
+msgid "Invalid or incomplete order details provided for payment creation."
+msgstr ""
+"Chi tiết đơn hàng không hợp lệ hoặc không đầy đủ được cung cấp để tạo thanh "
+"toán."
+
+#: includes/class_payoo_handler.php:103
+msgid "Invalid order amount (must be greater than 0)."
+msgstr "Số tiền đặt hàng không hợp lệ (phải lớn hơn 0)."
+
+#: includes/class_payoo_handler.php:166
+msgid "Invalid payment data structure for sending request."
+msgstr "Cấu trúc dữ liệu thanh toán không hợp lệ để gửi yêu cầu."
+
+#: includes/class_vcl_order.php:627
+msgid "Order ID is not set."
+msgstr "Số ID đặt không có sẵn"
+
+#: includes/class_vcl_order.php:630
+msgid "Order not found."
+msgstr "Không tim thấy đơn hàng"
+
+#: includes/class_widget.php:6 includes/class_widget.php:21
+msgid "Recently Viewed Products"
+msgstr "Sản phẩm bạn đã xem"
+
+#: includes/class_widget.php:7
+msgid "Display ERP products user has recently viewed"
+msgstr ""
+
+#: includes/class_widget.php:25
+msgid "Title:"
+msgstr ""
+
+#: includes/inc_ajax_orders.php:10 includes/inc_ajaxcall.php:11
+#: includes/inc_ajaxcall.php:45 includes/inc_ajaxcall.php:92
+#: includes/inc_ajaxcall.php:156 includes/inc_ajaxcall.php:226
+#: includes/inc_ajaxcall.php:342 includes/inc_ajaxcall.php:623
+#: includes/inc_ajaxcall.php:662 includes/inc_ajaxcall.php:692
+#: includes/inc_ajaxcall.php:719 includes/inc_ajaxcall.php:1050
+#: includes/inc_ajaxcall.php:1184
+msgid "Invalid request"
+msgstr "Yêu cầu không hợp lệ"
+
+#: includes/inc_ajax_orders.php:48
+#, php-format
+msgid "Sub-total [%s product(s)]"
+msgstr "Tạm tính (%s sản phẩm)"
+
+#: includes/inc_ajax_orders.php:51
+msgid "Promotion"
+msgstr "Khuyến mãi"
+
+#: includes/inc_ajax_orders.php:53
+msgid "Shipping"
+msgstr "Vận chuyển"
+
+#: includes/inc_ajax_orders.php:55 template-parts/account-orders.php:89
+#: template-parts/account-orders.php:224 template-parts/account-orders.php:249
+msgid "Total"
+msgstr "Tổng tiền"
+
+#: includes/inc_ajax_orders.php:58
+msgid "Reward points"
+msgstr "Điểm thưởng"
+
+#: includes/inc_ajax_orders.php:81
+msgid "Invalid order data."
+msgstr "Dữ liệu đơn hàng không hợp lệ."
+
+#: includes/inc_ajax_orders.php:90
+msgid "Error processing order data."
+msgstr "Lỗi khi xử lý dữ liệu đơn hàng."
+
+#: includes/inc_ajax_orders.php:97
+msgid "Please provide full name and phone number."
+msgstr "Vui lòng cung cấp họ tên và số điện thoại."
+
+#: includes/inc_ajax_orders.php:119
+msgid "Please provide the complete delivery address."
+msgstr "Vui lòng cung cấp địa chỉ giao hàng đầy đủ."
+
+#: includes/inc_ajax_orders.php:126
+msgid "Please select a pickup store."
+msgstr "Vui lòng chọn cửa hàng lấy hàng."
+
+#: includes/inc_ajax_orders.php:132
+msgid "Please select a shipping method."
+msgstr "Vui lòng chọn Phương thức giao hàng."
+
+#: includes/inc_ajax_orders.php:143
+msgid "Please enter the full information for the other recipient."
+msgstr "Vui lòng nhập đầy đủ thông tin cho người nhận khác."
+
+#: includes/inc_ajax_orders.php:154
+msgid "Please enter the full company invoice details."
+msgstr "Vui lòng nhập đầy đủ chi tiết hóa đơn của công ty."
+
+#: includes/inc_ajax_orders.php:162
+msgid "Your cart is empty or invalid."
+msgstr "Giỏ hàng của bạn trống hoặc không hợp lệ."
+
+#: includes/inc_ajax_orders.php:191
+msgid "Order placed successfully! We will contact you soon."
+msgstr "Đã đặt hàng thành công! Chúng tôi sẽ sớm liên hệ với bạn."
+
+#: includes/inc_ajax_orders.php:200
+msgid "Unable to create the order. Please try again."
+msgstr "Không thể tạo đơn hàng. Vui lòng thử lại."
+
+#: includes/inc_ajax_orders.php:206
+msgid "A system error occurred while processing the order."
+msgstr "Đã xảy ra lỗi hệ thống trong khi xử lý đơn hàng."
+
+#: includes/inc_ajax_orders.php:221
+msgid "Invalid security token."
+msgstr "Mã thông báo bảo mật không hợp lệ."
+
+#: includes/inc_ajax_orders.php:227
+msgid "Missing order data."
+msgstr "Thiếu dữ liệu đơn hàng."
+
+#: includes/inc_ajax_orders.php:237
+msgid "Invalid order data format."
+msgstr "Định dạng dữ liệu đơn hàng không hợp lệ."
+
+#: includes/inc_ajax_orders.php:249
+msgid "Failed to create order in database."
+msgstr "Không thể tạo đơn hàng trong cơ sở dữ liệu."
+
+#: includes/inc_ajax_orders.php:258 includes/inc_ajax_orders.php:350
+msgid "Payoo payment gateway is not configured correctly."
+msgstr "Cổng thanh toán Payoo không được định cấu hình chính xác."
+
+#: includes/inc_ajax_orders.php:265 includes/inc_ajax_orders.php:357
+msgid "Error preparing Payoo payment data:"
+msgstr "Lỗi khi chuẩn bị dữ liệu thanh toán Payoo:"
+
+#: includes/inc_ajax_orders.php:273 includes/inc_ajax_orders.php:366
+msgid "Error sending request to Payoo:"
+msgstr "Lỗi khi gửi yêu cầu đến Payoo:"
+
+#: includes/inc_ajax_orders.php:280 includes/inc_ajax_orders.php:373
+msgid "Khách hàng được chuyển hướng đến Payoo để thanh toán."
+msgstr "Khách hàng được chuyển hướng đến Payoo để thanh toán."
+
+#: includes/inc_ajax_orders.php:286
+msgid "Order created successfully. Redirecting to Payoo..."
+msgstr "Đã tạo đơn hàng thành công. Đang chuyển hướng đến Payoo..."
+
+#: includes/inc_ajax_orders.php:298
+msgid "An unexpected error occurred during checkout. Please try again later."
+msgstr ""
+"Đã xảy ra lỗi không mong muốn trong quá trình thanh toán. Vui lòng thử lại "
+"sau."
+
+#: includes/inc_ajax_orders.php:340
+msgid "Missing order ID."
+msgstr "Thiếu mã đơn hàng."
+
+#: includes/inc_ajax_orders.php:375
+msgid "Redirecting to Payoo..."
+msgstr "Đang chuyển hướng đến Payoo..."
+
+#: includes/inc_ajaxcall.php:37
+msgid "Incorrect login information."
+msgstr "Thông tin đăng nhập không chính xác."
+
+#: includes/inc_ajaxcall.php:52
+msgid "Email/Phone and password are required."
+msgstr "Email/Điện thoại và mật khẩu là bắt buộc."
+
+#: includes/inc_ajaxcall.php:75
+msgid ""
+"Registration successful! You will be redirected in 5 seconds to complete "
+"your information"
+msgstr ""
+"Đăng ký thành công! Bạn sẽ được chuyển hướng sau 5 giây để hoàn tất thông "
+"tin của mình."
+
+#: includes/inc_ajaxcall.php:628 includes/inc_ajaxcall.php:638
+#: includes/inc_ajaxcall.php:667
+msgid "Please login!"
+msgstr "Vui lòng đăng nhập"
+
+#: includes/inc_ajaxcall.php:633 includes/inc_ajaxcall.php:672
+msgid "Invalid product ID"
+msgstr "ID sản phẩm không hợp lệ"
+
+#: includes/inc_ajaxcall.php:649
+msgid "Product has been added to favorites!"
+msgstr "Sản phẩm đã được thêm vào mục yêu thích!"
+
+#: includes/inc_ajaxcall.php:650 template-parts/product-detail.php:159
+#, php-format
+msgid "Favorite (%d)"
+msgstr "Yêu thích (%d)"
+
+#: includes/inc_ajaxcall.php:653 includes/inc_ajaxcall.php:686
+msgid "Error! Please try again"
+msgstr "Lỗi. Vui lòng thử lại."
+
+#: includes/inc_ajaxcall.php:682
+msgid "Product removed from favorites!"
+msgstr "Đã xóa khỏi mục yêu thích"
+
+#: includes/inc_ajaxcall.php:696
+msgid "Invalid SKU"
+msgstr "Mã SKU không hợp lệ"
+
+#: includes/inc_ajaxcall.php:832
+msgid "User not logged in."
+msgstr "Người dùng chưa đăng nhập."
+
+#: includes/inc_ajaxcall.php:838
+msgid "Invalid customer."
+msgstr "Khách hàng không hợp lệ."
+
+#: includes/inc_ajaxcall.php:988
+msgid "Search keyword is too short."
+msgstr "Từ khóa tìm kiếm quá ngắn."
+
+#: includes/inc_ajaxcall.php:1038
+msgid "No results found."
+msgstr "Không tìm thấy kết quả."
+
+#: includes/inc_ajaxcall.php:1287
+msgid "Invalid products!"
+msgstr "Sản phẩm không hợp lệ!"
+
+#: includes/inc_megamenu.php:16
+msgid "None"
+msgstr "Không có"
+
+#: includes/inc_megamenu.php:27
+msgid "Dropdown settings"
+msgstr ""
+
+#: includes/inc_product_reviews.php:171
+msgid "Product reviews table not found."
+msgstr ""
+
+#: includes/inc_product_reviews.php:206
+msgid "Product ID is invalid."
+msgstr "ID sản phẩm không hợp lệ."
+
+#: includes/inc_product_reviews.php:210
+msgid "Review content cannot be empty."
+msgstr "Nội dung không thể rỗng"
+
+#: includes/inc_product_reviews.php:216
+msgid "Please select a valid rating (1-5 stars)."
+msgstr "Vui lòng chọn xếp hạng hợp lệ (1-5 sao)."
+
+#: includes/inc_product_reviews.php:230
+msgid "Please enter your name."
+msgstr "Vui lòng nhập Tên của bạn"
+
+#: includes/inc_product_reviews.php:282
+msgid "Could not save review due to a database error."
+msgstr "Không thể lưu đánh giá do lỗi cơ sở dữ liệu."
+
+#: includes/inc_product_reviews.php:287
+msgid "Review could not be saved."
+msgstr "Không thể lưu đánh giá."
+
+#: includes/inc_product_reviews.php:315 template-parts/account-orders.php:88
+msgid "Product"
+msgstr "Sản phẩm"
+
+#: includes/inc_product_reviews.php:320
+#, php-format
+msgid "[%s] New product review for approval"
+msgstr "[%s] Đánh giá sản phẩm mới để phê duyệt"
+
+#: includes/inc_product_reviews.php:322
+#, php-format
+msgid "There are new reviews for the product: %s"
+msgstr "Có đánh giá mới cho sản phẩm: %s"
+
+#: includes/inc_product_reviews.php:323
+#, php-format
+msgid "Sender: %s"
+msgstr "Người gửi: %s"
+
+#: includes/inc_product_reviews.php:324
+#, php-format
+msgid "Email: %s"
+msgstr ""
+
+#: includes/inc_product_reviews.php:325
+#, php-format
+msgid "Rating: %d sao"
+msgstr "Xếp hạng: %d sao"
+
+#: includes/inc_product_reviews.php:326
+#, php-format
+msgid "Content: %s"
+msgstr "Nội dung: %s"
+
+#: includes/inc_product_reviews.php:330
+#, php-format
+msgid "View product: %s"
+msgstr "Xem sản phẩm: %s"
+
+#: includes/inc_product_reviews.php:336
+#, php-format
+msgid "Visit the admin page to browse this review: %s"
+msgstr "Truy cập trang quản trị để duyệt đánh giá này: %s"
+
+#: includes/inc_product_reviews.php:353
+msgid "Security check failed. Please refresh the page."
+msgstr "Hoạt động thất bại. Hãy làm mới trang và thử lại."
+
+#: includes/inc_product_reviews.php:391
+msgid "Thank you for your review!"
+msgstr "Cám ơn đánh giá của bạn! "
+
+#: includes/inc_product_reviews.php:392
+msgid "Thank you for your review. It will be visible after approval."
+msgstr ""
+"Cảm ơn bạn đã đánh giá. Thông tin này sẽ hiển thị sau khi được phê duyệt."
+
+#: includes/inc_product_reviews.php:411
+msgid "Cannot load reviews: Invalid product object."
+msgstr "Không thể tải đánh giá: Đối tượng sản phẩm không hợp lệ."
+
+#: includes/inc_product_reviews.php:431 includes/inc_product_reviews.php:466
+#, php-format
+msgid "Error: Template file %s not found."
+msgstr ""
+
+#: includes/inc_product_reviews.php:454
+msgid "Product ID not specified for the review form."
+msgstr "ID sản phẩm không được chỉ định cho biểu mẫu đánh giá."
+
+#: includes/inc_product_reviews.php:483 includes/inc_product_reviews.php:484
+msgid "Product Reviews"
+msgstr "Đánh giá sản phẩm"
+
+#: includes/inc_product_reviews.php:513
+#, php-format
+msgid "Rating: %s out of 5 stars"
+msgstr "Xếp hạng: %s trên 5 sao"
+
+#: includes/inc_product_reviews.php:528
+msgid "review"
+msgstr "đánh giá"
+
+#: includes/inc_product_reviews.php:529
+msgid "reviews"
+msgstr "đánh giá"
+
+#: includes/inc_product_reviews.php:535
+msgid "has"
+msgstr "có"
+
+#: includes/inc_products.php:3 includes/posttype_brands.php:5
+#: includes/posttype_brands.php:7 page-discount.php:48
+#: template-parts/product-listing.php:31
+msgid "Brands"
+msgstr "Nhãn hiệu"
+
+#: includes/inc_products.php:4 page-discount.php:56
+#: template-parts/product-listing.php:39
+msgid "Branches"
+msgstr "Chi nhánh"
+
+#: includes/inc_products.php:5
+msgid "Attributes"
+msgstr "Các thuộc tính"
+
+#: includes/inc_products.php:6 includes/inc_theme_support.php:168
+msgid "Color"
+msgstr "Màu"
+
+#: includes/inc_products.php:7 includes/inc_theme_support.php:169
+msgid "Weight"
+msgstr "Cân nặng"
+
+#: includes/inc_products.php:8 includes/inc_theme_support.php:170
+msgid "Play style"
+msgstr "Phong cách chơi"
+
+#: includes/inc_products.php:9 includes/inc_theme_support.php:171
+msgid "Play mode"
+msgstr "Phong cách chơi"
+
+#: includes/inc_products.php:10 includes/inc_theme_support.php:172
+msgid "Skill level"
+msgstr "Trình độ"
+
+#: includes/inc_products.php:226
+msgid "Shopping cart"
+msgstr "Giỏ hàng"
+
+#: includes/inc_products.php:234 template-parts/order-received.php:133
+msgid "Total:"
+msgstr "Tổng:"
+
+#: includes/inc_products.php:236
+msgid "Shopping cart / Checkout"
+msgstr "Giỏ hàng / Thanh toán"
+
+#: includes/inc_products.php:240 includes/inc_theme_support.php:151
+msgid "There are no items in your cart."
+msgstr "Không có mặt hàng nào trong giỏ hàng của bạn."
+
+#: includes/inc_shortcodes.php:9
+msgid "Invalid Block ID."
+msgstr ""
+
+#: includes/inc_shortcodes.php:19
+msgid "Block not found or not published."
+msgstr "Tên trường không kiếm thấy hoặc không duy nhất"
+
+#: includes/inc_theme_support.php:152
+msgid "There was an error loading the cart. Please try again later."
+msgstr "Đã xảy ra lỗi khi tải giỏ hàng. Vui lòng thử lại sau."
+
+#: includes/inc_theme_support.php:153
+msgid "Product is temporarily out of stock!"
+msgstr "Sản phẩm tạm hết hàng"
+
+#: includes/inc_theme_support.php:154
+msgid "Please select full product variation."
+msgstr "Vui lòng chọn biến thể sản phẩm đầy đủ."
+
+#: includes/inc_theme_support.php:155
+msgid "Invalid product or not enough variants selected."
+msgstr "Sản phẩm không hợp lệ hoặc không đủ biến thể được chọn."
+
+#: includes/inc_theme_support.php:156
+msgid "Branch information not found."
+msgstr "Không tìm thấy thông tin chi nhánh."
+
+#: includes/inc_theme_support.php:157
+msgid "Please remove products to continue comparing!"
+msgstr "Vui lòng xóa sản phẩm để tiếp tục so sánh!"
+
+#: includes/inc_theme_support.php:158
+msgid "Product has been added to comparison list."
+msgstr "Sản phẩm đã được thêm vào danh sách so sánh."
+
+#: includes/inc_theme_support.php:160
+msgid "Added"
+msgstr "Đã thêm"
+
+#: includes/inc_theme_support.php:162
+msgid "Show only the difference"
+msgstr "Chỉ hiển thị sự khác biệt"
+
+#: includes/inc_theme_support.php:163
+msgid "products left"
+msgstr "sản phẩm"
+
+#: includes/inc_theme_support.php:164
+msgid "Not available"
+msgstr "Không có sẵn"
+
+#: includes/inc_theme_support.php:187
+msgid "Email is already registered."
+msgstr "Email này đã được đăng ký."
+
+#: includes/inc_theme_support.php:196
+msgid "Phone number is already registered."
+msgstr "Số điện thoại đã được đăng ký"
+
+#: includes/inc_theme_support.php:199
+msgid "Invalid email or phone number."
+msgstr "Email hoặc số điện thoại không hợp lệ."
+
+#: includes/inc_theme_support.php:310
+msgid "Ẩn trên Điện thoại"
+msgstr ""
+
+#: includes/inc_widgets.php:6
+#, php-format
+msgid "Footer Column %d"
+msgstr ""
+
+#: includes/inc_widgets.php:10 includes/inc_widgets.php:24
+msgid "Footer widget"
+msgstr ""
+
+#: includes/inc_widgets.php:20
+#, php-format
+msgid "Footer Column Bottom %d"
+msgstr ""
+
+#: includes/inc_widgets.php:34
+msgid "Main Widget Area"
+msgstr ""
+
+#: includes/inc_widgets.php:36
+msgid "Main widget for Category"
+msgstr ""
+
+#: includes/inc_widgets.php:43
+msgid "Post Widget Area"
+msgstr ""
+
+#: includes/inc_widgets.php:45
+msgid "Widget for Post"
+msgstr ""
+
+#: includes/inc_widgets.php:52
+msgid "Shop Widget Area"
+msgstr ""
+
+#: includes/inc_widgets.php:54
+msgid "Widget area for Shop and Products"
+msgstr ""
+
+#: includes/posttype_brands.php:6 includes/posttype_brands.php:8
+#: template-parts/product-detail.php:192
+msgid "Brand"
+msgstr "Thương hiệu"
+
+#: includes/posttype_brands.php:9 includes/posttype_store_system.php:10
+msgid "Add New (disabled)"
+msgstr ""
+
+#: includes/posttype_brands.php:10
+msgid "Add New Brand (disabled)"
+msgstr ""
+
+#: includes/posttype_brands.php:11
+msgid "Edit Brand (disabled)"
+msgstr ""
+
+#: includes/posttype_brands.php:12
+msgid "New Brand (disabled)"
+msgstr ""
+
+#: includes/posttype_brands.php:13
+msgid "View Brand"
+msgstr "Xem thương hiệu"
+
+#: includes/posttype_brands.php:14
+msgid "Search Brands"
+msgstr ""
+
+#: includes/posttype_brands.php:15
+msgid "No Brands found"
+msgstr ""
+
+#: includes/posttype_brands.php:16
+msgid "No Brands found in Trash"
+msgstr ""
+
+#: includes/posttype_cms_block.php:6
+msgid "HTML Blocks"
+msgstr ""
+
+#: includes/posttype_cms_block.php:7
+msgid "HTML Block"
+msgstr ""
+
+#: includes/posttype_cms_block.php:8 includes/posttype_cms_block.php:9
+msgid "Add New Item"
+msgstr ""
+
+#: includes/posttype_cms_block.php:10
+msgid "Edit HTML Block"
+msgstr ""
+
+#: includes/posttype_cms_block.php:11
+msgid "New HTML Block"
+msgstr ""
+
+#: includes/posttype_cms_block.php:12
+msgid "View HTML Block"
+msgstr ""
+
+#: includes/posttype_cms_block.php:13
+msgid "Search HTML Blocks"
+msgstr ""
+
+#: includes/posttype_cms_block.php:14
+msgid "No HTML Blocks found"
+msgstr ""
+
+#: includes/posttype_cms_block.php:15
+msgid "No HTML Blocks found in Trash"
+msgstr ""
+
+#: includes/posttype_store_system.php:6 includes/posttype_store_system.php:7
+#: includes/posttype_store_system.php:8 includes/posttype_store_system.php:9
+msgid "Store"
+msgstr "Cửa hàng"
+
+#: includes/posttype_store_system.php:11
+msgid "Add New Store (disabled)"
+msgstr ""
+
+#: includes/posttype_store_system.php:12
+msgid "Edit Store (disabled)"
+msgstr ""
+
+#: includes/posttype_store_system.php:13
+msgid "New Store (disabled)"
+msgstr ""
+
+#: includes/posttype_store_system.php:14
+msgid "View Store"
+msgstr "Cửa hàng"
+
+#: includes/posttype_store_system.php:15
+msgid "Search Store"
+msgstr "Tìm kiếm cửa hàng"
+
+#: includes/posttype_store_system.php:16
+msgid "No Store found"
+msgstr "Không tìm thấy cửa hàng"
+
+#: includes/posttype_store_system.php:17
+msgid "No Store found in Trash"
+msgstr "Không tìm thấy cửa hàng nào trong Thùng rác"
+
+#: includes/posttype_store_system.php:38
+msgid "Store information"
+msgstr "Thông tin cửa hàng"
+
+#: includes/posttype_store_system.php:58
+msgid "Store address"
+msgstr "Địa chỉ cửa hàng"
+
+#: includes/posttype_store_system.php:62 page-shopping-cart.php:68
+#: template-parts/account-address.php:90
+#: template-parts/account-edit-profile.php:45
+msgid "Phone number"
+msgstr "Số điện thoại"
+
+#: includes/posttype_store_system.php:66
+msgid "Google Map (Embed URL)"
+msgstr ""
+
+#: includes/posttype_store_system.php:70
+msgid "Direct Google Maps link"
+msgstr "Liên kết Google Maps trực tiếp"
+
+#: includes/template-store-system.php:64 includes/template-store-system.php:92
+msgid "No stores found."
+msgstr "Không có cửa hàng nào được tìm thấy"
+
+#: page-account.php:55
+#, php-format
+msgid "Hello !<br><b>%s</b>"
+msgstr "Xin chào !<br><b>%s</b>"
+
+#: page-account.php:60
+msgid "Edit profile"
+msgstr "Chỉnh sửa hồ sơ"
+
+#: page-account.php:64
+msgid "Sign out"
+msgstr "Thoát"
+
+#: page-account.php:91 template-parts/account-edit-profile.php:9
+msgid "My profile"
+msgstr "Hồ sơ của tôi"
+
+#: page-account.php:92
+msgid "Address book"
+msgstr "Sổ địa chỉ"
+
+#: page-discount.php:29 template-parts/product-listing.php:9
+msgid "Updating..."
+msgstr "Đang cập nhật..."
+
+#: page-discount.php:40 template-parts/product-listing.php:23
+msgid "Price ranges"
+msgstr "Khoảng giá"
+
+#: page-discount.php:98 template-parts/product-listing.php:86
+msgid "Choose racket as required"
+msgstr "Theo yêu cầu"
+
+#: page-discount.php:140 template-parts/product-listing.php:132
+msgid "Sort by"
+msgstr "Sắp xếp theo"
+
+#: page-register.php:37 page-register.php:45 page-register.php:64
+msgid "Login"
+msgstr "Đăng nhập"
+
+#: page-register.php:39 page-register.php:52
+msgid "Enter phone number/Email"
+msgstr "Số điện thoại / email"
+
+#: page-register.php:41 page-register.php:54
+msgid "Password"
+msgstr "Mật khẩu"
+
+#: page-register.php:44
+msgid "Forgot password ?"
+msgstr "Quên mật khẩu ?"
+
+#: page-register.php:47
+msgid "Don't have an account ?"
+msgstr "Bạn chưa có tài khoản?"
+
+#: page-register.php:47 page-register.php:50
+msgid "Register"
+msgstr "Đăng ký"
+
+#: page-register.php:58
+msgid "Repeat Password"
+msgstr "Nhập lại Mật khẩu"
+
+#: page-register.php:62
+msgid "Continue"
+msgstr "Tiếp tục"
+
+#: page-register.php:64
+msgid "Already have an account!"
+msgstr "Bạn đã có Tài khoản"
+
+#: page-register.php:69
+msgid "OR"
+msgstr "HOẶC"
+
+#: page-register.php:72
+msgid "Login with Zalo"
+msgstr "Đăng nhập bằng Zalo"
+
+#: page-register.php:75
+msgid "Login with Facebook"
+msgstr "Đăng nhập bằng Facebook"
+
+#: page-register.php:78
+msgid "Login with Google"
+msgstr "Đăng nhập với Google"
+
+#: page-register.php:81
+msgid "Login with QRCode"
+msgstr "Đăng nhập bằng QRCode"
+
+#: page-register.php:93
+msgid "Error!"
+msgstr "lỗi"
+
+#: page-shopping-cart.php:46
+msgid "Customer Information"
+msgstr "Thông tin khách hàng"
+
+#: page-shopping-cart.php:53 template-parts/account-edit-profile.php:26
+msgid "Male"
+msgstr "Nam"
+
+#: page-shopping-cart.php:57 template-parts/account-edit-profile.php:30
+msgid "Female"
+msgstr "Nữ"
+
+#: page-shopping-cart.php:77 page-shopping-cart.php:216
+msgid "Shipping method"
+msgstr "Phương thức giao hàng"
+
+#: page-shopping-cart.php:82 page-shopping-cart.php:83
+msgid "Delivery to your door"
+msgstr "Giao tận nơi"
+
+#: page-shopping-cart.php:86 page-shopping-cart.php:87
+#: template-parts/account-orders.php:54 template-parts/order-received.php:151
+msgid "Pick up at store"
+msgstr "Nhận tại cửa hàng"
+
+#: page-shopping-cart.php:118
+msgid "Quick search ..."
+msgstr "Tìm nhanh..."
+
+#: page-shopping-cart.php:222
+msgid "Payment method"
+msgstr "Phương thức thanh toán"
+
+#: page-shopping-cart.php:227 page-shopping-cart.php:228
+msgid "COD"
+msgstr "Thanh toán khi nhận hàng"
+
+#: page-shopping-cart.php:231
+msgid "Payoo"
+msgstr ""
+
+#: single.php:59
+msgid " Related Posts"
+msgstr "Bài viết liên quan"
+
+#: template-parts/account-address.php:4
+msgid "Please login to manage addresses."
+msgstr "Vui lòng đăng nhập để quản lý địa chỉ."
+
+#: template-parts/account-address.php:18
+msgid "My addresses"
+msgstr "Địa chỉ của tôi"
+
+#: template-parts/account-address.php:21
+msgid "Add new address"
+msgstr "Thêm địa chỉ mới"
+
+#: template-parts/account-address.php:24
+msgid "Manage your shipping address information."
+msgstr "Quản lý thông tin địa chỉ giao hàng của bạn."
+
+#: template-parts/account-address.php:46
+msgid "Default"
+msgstr "Mặc định"
+
+#: template-parts/account-address.php:52
+msgid "Delete"
+msgstr "Xóa"
+
+#: template-parts/account-address.php:62
+#: template-parts/account-address.php:120
+msgid "Set as default"
+msgstr "Đặt làm mặc định"
+
+#: template-parts/account-address.php:68
+msgid "You have no saved addresses."
+msgstr "Bạn không có địa chỉ đã lưu."
+
+#: template-parts/account-address.php:79
+msgid "Create new address"
+msgstr "Tạo địa chỉ mới"
+
+#: template-parts/account-address.php:86
+msgid "Recipient's name"
+msgstr "Tên người nhận"
+
+#: template-parts/account-address.php:97
+msgid "Province/City - District"
+msgstr "Tỉnh/Thành phố - Huyện"
+
+#: template-parts/account-address.php:99
+#: template-parts/account-edit-profile.php:130
+msgid "Select Province/City - District"
+msgstr "Chọn tỉnh/thành phố - huyện"
+
+#: template-parts/account-address.php:105
+#: template-parts/account-edit-profile.php:138
+msgid "Ward/Commune"
+msgstr "Phường/Xã"
+
+#: template-parts/account-address.php:107
+#: template-parts/account-edit-profile.php:141
+msgid "Select Ward/Commune"
+msgstr "Chọn phường/xã"
+
+#: template-parts/account-address.php:114
+msgid "Specific address (House number, street name...)"
+msgstr "Địa chỉ cụ thể (Số nhà, tên đường…)"
+
+#: template-parts/account-address.php:126 template-parts/order-received.php:89
+msgid "Cancel"
+msgstr "Hủy"
+
+#: template-parts/account-address.php:127
+msgid "Save address"
+msgstr "Lưu địa chỉ"
+
+#: template-parts/account-edit-profile.php:10
+msgid "Manage profile information to keep your account secure"
+msgstr "Quản lý thông tin hồ sơ để giữ an toàn cho tài khoản của bạn"
+
+#: template-parts/account-edit-profile.php:16
+msgid "Fullname"
+msgstr "Họ và Tên"
+
+#: template-parts/account-edit-profile.php:22
+msgid "Gender"
+msgstr "Giới tính"
+
+#: template-parts/account-edit-profile.php:34
+msgid "Other"
+msgstr "Khác"
+
+#: template-parts/account-edit-profile.php:51
+msgid "Day of birth"
+msgstr "Ngày sinh"
+
+#: template-parts/account-edit-profile.php:55
+msgid "Day"
+msgstr "Ngày"
+
+#: template-parts/account-edit-profile.php:63
+msgid "Month"
+msgstr "Tháng"
+
+#: template-parts/account-edit-profile.php:66
+msgid "January"
+msgstr "Tháng 1"
+
+#: template-parts/account-edit-profile.php:67
+msgid "February"
+msgstr "Tháng 2"
+
+#: template-parts/account-edit-profile.php:68
+msgid "March"
+msgstr "Tháng 3"
+
+#: template-parts/account-edit-profile.php:69
+msgid "April"
+msgstr "Tháng 4"
+
+#: template-parts/account-edit-profile.php:70
+msgid "May"
+msgstr "Tháng 5"
+
+#: template-parts/account-edit-profile.php:71
+msgid "June"
+msgstr "Tháng 6"
+
+#: template-parts/account-edit-profile.php:72
+msgid "July"
+msgstr "Tháng 7"
+
+#: template-parts/account-edit-profile.php:73
+msgid "August"
+msgstr "Tháng 8"
+
+#: template-parts/account-edit-profile.php:74
+msgid "September"
+msgstr "Tháng 9"
+
+#: template-parts/account-edit-profile.php:75
+msgid "October"
+msgstr "Tháng 10"
+
+#: template-parts/account-edit-profile.php:76
+msgid "November"
+msgstr "Tháng 11"
+
+#: template-parts/account-edit-profile.php:77
+msgid "December"
+msgstr "Tháng 12"
+
+#: template-parts/account-edit-profile.php:86
+msgid "Year"
+msgstr "Năm"
+
+#: template-parts/account-edit-profile.php:119
+msgid "Company (Optional)"
+msgstr "Công ty (Không bắt buộc)"
+
+#: template-parts/account-edit-profile.php:127
+msgid "Province/City"
+msgstr "Tỉnh/Thành phố"
+
+#: template-parts/account-edit-profile.php:149
+msgid "Address"
+msgstr "Địa chỉ"
+
+#: template-parts/account-edit-profile.php:151
+msgid "House number, street name"
+msgstr "Số nhà, tên đường"
+
+#: template-parts/account-edit-profile.php:157
+msgid "Postal Code (Optional)"
+msgstr "Mã bưu chính (không bắt buộc)"
+
+#: template-parts/account-orders.php:32
+msgid "Invalid order or you do not have permission to view this order."
+msgstr "Đơn hàng không hợp lệ hoặc bạn không có quyền xem đơn hàng này."
+
+#: template-parts/account-orders.php:36
+msgid "Make payment"
+msgstr "Thanh toán ngay"
+
+#: template-parts/account-orders.php:40
+#, php-format
+msgid "Order Details #%s"
+msgstr "Chi tiết đơn hàng #%s"
+
+#: template-parts/account-orders.php:42
+#, php-format
+msgid "Order date: %s"
+msgstr "Ngày đặt hàng: %s"
+
+#: template-parts/account-orders.php:43 template-parts/order-received.php:166
+msgid "Status:"
+msgstr "Trạng thái:"
+
+#: template-parts/account-orders.php:44 template-parts/order-received.php:139
+msgid "Payment method:"
+msgstr "Phương thức thanh toán:"
+
+#: template-parts/account-orders.php:54 template-parts/account-orders.php:61
+#: template-parts/account-orders.php:64 template-parts/order-received.php:151
+#: template-parts/order-received.php:158 template-parts/order-received.php:161
+msgid "Delivery method:"
+msgstr "Phương thức giao nhận:"
+
+#: template-parts/account-orders.php:55 template-parts/order-received.php:152
+msgid "Store:"
+msgstr "Cửa hàng:"
+
+#: template-parts/account-orders.php:57 template-parts/account-orders.php:77
+#: template-parts/order-received.php:154
+msgid "Address:"
+msgstr "Địa chỉ:"
+
+#: template-parts/account-orders.php:61 template-parts/order-received.php:158
+msgid "Pick up at store (Store details not available)"
+msgstr "Nhận hàng tại cửa hàng (Chi tiết cửa hàng không có sẵn)"
+
+#: template-parts/account-orders.php:64 template-parts/order-received.php:161
+msgid "Home delivery"
+msgstr "Giao hàng tận nơi"
+
+#: template-parts/account-orders.php:65 template-parts/order-received.php:162
+msgid "Shipping service:"
+msgstr "Dịch vụ vận chuyển:"
+
+#: template-parts/account-orders.php:68
+msgid "Note:"
+msgstr "Ghi chú:"
+
+#: template-parts/account-orders.php:73
+msgid "Company invoice:"
+msgstr "Hóa đơn công ty:"
+
+#: template-parts/account-orders.php:75
+msgid "Company name:"
+msgstr "Tên công ty:"
+
+#: template-parts/account-orders.php:76
+msgid "Tax code:"
+msgstr "Mã số thuế:"
+
+#: template-parts/account-orders.php:116
+msgid "No products in this order."
+msgstr "Không có sản phẩm nào trong đơn hàng này."
+
+#: template-parts/account-orders.php:122
+msgid "Subtotal:"
+msgstr "Tổng phụ:"
+
+#: template-parts/account-orders.php:128
+msgid "Shipping fee:"
+msgstr "Phí vận chuyển:"
+
+#: template-parts/account-orders.php:135
+msgid "Discount (Voucher):"
+msgstr "Giảm giá (Voucher):"
+
+#: template-parts/account-orders.php:141
+msgid "Tax:"
+msgstr "Thuế:"
+
+#: template-parts/account-orders.php:146
+msgid "Grand Total:"
+msgstr "Tổng đơn hàng:"
+
+#: template-parts/account-orders.php:156
+msgid "Billing address"
+msgstr "Địa chỉ thanh toán"
+
+#: template-parts/account-orders.php:177
+msgid "Shipping address"
+msgstr "Địa chỉ giao hàng"
+
+#: template-parts/account-orders.php:198
+msgid "Error: Could not load order details. VCL_Order class does not exist."
+msgstr ""
+
+#: template-parts/account-orders.php:207
+msgid "Your orders"
+msgstr "Đơn hàng của bạn"
+
+#: template-parts/account-orders.php:208
+msgid "Manage your orders"
+msgstr "Quản lý đơn hàng"
+
+#: template-parts/account-orders.php:221 template-parts/account-orders.php:236
+msgid "Order"
+msgstr "Đơn hàng"
+
+#: template-parts/account-orders.php:222 template-parts/account-orders.php:241
+msgid "Date"
+msgstr "Ngày"
+
+#: template-parts/account-orders.php:260
+msgid "View"
+msgstr "Xem"
+
+#: template-parts/account-orders.php:274
+msgid "Go to shop"
+msgstr "Đi đến cửa hàng"
+
+#: template-parts/account-orders.php:275
+msgid "No orders have been made yet."
+msgstr "Bạn chưa có đơn hàng nào."
+
+#: template-parts/account-orders.php:280
+msgid ""
+"Error: Could not load customer information. Customer class does not exist."
+msgstr ""
+
+#: template-parts/cart-item.php:60
+msgid "Promotions are being applied"
+msgstr "Chương trình khuyến mãi đang được áp dụng"
+
+#: template-parts/cart-item.php:62
+msgid "View details"
+msgstr "Xem chi tiết"
+
+#: template-parts/cart-item.php:71 template-parts/product-item.php:72
+#, php-format
+msgid "Free %s"
+msgstr "Tặng %s"
+
+#: template-parts/compare-products.php:7
+msgid "Compare products"
+msgstr "So sánh sản phẩm"
+
+#: template-parts/header.php:17
+msgid "Search for brands, products, articles..."
+msgstr "Tìm kiếm thương hiệu, sản phẩm, bài viết..."
+
+#: template-parts/header.php:54
+msgid "Our<br>stores"
+msgstr "Cửa hàng<br>của chúng tôi"
+
+#: template-parts/header.php:60
+msgid "Order lookup<br>Warranty check"
+msgstr "Tra cứu đơn hàng<br>Kiểm tra bảo hành"
+
+#: template-parts/header.php:66
+msgid "Your<br>account"
+msgstr "Tài khoản<br>của bạn"
+
+#: template-parts/header.php:69
+msgid "Register<br>Login"
+msgstr "Đăng ký<br>Đăngnhập"
+
+#: template-parts/header.php:88
+msgid "Your cart"
+msgstr "Giỏ hàng"
+
+#: template-parts/header.php:88
+msgid "product(s)"
+msgstr "sản phẩm"
+
+#: template-parts/order-received.php:37
+msgid ""
+"Sorry, this order is invalid or you do not have permission to access it."
+msgstr "Rất tiếc, đơn hàng này không hợp lệ hoặc bạn không có quyền truy cập."
+
+#: template-parts/order-received.php:53
+msgid "Order failed!"
+msgstr "Đơn hàng không thành công!"
+
+#: template-parts/order-received.php:55
+msgid "Order placed successfully!"
+msgstr "Đã đặt hàng thành công!"
+
+#: template-parts/order-received.php:74
+#, php-format
+msgid ""
+"Thank you, %s <b>%s</b>, for giving VotCauLong Shop the opportunity to serve "
+"you."
+msgstr "Cảm ơn bạn, %s <b>%s</b>, đã cho VotCauLong Shop cơ hội phục vụ bạn."
+
+#: template-parts/order-received.php:75
+msgid "Mr."
+msgstr "Ông"
+
+#: template-parts/order-received.php:75
+msgid "Ms."
+msgstr "Bà"
+
+#: template-parts/order-received.php:76
+msgid "you"
+msgstr "bạn"
+
+#: template-parts/order-received.php:84
+msgid "Order:"
+msgstr "Đơn hàng:"
+
+#: template-parts/order-received.php:88
+msgid "Manage order"
+msgstr "Quản lý đơn hàng"
+
+#: template-parts/order-received.php:95
+msgid "Order date:"
+msgstr "Ngày đặt hàng: "
+
+#: template-parts/order-received.php:100
+msgid "Customer name:"
+msgstr "Tên Khách hàng:"
+
+#: template-parts/order-received.php:106
+msgid "Phone number:"
+msgstr "Số điện thoại:"
+
+#: template-parts/order-received.php:112
+msgid "Email:"
+msgstr ""
+
+#: template-parts/order-received.php:119
+msgid "Shipping address:"
+msgstr "Địa chỉ giao hàng:"
+
+#: template-parts/order-received.php:170
+msgid "Other requests:"
+msgstr "Các yêu cầu khác:"
+
+#: template-parts/product-detail.php:19
+msgid "In stock"
+msgstr "Còn hàng"
+
+#: template-parts/product-detail.php:22 template-parts/product-detail.php:333
+msgid "Out of stock"
+msgstr "Hết hàng"
+
+#: template-parts/product-detail.php:191
+#, php-format
+msgid "Sold : %s"
+msgstr "Đã bán : %s"
+
+#: template-parts/product-detail.php:198
+msgid "SKU"
+msgstr "Mã sản phẩm"
+
+#: template-parts/product-detail.php:276
+msgid "Quantity"
+msgstr "Số lượng"
+
+#: template-parts/product-detail.php:333
+#, php-format
+msgid "%d product(s) left"
+msgstr "%d sản phẩm"
+
+#: template-parts/product-listing.php:15
+#: template-parts/product-listing.php:129
+msgid "Filter Products"
+msgstr "Lọc sản phẩm"
+
+#: template-parts/product-review-form.php:17
+msgid "Product is not valid for review."
+msgstr "Tạo đánh giá sản phẩm không thành công."
+
+#: template-parts/product-review-form.php:27
+msgid "Leave your review"
+msgstr "Để lại đánh giá của bạn"
+
+#: template-parts/product-review-form.php:32
+msgid "Please Login to review this product!"
+msgstr "Vui lòng đăng nhập để đánh giá sản phẩm này!"
+
+#: template-parts/product-review-form.php:37
+msgid "Your review"
+msgstr "Bài đánh giá của bạn"
+
+#: template-parts/product-review-form.php:41
+msgid "star"
+msgstr "sao"
+
+#: template-parts/product-review-form.php:47
+msgid "Review content"
+msgstr "Nội dung đánh giá"
+
+#: template-parts/product-review-form.php:61
+msgid "Submit a review"
+msgstr "Gửi đánh giá"
+
+#: template-parts/product-review-form.php:154
+msgid "An error occurred. Please try again."
+msgstr "Có lỗi xảy ra. Xin vui lòng thử lại."
+
+#: template-parts/product-reviews.php:11
+msgid "Unable to load review data."
+msgstr "Không thể tải dữ liệu đánh giá."
+
+#: template-parts/product-reviews.php:16
+msgid "Overview of the review"
+msgstr "Tổng quan về đánh giá"
+
+#: template-parts/product-reviews.php:20
+#, php-format
+msgid "Average rating: %s out of 5 stars"
+msgstr "Xếp hạng trung bình: %s/5 sao"
+
+#. translators: %1$s: HTML string of star icons, %2$s: strong-tagged average rating number, %3$s: strong-tagged total reviews count
+#: template-parts/product-reviews.php:36
+#, php-format
+msgid "%1$s (%2$s/5) based on %3$s ratings."
+msgstr "%1$s (%2$s/5) dựa trên %3$s xếp hạng."
+
+#: template-parts/product-reviews.php:50
+msgid "Customer Reviews"
+msgstr "Đánh giá của khách hàng"
+
+#: template-parts/product-reviews.php:75
+msgid "Reply"
+msgstr "Trả lời"
+
+#: template-parts/product-reviews.php:92
+msgid "There are no approved reviews for this product yet."
+msgstr "Chưa có đánh giá nào được phê duyệt cho sản phẩm này."
+
+#: template-parts/widget-filter.php:24
+msgid "Quick search"
+msgstr "Tìm nhanh"
+
+#: template-parts/widget-filter.php:24
+msgid "No results found!"
+msgstr "Không tìm thấy!"
+
+#: backend/datatables/datatables.min.js:16
+msgid ""
+"assert.fail() with more than one argument is deprecated. Please use assert."
+"strictEqual() instead or only pass a message."
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "expected"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "fn"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "promiseFn"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "error"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "parseXml: duplicate attribute \""
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "parseXml: tag not matching, opening \""
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "parseXml: tag could not be parsed \""
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "parseXml: data after document end has been discarded"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "parseXml: parsing error"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SvgPath: command "
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SvgPath: unexpected string "
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SVGtoPDF: loop of circular references for id \""
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SVGElemImage: failed to open image \""
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SvgElemGradient: negative r value"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SvgElemPolygon: unexpected string "
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SvgElemPolyline: uneven number of coordinates"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SvgElemPolygon: uneven number of coordinates"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SVGElemText: failed to open font \""
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid ""
+"SVGtoPDF: useCSS option can only be used for SVG *elements* in compatible "
+"browsers"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SVGtoPDF: this element can't be rendered directly: "
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "SVGtoPDF: the input does not look like a valid SVG"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "Reduce of empty array with no initial value"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "Accessors not supported"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "includes"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "flags"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "iterator"
+msgstr ""
+
+#: backend/datatables/datatables.min.js:16
+msgid "toStringTag"
+msgstr ""
+
+#~ msgid "Registration successful!"
+#~ msgstr "Đăng ký thành công!"
+
+#~ msgid "Added to wishlist!"
+#~ msgstr "Đã thêm vào wishlist"
+
+#~ msgid "Favorite (%s)"
+#~ msgstr "Yêu thích (%s)"
+
+#~ msgid "Product is already in wishlist!"
+#~ msgstr "Sản phẩm đã được thêm vào danh sách yêu thích"
+
+#~ msgid "Wishlist empty!"
+#~ msgstr "Danh sách Yêu thích trống!"
+
+#~ msgid "Removed from wishlist!"
+#~ msgstr "Đã xóa khỏi danh sách Yêu thích!"
+
+#~ msgid "Check out"
+#~ msgstr "Thanh toán"

@@ -1,0 +1,125 @@
+:root {
+    --top-color: #1759ca;
+    --item-color: #0a3b92;
+    --default: #b9b69a;
+    --success: #21935c;
+    --warning: #ffc107;
+    --danger: #ff5722;
+    --primary: #29b6f6;
+}
+
+body.login {
+    background-image: url('../img/login-bg.jpg') !important;
+}
+body.login::before{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: #000;
+    opacity: 0.4;
+    z-index: -1;
+}
+#login h1.wp-login-logo {
+    background-image: url('../img/admin-logo.png') !important;
+    background-size: contain;
+    width: auto !important;
+    max-width: 100%;
+    height: 75px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#login h1 a {
+    display: none;
+}
+#login form {
+    /*background: none;
+    border: 0px;
+    box-shadow: none;
+    padding:0px;*/
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 15px;
+    box-shadow: 0px 1px 25px rgba(0,0,0,0.3);
+}
+#login form .input {
+    /*border-color: #eee;
+    background: #fff;
+    font-size: 15px;
+    border-radius: 0px;*/
+    font-size: 15px;
+    color: rgba(0,0,0,0.7);
+    border-radius: 5px;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.15);
+    border: 1px solid rgb(196 196 196 / 8%);
+}
+#login form input[type="checkbox"] {
+    background: #ffffff42;
+    border:1px solid rgba(0,0,0,0.15);
+    box-shadow: none;
+}
+#login form input[type="checkbox"]:focus {
+    border:1px solid rgba(0,0,0,0.15);
+    box-shadow: none;
+}
+#login input {border-radius: 0px;}
+#login input[type="password"]:focus,#login input[type="text"]:focus {box-shadow: none;}
+#login form label[for="user_login"], #login form label[for="user_pass"], #login form label[for="rememberme"] {
+    /*text-shadow: 1px 1px 3px rgba(223, 223, 223, 0.76);*/
+    color: #fff;
+    font-weight: 600;
+}
+#login .button-primary{
+    background-color: var(--top-color);
+    border-color: rgba(255,255,255,0.25);
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+    transition: all 0.5s;
+}
+#login .button-primary:hover {
+    background-color: var(--warning) !important;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.15);
+}
+#login .button-secondary {color: var(--item-color);}
+#login p.message {background-color: transparent;border: 0px;box-shadow: none;padding-left: 0px;}
+#login a:hover {color:var(--warning);}
+
+a.privacy-policy-link {color: #555d66; text-decoration: none;}
+.login #backtoblog a:hover, .login #nav a:hover {
+    color: var(--warning);
+}
+
+#login .button-primary:focus {
+    outline: 0 !important;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.wp-core-ui .button-primary.focus, .wp-core-ui .button-primary:focus {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+p.message {
+    border: 1px outset var(--success)!important;
+    border-left-width: 5px!important;
+    box-shadow: 0px 1px 5px rgba(0,0,0,0.3)!important;
+    display: flex;
+    align-items: center;
+    padding: 15px 25px!important;
+    margin: 15px 0;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    background-image: linear-gradient(45deg, #ffffff2f, #ffffff10);
+    transition-property: opacity, transform;
+    transition: 0.5s ease-in!important;
+}
+.login #nav a,.login #backtoblog a{
+    color: #fff;
+}
