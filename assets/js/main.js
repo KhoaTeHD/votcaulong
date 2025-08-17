@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
   scrollToTopBtn.click(function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
-  Shareon.init();
+
   const swiper_info_box = new Swiper(".banner-footer .swiper", {
     // Optional parameters
     loop: true,
@@ -200,13 +200,19 @@ jQuery(document).ready(function ($) {
     $("#registerForm").fadeOut();
   });
 
+  let isFavouriteBtnProcessing = false; // Flag to prevent spamming
+
   $(document).on("click", ".favourite-btn", function (e) {
     e.preventDefault();
+    if (isFavouriteBtnProcessing) {
+      return; // If already processing, do nothing
+    }
+
     var product_id = $(this).data("product-id");
     let $thisBtn = $(this);
-    if ($thisBtn.hasClass("added")) {
-      return;
-    }
+
+    isFavouriteBtnProcessing = true; // Set flag to true
+
     $.ajax({
       url: ThemeVars.ajaxurl,
       type: "POST",
@@ -221,14 +227,20 @@ jQuery(document).ready(function ($) {
       },
       success: function (response) {
         if (response.success) {
-          siteNotify(response.data.message);
           $thisBtn.text(response.data.count_text);
-          $thisBtn.addClass("added");
         } else {
-          // alert(response.data.message);
           siteNotify(response.data.message);
         }
-        toggleButtonState($thisBtn, false);
+      },
+      error: function() {
+        // siteNotify('');
+      },
+      complete: function () {
+
+        setTimeout(() => {
+          isFavouriteBtnProcessing = false; // Reset flag after a delay
+          toggleButtonState($thisBtn, false);
+        }, 3000); // 1.5 second delay
       },
     });
   });
@@ -614,6 +626,54 @@ jQuery(document).ready(function ($) {
 
 
 
+  // Custom handler for Shareon's "copy link" button
+  $(document).on("click", ".shareon-link", function (e) {
+    e.preventDefault();
+    const urlToCopy = $(this).data('url') || window.location.href; // Get URL from data-url or current page
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(urlToCopy)
+        .then(() => {
+          siteNotify('copied');
+        })
+        .catch(err => {
+          console.error('Failed to copy text: ', err);
+
+          fallbackCopyTextToClipboard(urlToCopy);
+        });
+    } else {
+      // Fallback for older browsers
+      fallbackCopyTextToClipboard(urlToCopy);
+    }
+  });
+
+  function fallbackCopyTextToClipboard(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    // Avoid scrolling to bottom
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      const successful = document.execCommand('copy');
+      const msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Fallback: Copying text command was ' + msg);
+      if (successful) {
+        siteNotify('copied');
+      } else {
+      }
+    } catch (err) {
+      console.error('Fallback: Oops, unable to copy', err);
+    }
+
+    document.body.removeChild(textArea);
+  }
+
   const brands_swiper = new Swiper('.brand-swiper', {
     slidesPerView: 'auto',
     spaceBetween: 16,
@@ -652,9 +712,34 @@ jQuery(document).ready(function ($) {
     }
   });
 
+  if ($(window).width() <= 768) {
+    const $menuLinks = $('.menu-item-has-children > a');
+
+    $menuLinks.on('click', function (e) {
+      const $parent = $(this).parent();
+
+      if (!$parent.hasClass('submenu-open')) {
+        e.preventDefault();
+
+        // $('.menu-item-has-children')
+        //     .not($parent)
+        //     .removeClass('submenu-open');
+        $parent.siblings().removeClass('submenu-open');
+        $parent.addClass('submenu-open');
+      } else {
+        $parent.removeClass('submenu-open');
+      }
+    });
+
+    $(document).on('click touchstart', function (e) {
+      if (!$(e.target).closest('.menu-item-has-children').length) {
+        $('.menu-item-has-children').removeClass('submenu-open');
+      }
+    });
+  }
 
 
-
+  Shareon.init();
 });/////////////////////////////////////////////
 
 //---- quick compare & function
@@ -731,7 +816,7 @@ function generateComparisonTableHtml(products, fields) {
                     <div class="product-name">${escapeHtml(product.basic_info.item_name)}</div>
                     <div class="product-code">${escapeHtml(product.basic_info.item_code)}</div>
                     <div class="product-price">${product.basic_info.price}</div>
-                    <div class="product-brand">${escapeHtml(product.basic_info.brand)}</div>
+                    <div class="product-brand">${escapeHtml(product.basic_info.brand??'')}</div>
                 </div>
             </th>`;
     } else {
@@ -822,7 +907,7 @@ function generateBasicInfoRows(products) {
 
   products.forEach(product => {
     if (product){
-      html += `<td class="field-value">${escapeHtml(product.basic_info.description || 'N/A')}</td>`;
+      html += `<td class="field-value">${(product.basic_info.description || 'N/A')}</td>`;
     }else{
       html += `<td class="field-value"></td>`;
     }

@@ -217,9 +217,11 @@ jQuery(document).ready(function ($) {
         let $submit_btn = $form.find('button[type="submit"]');
         $form.find('.error').removeClass('error');
         let checked = true;
+        let register_fullname = $form.find('input[name="register_fullname"]').val();
         let input_register = $form.find('input[name="email_phone_number"]').val();
         let pass = $form.find('input[name="password"]').val();
         let re_pass = $form.find('input[name="repeat-password"]').val();
+        if (register_fullname==='') { checked = false; $form.find('input[name="register_fullname"]').addClass('error'); }
         if (input_register==='') { checked = false; $form.find('input[name="email_phone_number"]').addClass('error'); }
         if (pass==='' || re_pass==='') { checked = false; $form.find('input[name="password"]').addClass('error'); }
         if ( pass!==re_pass){ checked = false; $form.find('input[name="password"]').addClass('error'); $form.find('input[name="repeat-password"]').addClass('error'); }
@@ -227,7 +229,7 @@ jQuery(document).ready(function ($) {
         $.ajax({
             url: ThemeVars.ajaxurl,
             type: 'POST',
-            data: { action: 'custom_register', nonce: ThemeVars.nonce, email_or_phone: input_register, password: pass },
+            data: { action: 'custom_register', nonce: ThemeVars.nonce, fullname: register_fullname ,email_or_phone: input_register, password: pass },
             beforeSend: function (){ toggleButtonState($submit_btn,true); },
             success: function (response) {
                 if (response.success) {
@@ -241,6 +243,52 @@ jQuery(document).ready(function ($) {
             error: function() {
                 siteNotify('Đã có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại.','error');
                 toggleButtonState($submit_btn,false);
+            }
+        });
+    });
+
+    // ------------------ FORGOT PASSWORD ------------------
+    $('#frm-forgot-password').on('submit', function(e) {
+        e.preventDefault();
+        let $form = $(this);
+        let $btn = $('#btn-reset-password');
+        let $errorAlert = $('#forgot-password-error');
+        $errorAlert.addClass('d-none').text('');
+
+        let userLogin = $form.find('input[name="user_login"]').val().trim();
+
+        if (userLogin === '') {
+            $errorAlert.text('Vui lòng nhập email hoặc số điện thoại.').removeClass('d-none');
+            return false;
+        }
+
+        $.ajax({
+            url: ThemeVars.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'vcl_forgot_password',
+                nonce: ThemeVars.nonce,
+                user_login: userLogin
+            },
+            beforeSend: function() {
+                toggleButtonState($btn, true);
+            },
+            success: function(response) {
+                if (response.success) {
+                    siteNotify(response.data.message);
+                    $('#forgotPasswordModal').modal('hide');
+                    $form[0].reset();
+                } else {
+                    $errorAlert.text(response.data.message).removeClass('d-none');
+                    siteNotify(response.data.message, 'error');
+                }
+            },
+            error: function() {
+                $errorAlert.text('Lỗi kết nối. Vui lòng thử lại.').removeClass('d-none');
+                siteNotify('Lỗi kết nối máy chủ.', 'error');
+            },
+            complete: function() {
+                toggleButtonState($btn, false);
             }
         });
     });
@@ -291,6 +339,85 @@ jQuery(document).ready(function ($) {
                 siteNotify('Đã có lỗi xảy ra. Vui lòng thử lại sau.','error');
             },
             complete: function() { toggleButtonState($btn,false); hideLoading(); }
+        });
+    });
+
+    // ------------------ CHANGE PASSWORD ------------------
+    const changePasswordForm = $('#change-password-form');
+    changePasswordForm.submit(function(e) {
+        e.preventDefault();
+        let $form = $(this);
+        let $btn = $(this).find('button[type="submit"]');
+        let isValid = true;
+        $form.find('.error').removeClass('error');
+        $form.find('.error-message').remove();
+
+        let currentPassword = $form.find('input[name="current_password"]').val();
+        let newPassword = $form.find('input[name="new_password"]').val();
+        let confirmNewPassword = $form.find('input[name="confirm_new_password"]').val();
+
+        if (currentPassword === '') {
+            isValid = false;
+            $form.find('input[name="current_password"]').addClass('error');
+            siteNotify('Vui lòng nhập mật khẩu hiện tại.', 'error');
+        }
+        if (newPassword === '') {
+            isValid = false;
+            $form.find('input[name="new_password"]').addClass('error');
+            siteNotify('Vui lòng nhập mật khẩu mới.', 'error');
+        }
+        if (confirmNewPassword === '') {
+            isValid = false;
+            $form.find('input[name="confirm_new_password"]').addClass('error');
+            siteNotify('Vui lòng xác nhận mật khẩu mới.', 'error');
+        }
+        if (newPassword !== confirmNewPassword) {
+            isValid = false;
+            $form.find('input[name="new_password"]').addClass('error');
+            $form.find('input[name="confirm_new_password"]').addClass('error');
+            siteNotify('Mật khẩu mới và xác nhận mật khẩu không khớp.', 'error');
+        }
+        if (newPassword.length < 6) {
+            isValid = false;
+            $form.find('input[name="new_password"]').addClass('error');
+            siteNotify('Mật khẩu mới phải có ít nhất 6 ký tự.', 'error');
+        }
+
+        if (!isValid) {
+            return false;
+        }
+
+        $.ajax({
+            url: ThemeVars.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'vcl_change_password',
+                nonce: ThemeVars.nonce,
+                current_password: currentPassword,
+                new_password: newPassword
+            },
+            beforeSend: function() {
+                toggleButtonState($btn, true);
+                showLoading();
+            },
+            success: function(response) {
+                if (response.success) {
+                    siteNotify(response.data.message);
+                    $form[0].reset(); // Clear form fields on success
+                    if (response.data.redirect) {
+                        setTimeout(function() { window.location.href = response.data.redirect; }, 1000);
+                    }
+                } else {
+                    siteNotify(response.data.message, 'error');
+                }
+            },
+            error: function(error) {
+                siteNotify('Đã có lỗi xảy ra. Vui lòng thử lại sau.', 'error');
+            },
+            complete: function() {
+                toggleButtonState($btn, false);
+                hideLoading();
+            }
         });
     });
 
@@ -564,4 +691,65 @@ jQuery(document).ready(function ($) {
             });
         }
     })
+
+    // Handle Cancel Order button click
+    $(document).on('click', '.order-make-cancel', function(e) {
+        e.preventDefault();
+        const orderId = $(this).data('orderid');
+        $('#confirmCancelOrderBtn').data('orderid', orderId);
+        $('#cancel-reason').val('').removeClass('is-invalid');
+        $('#cancel-reason-feedback').text('');
+        const cancelModal = new bootstrap.Modal(document.getElementById('cancelOrderModal'));
+        cancelModal.show();
+    });
+
+    // Handle Confirm Cancellation button click inside the modal
+    $(document).on('click', '#confirmCancelOrderBtn', function(e) {
+        e.preventDefault();
+        const orderId = $(this).data('orderid');
+        const cancelReason = $('#cancel-reason').val().trim();
+        const $cancelReasonInput = $('#cancel-reason');
+        const $cancelReasonFeedback = $('#cancel-reason-feedback');
+        const $confirmBtn = $(this);
+
+        if (cancelReason === '') {
+            $cancelReasonInput.addClass('is-invalid');
+            $cancelReasonFeedback.text('Vui lòng nhập lý do hủy đơn hàng.').show();
+            return;
+        } else {
+            $cancelReasonInput.removeClass('is-invalid');
+            $cancelReasonFeedback.text('').hide();
+        }
+
+        $.ajax({
+            url: ThemeVars.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'vcl_cancel_order',
+                nonce: ThemeVars.nonce,
+                order_id: orderId,
+                customer_note: cancelReason
+            },
+            beforeSend: function() {
+                toggleButtonState($confirmBtn, true);
+            },
+            success: function(response) {
+                if (response.success) {
+                    siteNotify(response.data.message || 'Đơn hàng đã được hủy thành công.');
+                    // Reload the page to reflect the status change
+                    setTimeout(function() { location.reload(); }, 1000);
+                } else {
+                    siteNotify(response.data.message || 'Không thể hủy đơn hàng.', 'error');
+                }
+            },
+            error: function() {
+                siteNotify('Lỗi kết nối máy chủ khi hủy đơn hàng.', 'error');
+            },
+            complete: function() {
+                toggleButtonState($confirmBtn, false);
+                const cancelModal = bootstrap.Modal.getInstance(document.getElementById('cancelOrderModal'));
+                if (cancelModal) cancelModal.hide();
+            }
+        });
+    });
 });

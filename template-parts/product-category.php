@@ -29,7 +29,7 @@ if (is_wp_error($pro_cate) || !$pro_cate){
             <h3 class="title"><?php echo $pro_cate->name  ?></h3>
         </div>
         <div class="post-content bg-white p-3">
-            <?php 
+            <?php
             require_once('product-listing.php');
           ?>
         </div>

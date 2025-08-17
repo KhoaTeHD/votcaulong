@@ -19,33 +19,75 @@ class Payoo_Handler {
     private $checkout_url; // Payoo Checkout URL (Sandbox/Production)
     private $return_url; // URL user returns to (shop_back_url)
     private $notify_url; // URL for Payoo IPN POST requests
+    private $debug_log_enabled = false;
+    private $log_file, $order_prefix;
+
+    /**
+     * Logs a message to the Payoo debug log file if enabled.
+     *
+     * @param string $message The message to log.
+     */
+    private function _log( $message ) {
+        if ( ! $this->debug_log_enabled ) {
+            return;
+        }
+        if ( empty( $this->log_file ) ) {
+            $upload_dir = wp_upload_dir();
+            $this->log_file = $upload_dir['basedir'] . '/payoo-debug.log';
+        }
+
+        $timestamp = current_time( 'mysql' );
+        $formatted_message = sprintf( "[%s] - %s\n", $timestamp, $message );
+
+        // Use file_put_contents with LOCK_EX for safe appending
+        file_put_contents( $this->log_file, $formatted_message, FILE_APPEND | LOCK_EX );
+    }
+
+    /**
+     * Loads Payoo API configuration from ACF Options Page.
+     * This method populates the handler's properties based on the settings
+     * defined in the 'Payoo API' group field.
+     */
+    private function _load_acf_config() {
+        if ( ! function_exists('get_field') ) {
+            // ACF is not active, do nothing.
+            return;
+        }
+
+        $config = get_field('payoo_api', 'option');
+
+        if ( empty($config) ) {
+            // No configuration found.
+            $this->_log('ACF field "payoo_api" not found or empty.');
+            return;
+        }
+
+        // Enable/disable logging
+        $this->debug_log_enabled = ! empty( $config['debug_log'] );
+        $this->_log('Payoo Handler initialized.');
+
+        $is_production = !empty($config['current_use']);
+        $env_settings = $is_production ? ($config['production'] ?? []) : ($config['sandbox'] ?? []);
+        
+        $this->_log('Environment: ' . ($is_production ? 'Production' : 'Sandbox'));
+        if ( ! empty($env_settings) ) {
+            $this->merchant_username = $env_settings['username'] ?? '';
+            $this->shop_id           = $env_settings['merchants_id'] ?? ''; // Corresponds to Merchant's ID
+            $this->secret_key        = $env_settings['checksum_key'] ?? '';
+            $this->checkout_url      = $env_settings['url_checkout'] ?? '';
+            $this->_log('Configuration loaded successfully.');
+        } else {
+            $this->_log('Configuration for the selected environment is empty.');
+        }
+    }
 
     /**
      * Constructor.
-     * Loads Payoo settings.
+     * Loads Payoo settings from ACF.
      */
     public function __construct() {
         // --- Configuration Loading ---
-        // Option 1: Using defined constants (Recommended for security)
-        // Example: define('PAYOO_USERNAME', 'your_username'); in wp-config.php
-        $this->merchant_username = defined('PAYOO_USERNAME') ? PAYOO_USERNAME : '';
-        $this->shop_id           = defined('PAYOO_SHOP_ID') ? PAYOO_SHOP_ID : '';
-        $this->secret_key        = defined('PAYOO_SECRET_KEY') ? PAYOO_SECRET_KEY : '';
-        $this->checkout_url      = defined('PAYOO_CHECKOUT_URL') ? PAYOO_CHECKOUT_URL : ''; // e.g., 'https://sandbox.payoo.vn/v2/paynow'
-
-        // Option 2: Using Theme Options (Requires a theme options framework)
-        // Example: $options = get_option('my_theme_options');
-        // $this->merchant_username = $options['payoo_username'] ?? '';
-        // $this->shop_id           = $options['payoo_shop_id'] ?? '';
-        // $this->secret_key        = $options['payoo_secret_key'] ?? '';
-        // $this->checkout_url      = $options['payoo_checkout_url'] ?? '';
-
-        // --- Fallback/Default values (Use only if options/constants are not set) ---
-        if (empty($this->merchant_username)) { /* Log error or set default test value */ }
-        if (empty($this->shop_id)) { /* Log error or set default test value */ }
-        if (empty($this->secret_key)) { /* Log error or set default test value */ }
-        if (empty($this->checkout_url)) { /* Log error or set default test value */ }
-
+        $this->_load_acf_config();
 
         // --- Shop Info & Callback URLs ---
         $this->shop_title        = get_bloginfo('name'); // Get shop title from WordPress settings
@@ -65,10 +107,14 @@ class Payoo_Handler {
      * @return bool True if configured, false otherwise.
      */
     public function is_configured() {
-        return !empty($this->merchant_username) &&
+        $is_configured = !empty($this->merchant_username) &&
                !empty($this->shop_id) &&
                !empty($this->secret_key) &&
                !empty($this->checkout_url);
+        if( ! $is_configured ){
+            $this->_log('is_configured check FAILED.');
+        }
+        return $is_configured;
     }
 
     /**
@@ -79,8 +125,11 @@ class Payoo_Handler {
      * @return array|WP_Error ['data' => string, 'checksum' => string] or WP_Error on failure.
      */
     public function create_payment_data( $order_details ) {
+        $this->_log("Attempting to create payment data for Order ID: {$order_details->order_id}.");
         if (!$this->is_configured()) {
-            return new WP_Error('payoo_config_error', __('Payoo gateway is not configured correctly.',LANG_ZONE ) );
+            $error_message = __('Payoo gateway is not configured correctly.',LANG_ZONE );
+            $this->_log("Error: {$error_message}");
+            return new WP_Error('payoo_config_error', $error_message );
         }
 
         // Validate input array
@@ -90,17 +139,22 @@ class Payoo_Handler {
              empty($order_details->fullname) ||
              empty($order_details->billing_phone) ||
              empty($order_details->billing_email) ) {
-            return new WP_Error('payoo_data_error', __('Invalid or incomplete order details provided for payment creation.', LANG_ZONE));
+            $error_message = __('Invalid or incomplete order details provided for payment creation.', LANG_ZONE);
+            $this->_log("Error: {$error_message} Data: " . print_r($order_details, true));
+            return new WP_Error('payoo_data_error', $error_message);
         }
 
         $order_id = $order_details->order_id;
+		$erp_order_code = str_replace('-','_',$order_details->erp_order_code);
         $total_amount = $order_details->total_amount;
         $customer_name = $order_details->fullname;
         $customer_phone = $order_details->billing_phone;
         $customer_email = $order_details->billing_email;
 
         if ($total_amount <= 0) {
-             return new WP_Error('payoo_data_error', __('Invalid order amount (must be greater than 0).', LANG_ZONE));
+            $error_message = __('Invalid order amount (must be greater than 0).', LANG_ZONE);
+            $this->_log("Error: {$error_message} Amount: {$total_amount}");
+             return new WP_Error('payoo_data_error', $error_message);
         }
 
         // Format required by Payoo
@@ -124,7 +178,7 @@ class Payoo_Handler {
         $data_string .= '<shop_title>' . esc_attr($this->shop_title) . '</shop_title>';
         $data_string .= '<shop_domain>' . esc_attr($this->shop_domain) . '</shop_domain>';
         $data_string .= '<shop_back_url>' . esc_attr(urlencode($this->return_url)) . '</shop_back_url>';
-        $data_string .= '<order_no>' . esc_attr($order_id) . '</order_no>';
+        $data_string .= '<order_no>' . esc_attr($erp_order_code) . '</order_no>';
         $data_string .= '<order_cash_amount>' . esc_attr($money_total) . '</order_cash_amount>';
         $data_string .= '<order_ship_date>' . esc_attr($order_ship_date) . '</order_ship_date>';
         $data_string .= '<order_ship_days>' . esc_attr($order_ship_days) . '</order_ship_days>';
@@ -142,6 +196,9 @@ class Payoo_Handler {
 
         // Calculate Checksum
         $checksum = hash('sha512', $this->secret_key . $data_string);
+        
+        $this->_log("Data string: {$data_string}");
+        $this->_log("Successfully created payment data and checksum for Order ID: {$order_id} | {$erp_order_code}.");
 
         return [
             'data' => $data_string,
@@ -156,14 +213,20 @@ class Payoo_Handler {
      * @return string|WP_Error The payment URL to redirect the user to, or WP_Error on failure.
      */
     public function send_payment_request( $payment_data ) {
+        $this->_log("Attempting to send payment request to Payoo.");
         if (is_wp_error($payment_data)) {
+            $this->_log("Payment data contains WP_Error: " . $payment_data->get_error_message());
             return $payment_data;
         }
         if (!$this->is_configured()) {
-             return new WP_Error('payoo_config_error', 'Payoo gateway is not configured correctly.');
+            $error_message = 'Payoo gateway is not configured correctly.';
+            $this->_log("Error: {$error_message}");
+             return new WP_Error('payoo_config_error', $error_message);
         }
         if (!isset($payment_data['data']) || !isset($payment_data['checksum'])) {
-             return new WP_Error('payoo_internal_error', __('Invalid payment data structure for sending request.', LANG_ZONE));
+            $error_message = __('Invalid payment data structure for sending request.', LANG_ZONE);
+            $this->_log("Error: {$error_message}");
+             return new WP_Error('payoo_internal_error', $error_message);
         }
 
         $post_fields = [
@@ -182,19 +245,24 @@ class Payoo_Handler {
             'cookies'     => [],
             'sslverify'   => true // Recommended: Set to true for production. Ensure server has up-to-date CA certificates. Set to false only if necessary for testing/debugging.
         ];
-
+        
+        $this->_log("Sending POST request to: {$this->checkout_url}");
         $response = wp_remote_post($this->checkout_url, $args);
 
         if (is_wp_error($response)) {
             $error_message = $response->get_error_message();
+            $this->_log("Payoo API Request Error: " . $error_message);
             error_log("Payoo API Request Error: " . $error_message);
             return new WP_Error('payoo_connection_error', 'Lỗi kết nối đến Payoo: ' . $error_message);
         }
 
         $http_code = wp_remote_retrieve_response_code($response);
         $body = wp_remote_retrieve_body($response);
+        
+        $this->_log("Received response. HTTP Code: {$http_code}. Body: " . $body);
 
         if ($http_code >= 300) {
+             $this->_log("Payoo API HTTP Error: Code " . $http_code . " - Body: " . $body);
              error_log("Payoo API HTTP Error: Code " . $http_code . " - Body: " . $body);
              return new WP_Error('payoo_http_error', 'Lỗi HTTP từ Payoo: ' . $http_code);
         }
@@ -202,96 +270,160 @@ class Payoo_Handler {
         $response_data = json_decode($body, true);
 
         if (json_last_error() !== JSON_ERROR_NONE || !is_array($response_data)) {
+             $this->_log("Payoo API Response Error: Invalid JSON. Body: " . $body);
              error_log("Payoo API Response Error: Invalid JSON. Body: " . $body);
              return new WP_Error('payoo_response_error', 'Phản hồi không hợp lệ từ Payoo.');
         }
 
         if (isset($response_data['order']['payment_url'])) {
+            $this->_log("Successfully received payment URL: " . $response_data['order']['payment_url']);
             return $response_data['order']['payment_url']; // Success
         } else {
             $error_desc = $response_data['error_message'] ?? ($response_data['description'] ?? 'Unknown Payoo error');
+            $this->_log("Payoo Payment Creation Failed: " . $error_desc);
             error_log("Payoo Payment Creation Failed: " . print_r($response_data, true));
             return new WP_Error('payoo_payment_error', 'Lỗi tạo thanh toán Payoo: ' . $error_desc);
         }
     }
 
-    /**
-     * Handles the Instant Payment Notification (IPN) callback from Payoo.
-     * Verifies the notification and updates the order status using VCL_Order methods.
-     *
-     * @param string $raw_post_data Raw data from php://input.
-     * @return array JSON response for Payoo ['ReturnCode' => int, 'Description' => string].
-     */
-    public function handle_ipn( $raw_post_data ) {
-        // ... existing initial checks and checksum verification ...
+	/**
+	 * Xử lý thông báo thanh toán tức thì (IPN) từ Payoo.
+	 *
+	 * @param string $raw_post_data Dữ liệu POST thô từ Payoo.
+	 * @param string $remote_ip Địa chỉ IP của request đến.
+	 * @return array Phản hồi để gửi lại cho Payoo.
+	 */
+	public function handle_ipn( $raw_post_data, $remote_ip ) {
+		$this->_log("Handling IPN callback. Raw data: " . $raw_post_data . " | From IP: " . $remote_ip);
 
-        // --- Process the Notification Data ---
-        $data = json_decode($raw_post_data, true);
-        // ... existing data validation ...
+		// 1. Giải mã cấu trúc JSON bên ngoài
+		$ipn_data = json_decode(stripslashes($raw_post_data), true);
+		if (!is_array($ipn_data)) {
+			$this->_log("IPN Error: Dữ liệu thô nhận được không phải là JSON hợp lệ. Data: " . $ipn_data);
+			return ['ReturnCode' => -1, 'Description' => 'INVALID_JSON_FORMAT'];
+		}
 
-        $order_id = $data['OrderNo'];
-        $payment_status = $data['PaymentStatus']; // 1 = Success
-        $payoo_transaction_id = $data['TransactionId'] ?? 'N/A';
+		if (!isset($ipn_data['ResponseData']) || !isset($ipn_data['SecureHash'])) {
+			$this->_log("IPN Error: Cấu trúc JSON không hợp lệ hoặc thiếu khóa 'ResponseData'/'SecureHash'. Data: " . $raw_post_data);
+			return ['ReturnCode' => -1, 'Description' => 'INVALID_JSON_STRUCTURE'];
+		}
 
-        try {
-            // --- Load and Update VCL_Order ---
-            // Load order using VCL_Order constructor
-            $order = new VCL_Order($order_id);
+		$response_data_str = $ipn_data['ResponseData'];
+		$received_signature = $ipn_data['SecureHash'];
 
-            // Check if order loaded successfully using get_id()
-            if ( ! $order || ! $order->get_id() ) {
-                 error_log('Payoo IPN Info: Order not found for OrderNo: ' . $order_id . '. Acknowledging receipt.');
-                 return ['ReturnCode' => 0, 'Description' => 'NOTIFY_RECEIVED_ORDER_NOT_FOUND'];
-            }
+		// 2. Xác thực chữ ký (BƯỚC QUAN TRỌNG)
+		// Công thức theo tài liệu: SHA512(ChecksumKey + ResponseData + Payoo’s IP)
+		$string_to_hash = $this->secret_key . $response_data_str . $remote_ip;
+		$calculated_signature = hash('sha512', $string_to_hash);
 
-            // Save Payoo transaction ID using the new save_single_meta method
-            $order->save_single_meta('_payoo_transaction_id', $payoo_transaction_id);
+		if (!hash_equals($calculated_signature, $received_signature)) {
+			$this->_log("IPN SECURITY ERROR: Chữ ký không khớp!");
+			$this->_log("Dữ liệu để hash: " . $string_to_hash);
+			$this->_log("Chữ ký nhận được: " . $received_signature);
+			$this->_log("Chữ ký tính toán: " . $calculated_signature);
+			return ['ReturnCode' => -1, 'Description' => 'INVALID_SIGNATURE'];
+		}
+		$this->_log("IPN Signature verified successfully.");
 
-            // Get current status using get_order_status($order_id)
-            $current_status = $order->get_order_status($order_id);
-            $note = '';
+		// 3. Giải mã chuỗi JSON ResponseData bên trong
+		$data = json_decode($response_data_str, true);
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			$this->_log("IPN Error: Dữ liệu JSON trong ResponseData không hợp lệ. String: " . $response_data_str);
+			return ['ReturnCode' => -1, 'Description' => 'INVALID_RESPONSE_DATA_JSON'];
+		}
 
-            switch ($payment_status) {
-                case 1: // Success
-                    // Update status using update_status($order_id, $new_status)
-                    // Add note using add_order_note($note)
-                    if ($current_status !== 'completed' && $current_status !== 'processing') {
-                         $order->update_status($order_id, 'processing'); // Pass order_id
-                         $note = 'Thanh toán Payoo thành công.';
-                         // TODO: Trigger other actions like sending email, reducing stock etc.
-                    } else {
-                         $note = 'Đã nhận thông báo thành công Payoo (trạng thái không đổi).';
-                    }
-                    break;
-                // case 0: // Pending - Optional handling
-                //     if ($current_status !== 'on-hold') {
-                //         $order->update_status($order_id, 'on-hold'); // Pass order_id
-                //         $note = 'Thanh toán Payoo đang chờ xử lý.';
-                //     }
-                //     break;
-                default: // Failure or other statuses
-                     // Update status using update_status($order_id, $new_status)
-                     // Add note using add_order_note($note)
-                     if ($current_status !== 'failed' && $current_status !== 'cancelled') {
-                         $order->update_status($order_id, 'failed'); // Pass order_id
-                         $note = sprintf('Thanh toán Payoo không thành công hoặc trạng thái không xác định (%s).', esc_html($payment_status));
-                     } else {
-                         $note = sprintf('Đã nhận thông báo không thành công Payoo (%s) (trạng thái không đổi).', esc_html($payment_status));
-                     }
-                    break;
-            }
+		// 4. Xử lý dữ liệu đã được xác thực
+		$order_no = $data['OrderNo'] ?? null;
+		if (empty($order_no)) {
+			$this->_log("IPN Error: Không tìm thấy OrderNo trong ResponseData.");
+			return ['ReturnCode' => -1, 'Description' => 'ORDER_NOT_FOUND_IN_DATA'];
+		}
 
-            // Add a note with transaction details using add_order_note($note)
-            $order->add_order_note($note . ' Mã giao dịch Payoo: ' . esc_html($payoo_transaction_id));
+		$order_id = VCL_Order::get_erp_order_id($order_no);
+		if (empty($order_id)) {
+			$this->_log("IPN Info: Không tìm thấy đơn hàng cục bộ khớp với ERP OrderNo: {$order_no}. Ghi nhận đã nhận thông báo.");
+			return ['ReturnCode' => 0, 'Description' => 'NOTIFY_RECEIVED_ORDER_NOT_FOUND'];
+		}
 
-        } catch (Exception $e) {
-             error_log('Payoo IPN Error: Exception during order update for OrderNo ' . $order_id . ': ' . $e->getMessage());
-             return ['ReturnCode' => -1, 'Description' => 'INTERNAL_PROCESSING_ERROR'];
-        }
+		$this->_log("IPN cho ERP OrderNo: {$order_no} | Tìm thấy Order ID cục bộ: {$order_id}");
 
-        // Acknowledge successful processing to Payoo
-        return ['ReturnCode' => 0, 'Description' => 'NOTIFY_RECEIVED'];
-    }
+		$payment_status = $data['PaymentStatus']; // 1 = Success [cite: 1286]
+		$payoo_transaction_id = $data['PYTransId'] ?? 'N/A';
+
+		try {
+			$order = new VCL_Order($order_id);
+
+			if (!$order || !$order->get_id()) {
+				$this->_log("IPN Info: Không thể tạo đối tượng Order cho Order ID: {$order_id}. Ghi nhận đã nhận thông báo.");
+				return ['ReturnCode' => 0, 'Description' => 'NOTIFY_RECEIVED_ORDER_NOT_FOUND'];
+			}
+
+			$order->save_single_meta('_payoo_transaction_details', json_encode($data));
+			$current_status = $order->get_order_status($order_id);
+			$note = '';
+
+			$this->_log("Order ID {$order_id} - Trạng thái hiện tại: {$current_status}, IPN PaymentStatus: {$payment_status}");
+
+			switch ($payment_status) {
+				case 1: // Thành công [cite: 1286]
+					if ($current_status !== 'completed' && $current_status !== 'processing') {
+						$order->update_status($order_id, 'processing');
+						$note = 'Thanh toán Payoo thành công.';
+						$this->_log("Order ID {$order_id} - Trạng thái đã cập nhật thành 'processing'.");
+
+						/*$erp_api = new ERP_API_Client();
+						$erp_result = $erp_api->update_sales_order($order_no, ['docstatus' => 1]);
+
+						if (is_wp_error($erp_result)) {
+							$erp_error_msg = $erp_result->get_error_message();
+							$order->add_order_note("LỖI: Không thể submit đơn hàng trên ERP sau khi thanh toán thành công. Lỗi: " . $erp_error_msg);
+							$this->_log("IPN ERP Error: Thất bại khi submit SO {$order_no}. Lỗi: " . $erp_error_msg);
+						} else {
+							$order->add_order_note("Đơn hàng đã được tự động submit trên ERP.");
+							$this->_log("IPN ERP Success: Đã submit SO {$order_no}.");
+						}*/
+					} else {
+						$note = 'Đã nhận thông báo thành công Payoo (trạng thái không đổi).';
+						$this->_log("Order ID {$order_id} - Trạng thái đã là '{$current_status}', không thay đổi.");
+					}
+					break;
+				default: // Thất bại hoặc các trạng thái khác
+					if ($current_status !== 'failed' && $current_status !== 'cancelled') {
+						$order->update_status($order_id, 'failed');
+						$note = sprintf('Thanh toán Payoo không thành công hoặc trạng thái không xác định (%s).', esc_html($payment_status));
+						$this->_log("Order ID {$order_id} - Trạng thái đã cập nhật thành 'failed'.");
+
+						/*$erp_api = new ERP_API_Client();
+						$erp_result = $erp_api->cancel_sales_order($order_no);
+
+						if (is_wp_error($erp_result)) {
+							$erp_error_msg = $erp_result->get_error_message();
+							$order->add_order_note("LỖI: Không thể hủy đơn hàng nháp trên ERP sau khi thanh toán thất bại. Lỗi: " . $erp_error_msg);
+							$this->_log("IPN ERP Error: Thất bại khi hủy SO {$order_no}. Lỗi: " . $erp_error_msg);
+						} else {
+							$order->add_order_note("Đơn hàng nháp đã được tự động hủy trên ERP.");
+							$this->_log("IPN ERP Success: Đã hủy SO {$order_no}.");
+						}*/
+					} else {
+						$note = sprintf('Đã nhận thông báo không thành công Payoo (%s) (trạng thái không đổi).', esc_html($payment_status));
+						$this->_log("Order ID {$order_id} - Trạng thái đã là '{$current_status}', không thay đổi.");
+					}
+					break;
+			}
+
+			$full_note = $note . ' Mã giao dịch Payoo: ' . esc_html($payoo_transaction_id);
+			$order->add_order_note($full_note);
+			$this->_log("Order ID {$order_id} - Đã thêm ghi chú: " . $full_note);
+
+		} catch (Exception $e) {
+			$this->_log("IPN Exception: Lỗi trong quá trình cập nhật đơn hàng cho Order ID {$order_id}: " . $e->getMessage());
+			//error_log('Payoo IPN Error: Exception during order update for Order ID ' . $order_id . ': ' . $e->getMessage());
+			return ['ReturnCode' => -1, 'Description' => 'INTERNAL_PROCESSING_ERROR'];
+		}
+
+		$this->_log("IPN cho Order ID {$order_id} đã được xử lý thành công. Trả về NOTIFY_RECEIVED.");
+		return ['ReturnCode' => 0, 'Description' => 'NOTIFY_RECEIVED']; // Trả về 0 để xác nhận đã nhận IPN [cite: 1316]
+	}
 
      /**
      * Verifies the checksum for the simple GET redirect from Payoo (shop_back_url).
@@ -300,11 +432,14 @@ class Payoo_Handler {
      * @return bool True if checksum is valid, false otherwise.
      */
     public function verify_return_checksum( $get_params ) {
+        $this->_log("Verifying return checksum. Data: " . print_r($get_params, true));
          if (!$this->is_configured()) {
+            $this->_log('Return Error: Gateway not configured.');
             error_log('Payoo Return Error: Gateway not configured.');
             return false;
          }
         if ( !isset($get_params['session']) || !isset($get_params['order_no']) || !isset($get_params['status']) || !isset($get_params['checksum']) ) {
+            $this->_log('Return Error: Missing parameters in GET request.');
             error_log('Payoo Return Error: Missing parameters in GET request.');
             return false;
         }
@@ -321,7 +456,10 @@ class Payoo_Handler {
         $is_valid = hash_equals($calculated_checksum, $received_checksum);
 
         if (!$is_valid) {
+            $this->_log("Return Error: Checksum mismatch. Order: {$order_no}, Status: {$status}. Expected: {$calculated_checksum}, Received: {$received_checksum}");
             error_log('Payoo Return Error: Checksum mismatch. Order: ' . $order_no . ' Status: ' . $status);
+        } else {
+            $this->_log("Return checksum verified successfully for Order: {$order_no}.");
         }
 
         return $is_valid;

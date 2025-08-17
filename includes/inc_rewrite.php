@@ -6,6 +6,7 @@ function custom_rewrite_rules() {
 		'index.php?product_cate_name=$matches[1]&product_cate_id=$matches[2]',
 		'top'
 	);
+
 	// Sản phẩm (product)
 	add_rewrite_rule(
 		'^([^/]+)-i\.([^/]+)$',
@@ -34,6 +35,11 @@ function custom_rewrite_rules() {
         'index.php?vcl_page=order_received&order_id=$matches[1]&order_key=$matches[2]', // Query string mapping
         'top' // Priority
     );
+	add_rewrite_rule(
+		'^share-cart/([^/]+)/?$',
+		'index.php?pagename=share-cart-loader&cart_id=$matches[1]',
+		'top'
+	);
 }
 add_action('init', 'custom_rewrite_rules');
 
@@ -48,6 +54,7 @@ function custom_query_vars($vars) {
 	$vars[] = 'vcl_page';    // To identify our custom page type
     $vars[] = 'order_id';
     $vars[] = 'order_key';
+	$vars[] = 'cart_id';
 	return $vars;
 }
 add_filter('query_vars', 'custom_query_vars');
@@ -83,13 +90,16 @@ function handle_payoo_callback_request( WP_REST_Request $request ) {
 	$request_body = $request->get_body(); // Lấy nội dung body
 
 	// Log the request method, URI, and body
-	error_log('Payoo Callback Log (Request Received): Method=' . $method . ' URI=' . $request->get_route() . ' Body=' . $request_body);
+//	error_log('Payoo Callback Log (Request Received): Method=' . $method . ' URI=' . $request->get_route() . ' Body=' . $request_body);
     if ( 'POST' === $method ) {
         // --- Handle IPN (POST Request) ---
-        $raw_post_data = $request->get_body();
-        error_log('Payoo Callback Log (IPN Received): ' . $raw_post_data); // Log raw data for debugging
+//        $raw_post_data = $request->get_body();
+	    $raw_post_data = file_get_contents('php://input');
+	    $remote_ip = $_SERVER['REMOTE_ADDR'];
+		$data_json = json_decode($raw_post_data, true);
+        error_log('Payoo Callback Log (IPN Received): ' . print_r($data_json,true)); // Log raw data for debugging
 
-        $ipn_response = $payoo_handler->handle_ipn($raw_post_data);
+        $ipn_response = $payoo_handler->handle_ipn($raw_post_data,$remote_ip);
 
         // Send JSON response back to Payoo
         return new WP_REST_Response($ipn_response, 200); // HTTP 200 OK
@@ -97,20 +107,38 @@ function handle_payoo_callback_request( WP_REST_Request $request ) {
     } elseif ( 'GET' === $method ) {
         // --- Handle Return URL (GET Request) ---
         $params = $request->get_query_params();
-        error_log('Payoo Callback Log (Return Received): ' . print_r($params, true)); // Log params for debugging
+//        error_log('Payoo Callback Log (Return Received): ' . print_r($params, true)); // Log params for debugging
 
         $is_valid_checksum = $payoo_handler->verify_return_checksum($params);
-        $order_id = isset($params['order_no']) ? absint($params['order_no']) : 0;
+        $order_no = isset($params['order_no']) ? sanitize_text_field($params['order_no']) : '';
         $status = isset($params['status']) ? $params['status'] : null; // '1' = success, '0' = failure/cancel
 		$error_msg = isset($params['errormsg'])? $params['errormsg'] : null;
+	    $errorcode = isset($params['errorcode'])? $params['errorcode'] : null;
 
         // Prepare redirect URL (e.g., to a thank you page)
         // You might need to fetch the order key from your VCL_Order class
         $redirect_url = home_url('/'); // Default fallback redirect
 
-        if ($order_id) {
+        if ($order_no) {
+
+			$order_id = VCL_Order::get_erp_order_id(str_replace('_','-',$order_no));
+//	        error_log('Payoo Callback Log (Return Received): order_id: ' . $order_id); // Log params for debugging
             // Example: Get order key if needed for thank you page URL
-            $order = new VCL_Order($order_id);
+			$erp_order_name = normalizeOrderName($order_no);
+			if($erp_order_name) {
+				$callback_erp_data = [
+					'order_no'    => $erp_order_name,
+					'status'      => $status,
+					'errorcode'    => $errorcode,
+					'errormsg'   => $error_msg,
+//					'checksum'    => $params['checksum'],
+					'totalAmount' => $params['totalAmount'],
+					'paymentFee'  => $params['paymentFee']
+				];
+				$ERP_api = new ERP_API_Client();
+				$ERP_api->update_order_status($callback_erp_data);
+			}
+	        $order = new VCL_Order($order_id);
             // $order_key = $order->get_order_key(); // Assuming you have this method
 			if ($status == '1') {
 				 // Get current status using get_order_status($order_id)
@@ -120,8 +148,7 @@ function handle_payoo_callback_request( WP_REST_Request $request ) {
 					$order->update_status($order_id, 'paid'); // Pass order_id
 					$note = 'Thanh toán Payoo thành công.';
 					// TODO: Trigger other actions like sending email, reducing stock etc.
-					 $erp_order = $order->sync_to_erp();
-
+					// $erp_order = $order->sync_to_erp();
 			   }
 			}
             // Construct the Thank You page URL (adjust path as needed)
@@ -171,13 +198,14 @@ add_action('rest_api_init', function () {
 	register_rest_route('erp/v1', '/branch', array(
 		'methods'             => ['POST', 'PUT', 'DELETE'],
 		'callback'            => 'erp_branch_webhook',
-//		'permission_callback' => 'custom_rest_permission_check',
-		'permission_callback' => '__return_true',
+		'permission_callback' => 'custom_rest_permission_check',
+//		'permission_callback' => '__return_true',
 	));
 	register_rest_route('erp/v1', '/brand', array(
 		'methods'             => ['POST', 'PUT', 'DELETE'],
 		'callback'            => 'erp_brand_webhook',
-		'permission_callback' => '__return_true',
+		'permission_callback' => 'custom_rest_permission_check',
+//		'permission_callback' => '__return_true',
 	));
 });
 
@@ -209,19 +237,23 @@ function custom_update_order_api($request) {
 	$params   = $request->get_json_params();
 	$status   = isset($params['status']) ? $params['status'] : '';
 //	$note     = isset($params['note']) ? $params['note'] : '';
-	if ($status){
-		$order = new VCL_Order();
-		$success = $order->update_status_by_erp_name($order_id, $status);
-	}
-	if ($success) {
+	$erp_order_name = trim(normalizeOrderName($order_id));
+	$order_id = VCL_Order::get_erp_order_id($erp_order_name);
+
+	if ($order_id && $status) {
+
+		$vcl_order = new VCL_Order($order_id);
+		$vcl_order->update_status($order_id, $status);
+		$vcl_order->add_order_note( sprintf( __( 'Order status updated to <strong>[%s]</strong> by ERP.', LANG_ZONE ), $status ), false );
 		return new WP_REST_Response([
 			'success'  => true,
 			'message'  => 'Order updated!',
-			'order_name' => $order_id,
+			'order_name' => $erp_order_name,
+//			'id' => $order_id,
 			'status' => $status
 		], 200);
 	} else {
-		return new WP_Error('update_error', 'Invalid Order', array('status' => 401));
+		return new WP_Error('update_error', 'Invalid Order', array('status' => 401,'order_name' => $erp_order_name));
 	}
 
 }
@@ -280,7 +312,7 @@ function erp_branch_webhook($request){
 			} else {
 				return new WP_REST_Response(['message' => 'Error', 'data' => $data], 400);
 			}
-
+			break;
 		case 'PUT':
 			// Xử lý update
 			$warehouse_id = $data['warehouse'] ?? '';
@@ -339,7 +371,7 @@ function erp_branch_webhook($request){
 			}else{
 				return new WP_REST_Response(['message' => 'Error', 'data' => $data], 404);
 			}
-
+			break;
 
 		case 'DELETE':
 			$branch_name = $data['name'] ?? '';
@@ -381,7 +413,7 @@ function erp_branch_webhook($request){
 					'branch_name'  => $branch_name
 				], 404);
 			}
-
+			break;
 		default:
 			return new WP_Error('invalid_method', 'Invalid request method', array('status' => 405));
 	}
@@ -437,7 +469,7 @@ function erp_brand_webhook($request){
 			} else {
 				return new WP_REST_Response(['message' => 'Error', 'data' => $data], 400);
 			}
-
+			break;
 		// ----------- CẬP NHẬT BRAND -----------
 		case 'PUT':
 			$brand_id = $data['name'] ?? $data['brand'];
@@ -486,7 +518,7 @@ function erp_brand_webhook($request){
 			} else {
 				return new WP_REST_Response(['message' => 'Error', 'data' => $data], 404);
 			}
-
+			break;
 		// ----------- XOÁ BRAND -----------
 		case 'DELETE':
 			$brand_id = $data['name'] ?? '';
@@ -523,7 +555,7 @@ function erp_brand_webhook($request){
 					'brand_id'    => $brand_id
 				], 404);
 			}
-
+			break;
 		default:
 			return new WP_Error('invalid_method', 'Invalid request method', array('status' => 405));
 	}

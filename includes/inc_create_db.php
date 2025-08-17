@@ -144,6 +144,19 @@ function my_theme_setup_review_like_database() {
 
 	dbDelta( $sql_reviews_table );
 	dbDelta( $sql_likes_table );
+	$reviews_table = $wpdb->prefix . 'product_reviews';
+	$likes_table   = $wpdb->prefix . 'product_likes';
+
+		$wpdb->query("ALTER TABLE `$likes_table` DROP INDEX `user_product_like`");
+
+	$has_idx_product_only = $wpdb->get_var($wpdb->prepare(
+		"SELECT 1 FROM INFORMATION_SCHEMA.STATISTICS
+         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = %s AND INDEX_NAME = 'product_id' LIMIT 1",
+		$likes_table
+	));
+	if ($has_idx_product_only ) {
+		$wpdb->query("ALTER TABLE `$likes_table` DROP INDEX `product_id`");
+	}
 }
 function my_theme_run_all_db_setups() {
 	my_theme_create_keywords_table();

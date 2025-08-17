@@ -27,7 +27,7 @@ function add_additional_class_on_li($classes, $item, $args) {
 	if (!empty($block_id)) {
 		$classes[] = 'menu-item-has-children';
 	}
-	$erp_api = new ERP_API_Handler(FAKE_DATA);
+	$erp_api = new ERP_API_Client();
 	if ($category_id = get_query_var('product_cate_id')){
 		$api_data = $erp_api->get_category($category_id);
 	}elseif ($product_id = get_query_var('product_id')){
@@ -264,18 +264,20 @@ function addParamToUrl($url, $param){
 }
 function get_local_file_path_from_url($url) {
 	$upload_dir = wp_upload_dir();
-	$baseurl = $upload_dir['baseurl'];
-	$basedir = $upload_dir['basedir'];
 
-	if (strpos($url, $baseurl) === 0) {
-		return str_replace($baseurl, $basedir, $url);
-	}
+	$normalized_url      = preg_replace('#^https?:#', '', $url);
+	$normalized_base_url = preg_replace('#^https?:#', '', $upload_dir['baseurl']);
 
-	return false;
+	// Đổi base URL thành base DIR
+	return str_replace($normalized_base_url, $upload_dir['basedir'], $normalized_url);
 }
 //---------
 function vcl_get_shop_page() {
 	return get_field('shop_page','options');
+}
+//-----------
+function vcl_get_cart_page() {
+    return get_field('shopping_cart','options');
 }
 //----------
 /**
@@ -387,3 +389,41 @@ add_filter( 'dynamic_sidebar_params', 'my_custom_widget_wrapper_class' );
     function get_product( $product_id , $clear_cache = false, $get_stock = true)  {
         return ProductManager::get_product( $product_id , $clear_cache , $get_stock);
     }
+
+function normalizeOrderName($orderName) {
+	$orderName = str_replace('_','-',$orderName);
+	$keyword = "SAL-ORD";
+	$result = strstr($orderName, $keyword);
+	return $result !== false ? $result : $orderName;
+}
+//------
+function like_product( $product_id ) {
+	global $wpdb;
+	$likes_table = $wpdb->prefix . 'product_likes';
+	$user_id = 0;
+	if (is_user_logged_in()){
+        $user_id = get_current_user_id();
+		$count = $wpdb->get_var($wpdb->prepare(
+			"SELECT COUNT(*) FROM {$likes_table} WHERE user_id = %d AND product_id = %s",
+			$user_id,
+			$product_id
+		));
+        if ($count) {
+	        $user_id = 0;
+        }
+    }
+	$result = $wpdb->insert(
+		$likes_table,
+		array(
+			'user_id' => $user_id,
+			'product_id' => $product_id,
+			'date_liked' => current_time('mysql') // GMT time
+		),
+		array(
+			'%d', // user_id
+			'%s', // product_id
+			'%s'  // date_liked
+		)
+	);
+    return $result;
+}

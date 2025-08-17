@@ -15,7 +15,6 @@ function erp_api_health_check_page() {
 
 	$health = new ERP_API_HealthCheck($client);
 	$results = $health->run();
-
 	echo '<div class="wrap"><h1>ERP API Health Check</h1>';
 	echo '<table class="widefat striped" style="max-width:900px">';
 	echo '<thead><tr>

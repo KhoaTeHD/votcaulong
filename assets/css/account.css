@@ -80,3 +80,15 @@
     background-color: white;
     border-radius: 50%;
 }
+.order_details td.product-name a span{
+    font-weight: 400;
+    display: block;
+    font-size: 12px;
+    padding-left: 10px;
+}
+.order-status-filter .nav{
+    font-size: 0.8rem;
+}
+.order-status-filter .nav .nav-link{
+    padding: 5px 5px;
+}

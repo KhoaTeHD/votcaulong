@@ -7,7 +7,10 @@ get_header();
 <div class="container">
 	<div class="post-content bg-white">
         <section class=" bg-white shadow-sm">
-	        <?php get_template_part('template-parts/page','title');  ?>
+            <div class="section-header">
+                <h3 class="title"><?php the_title()  ?></h3>
+                <button type="button" class="btn btn-primary btn-sm btn-share-cart" id="btn-share-cart" data-bs-toggle="modal" data-bs-target="#shareCartModal"><i class="bi bi-share-fill"></i> <?php _e('Share Cart', LANG_ZONE) ?></button>
+            </div>
             <div class="shopping-cart-page p-md-4 p-3" id="shoppingCart-page">
                 <div class="cartPage-items" id="cartPage-items">
 
@@ -74,7 +77,7 @@ get_header();
                         </div>
                     </div>
                     <div class="shipping-method-section border-top py-3">
-                        <h5 class="mb-2"><?php _e('Shipping method',LANG_ZONE)  ?></h5>
+                        <h5 class="mb-2"><?php _e('Delivery information',LANG_ZONE)  ?></h5>
                         <div class=" row shipping-method">
                             <div class="col-sm-6">
                                 <div class="col-sm-9 col-form-label">
@@ -200,16 +203,39 @@ get_header();
                             </div>
                         </div>
                     </div>
-                    <div class="row" id="order_voucher">
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#enterVoucherCode" aria-expanded="false" aria-controls="enterVoucherCode"><i class="bi bi-ticket-detailed"></i> Sử dụng mã giảm giá</button>
+                    <div class="row" >
+                        <div class="col-md-12">
+                            <div id="order_pricing_rule"></div>
                         </div>
-                        <div class="col-md-12 collapse" id="enterVoucherCode">
-                            <div class="input-group p-3 bg-body-tertiary my-1 rounded">
-                                <input type="text" id="input_voucher_code" name="input_voucher_code" class="form-control" placeholder="Nhập mã giảm giá/ Phiếu mua hàng" aria-label="Nhập mã giảm giá/ Phiếu mua hàng" aria-describedby="button-apply-voucher">
-                                <button class="btn btn-outline-secondary" type="button" id="button-apply-voucher">Áp dụng</button>
-                            </div>
+                        <div class="col-md-12">
+                            <div id="order_discounts_applied">
 
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="order_voucher">
+                            <div id="used_voucher"></div>
+                            <div id="apply_voucher_button">
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#enterVoucherCode" aria-expanded="false" aria-controls="enterVoucherCode"><i class="bi bi-ticket-detailed"></i> Sử dụng mã giảm giá</button>
+                                <div class="col-md-6 collapse" id="enterVoucherCode">
+                                    <div class="input-group py-2 my-1 rounded">
+                                        <input type="text" id="input_voucher_code" name="input_voucher_code" class="form-control" placeholder="<?php _e('Enter voucher/coupon code', LANG_ZONE)  ?>" aria-label="<?php _e('Enter voucher/coupon code', LANG_ZONE)  ?>" aria-describedby="button-apply-voucher">
+                                        <button class="btn btn-sm btn-outline-secondary" type="button" id="button-apply-voucher"><?php _e('Apply', LANG_ZONE)  ?></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mt-3" id="redeem_loyalty_section">
+                            <h5><?php
+                                $loyalty = $customer->getLoyalty();
+                                $loyalty_points = (int)$loyalty['current_stats']['loyalty_points'];
+                                echo __('Current loyalty points',LANG_ZONE).': '.$loyalty_points  ?></h5>
+                            <div class="col-md-6 " >
+                                <div class="input-group  my-1 rounded">
+                                    <input  type="text" id="input_redeem_loyalty" name="input_redeem_loyalty" class="form-control" placeholder="<?php _e('Enter loyalty points', LANG_ZONE)  ?>" aria-label="<?php _e('Enter loyalty points', LANG_ZONE)  ?>" aria-describedby="button-redeem-loyalty">
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" id="button-redeem-loyalty"><?php _e('Redeem', LANG_ZONE)  ?></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="shipping-method-section border-top mt-3 py-3" id="shipping-method">
@@ -247,11 +273,16 @@ get_header();
                     </div>    
                     <div class="cartPage-checkout row my-5">
                         <div class="col-md-6 text-center">
-                            <button type="button" class="btn btn-primary btn-lg w-50" id="btn-checkout">Đặt hàng</button>
+                            <button type="button" class="btn btn-primary btn-lg w-50" id="btn-checkout">Thanh toán</button>
                         </div>   
                         <div class="col-md-6 text-center">
-                            <button type="button" class="btn btn-outline-primary btn-lg w-50 " id="btn-checkout-with-card">Thanh toán qua thẻ</button>
+                            <button type="button" class="btn btn-outline-primary btn-lg w-50 " id="btn-checkout-with-card">Mua trả góp</button>
                         </div> 
+                    </div>
+                    <div class="row my-3">
+                        <div class="col-12 text-center">
+
+                        </div>
                     </div>
                 </div>
                 <?php } else { ?>
@@ -265,6 +296,8 @@ get_header();
         </section>
 	</div>
 </div>
+
+
 
 <?php
 get_footer(); ?>

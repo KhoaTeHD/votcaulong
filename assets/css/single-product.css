@@ -289,6 +289,9 @@
     user-select: none;
     cursor: url("../images/icons/openhand360.png"), w-resize;
 }
+.single-product .info-head:has(div) {
+    margin-bottom: 1rem;
+}
 .single-product .brand-logo {
     margin-left: 15px;
 }
@@ -301,7 +304,6 @@
 }
 .single-product .product-title {
     font-size: 18px;
-    margin-top: 1rem;
     padding-right: 90px;
     letter-spacing: 1px;
 }

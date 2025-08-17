@@ -4,7 +4,9 @@ $url = ProductUrlGenerator::createProductUrl($product['title'],$product['id']);
 $attrs = '';
 $variant_product = '';
 $original_price = 0;
-$product_obj = new Product($args['product']);
+$product_obj = new Product($product);
+$remove_sku = '';
+$selected_rule = $product['selected_rule']??'';
 if (isset($product['variation']) && count($product['variation'])){
 
     $variant_product = new Product($product['variation']);
@@ -18,10 +20,12 @@ if (isset($product['variation']) && count($product['variation'])){
 	    $attrs .= '</ul>';
     }
     $original_price = $variant_product->getOriginalPrice();
+	$remove_sku = $variant_product->getSku();
 }else{
 	$image_url = $product_obj->getImageUrl();
 	$price = $product['price'];
     $original_price = $product['original_price'];
+	$remove_sku = $product['id'];
 }
 $test_free = [
 	[
@@ -35,7 +39,7 @@ $test_free = [
 		'qty' => 3,
 	],
 ];
-$free_items = $product_obj->getFreeItems()??$test_free;
+$free_items = $product_obj->getFreeItems()??[];
 ?>
 
 <div class="cartPage-item d-flex items-justified-space-between" data-variation-sku="<?php echo $variant_product ?$variant_product->getSku(): '' ?>" data-id="<?php echo esc_attr($product['id']); ?>" data-sku="<?php echo esc_attr($product['sku']); ?>" data-price="<?php echo esc_attr($price); ?>">
@@ -44,7 +48,7 @@ $free_items = $product_obj->getFreeItems()??$test_free;
         <div class="item-image">
             <a href="<?php echo $url ?>" class="product-url"><img src="<?php echo esc_url($image_url); ?>" class="img-thumbnail cart-item-image" loading="lazy"></a>
         </div>
-        <button class="remove-from-cart btn btn-danger btn-sm" data-product-id="<?php echo esc_attr($product['id']); ?>"><i class="bi bi-trash3"></i> <?php _e('Xóa')  ?></button>
+        <button class="remove-from-cart btn btn-danger btn-sm" data-product-id="<?php echo $remove_sku; ?>"><i class="bi bi-trash3"></i> <span><?php _e('Remove',LANG_ZONE)  ?></span></button>
 
     </div>
     <div class="cartItem-right d-flex items-justified-space-between">
@@ -63,13 +67,21 @@ $free_items = $product_obj->getFreeItems()??$test_free;
                     </a>
                 </div>
                 <ul class="item-promotions free_items collapse show" id="<?php echo $freeItem_ID ?>">
-			        <?php foreach ($free_items as $free) : ?>
+			        <?php foreach ($free_items as $idx =>$free) : ?>
                             <?php
-                            printf(
+                            if ($selected_rule && $selected_rule == $free['sku']){
+                                $is_checked = 'checked';
+                            }elseif ($idx===0){
+	                            $is_checked = 'checked';
+                            }else{
+                                $is_checked = '';
+                            }
+                            printf('<li class="free_item_line"><input type="radio" value="%s" id="%s" name="item_pricing_rule" '.$is_checked.' >&nbsp;<label for="%s">%s</label></li>',$free['sku'],$free['sku'],$free['sku'],$free['title']);
+                            /*printf(
 	                            '<li class="free_item_line"><span class="qty">%dx</span> %s</li>',
 	                            $free['qty'],
 	                            sprintf(__('Free %s', LANG_ZONE), $free['title'])
-                            );
+                            );*/
                             ?>
 
 			        <?php endforeach; ?>

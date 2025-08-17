@@ -197,6 +197,7 @@ jQuery(document).ready(function ($) {
         const pageNumbersSpan = $('.product-pagination-small span.page-numbers');
         let current_page = parseInt(pageNumbersSpan.data('current-page'));
         let total_pages = parseInt(pageNumbersSpan.data('total-pages'));
+        const paged_var = pageNumbersSpan.data('paged-var')
         let newpage = 0;
         // const pageContainer = $('#pagination_wrapper');
         // const pagePrevBtn = pageContainer.find('.page-prev-btn');
@@ -217,7 +218,7 @@ jQuery(document).ready(function ($) {
         if (newpage && newpage !== current_page) {
             // Cập nhật URL với trang mới
             const currentUrl = new URL(window.location);
-            currentUrl.searchParams.set('page', newpage);
+            currentUrl.searchParams.set(paged_var, newpage);
             history.pushState(null, '', currentUrl.toString());
             console.log(currentUrl);
             window.location.href = currentUrl.toString();

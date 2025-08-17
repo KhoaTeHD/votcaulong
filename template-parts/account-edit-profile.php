@@ -160,6 +160,11 @@ if ($args){
                 </div>
             </div>
             <!-- End Billing Address Fields -->
+            <div class="mb-2 row align-items-center">
+                <div class="col-md-9 offset-md-3 ">
+                    <button type="submit" class="btn btn-primary "><?php _e('Save', LANG_ZONE)  ?></button>
+                </div>
+            </div>
 		</div>
 	</div>
 </form>

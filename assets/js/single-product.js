@@ -33,61 +33,61 @@ jQuery(document).ready(function ($) {
     });
 
 
-    $(".addToCart-box #addToCart, .addToCart-box #quickBuy").on("click", function (e) {
-        e.preventDefault();
+    $(".addToCart-box #addToCart, .addToCart-box #quickBuy, .addToCart-box #muaTraGop")
+        .on("click", function (e) {
+            e.preventDefault();
 
-        const $btn = $(this);
-        const isQuickBuy = $btn.attr('id') === 'quickBuy';
-        const checkoutPage = $btn.data('checkout');
+            const $btn = $(this);
+            const btnID = $btn.attr('id');
+            const isQuickBuy = btnID === 'quickBuy';
+            const isTraGop  = btnID === 'muaTraGop';
+            const checkoutPage = $btn.data('checkout');
 
-        if (!productItem || !productItem.data('id')) {
-            siteNotify(translations.cart_select_variation);
-            return;
-        }
-        if (!productItem || productItem.data('status')!=='in-stock') {
-            siteNotify(translations.cart_out_stock);
-            return;
-        }
 
-        let quantity = parseInt($('.addToCart-box #quantity').val(), 10);
-        if (isNaN(quantity) || quantity < 1) {
-            quantity = 1;
-        }
+            if (productItem.data('status') !== 'in-stock') {
+                siteNotify(translations.cart_out_stock);
+                return;
+            }
 
-        const product = {
-            id: productItem.data('id'),
-            sku: productItem.data('sku'),
-            name: (productItem.data('name') || '').trim(),
-            price: productItem.data('price'),
-            originalPrice: productItem.data('original-price') || 0,
-            saleOff: productItem.data('saleoff') || 0,
-            image: productItem.data('image') || '',
-            category: productItem.data('category') || '',
-            url: productItem.data('url') || '',
-            attributes: productItem.data('attributes') || null,
-            variation: productItem.data('variation') || null,
-            quantity: quantity,
-            selected: productItem.data('selected') || ''
-        };
-        console.log(product);
+            let quantity = parseInt($('.addToCart-box #quantity').val(), 10);
+            if (!Number.isFinite(quantity) || quantity < 1) quantity = 1;
 
-        // Kiểm tra các thông tin bắt buộc
-        if (!product.id || !product.price || !product.selected) {
-            // console.warn("Thông tin sản phẩm không hợp lệ:", product);
-            siteNotify(translations.cart_invalid_product);
-            return;
-        }
+            const product = {
+                id: productItem.data('id'),
+                sku: productItem.data('sku'),
+                name: (productItem.data('name') || '').trim(),
+                price: productItem.data('price'),
+                originalPrice: productItem.data('original-price') || 0,
+                saleOff: productItem.data('saleoff') || 0,
+                image: productItem.data('image') || '',
+                category: productItem.data('category') || '',
+                url: productItem.data('url') || '',
+                attributes: productItem.data('attributes') || null,
+                variation: productItem.data('variation') || null,
+                quantity,
+                selected: productItem.data('selected') || ''
+            };
 
-        // Thêm vào giỏ
-        addToCart(product);
+            if (!product.id || !product.price || !product.selected) {
+                siteNotify(translations.cart_invalid_product);
+                return;
+            }
 
-        if (isQuickBuy && checkoutPage) {
-            window.location.href = checkoutPage;
-        } else {
-            const shoppingCartCanvas = new bootstrap.Offcanvas("#shoppingCartCanvas");
-            shoppingCartCanvas.show();
-        }
-    });
+            // Thêm vào giỏ (nếu addToCart async, hãy redirect trong callback .then)
+            addToCart(product);
+
+            if ( (isQuickBuy || isTraGop)
+                && typeof checkoutPage === 'string'
+                && checkoutPage.trim() !== '' ) {
+                window.location.assign(checkoutPage);
+            } else {
+                const el = document.getElementById('shoppingCartCanvas');
+                if (el) {
+                    const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(el);
+                    offcanvas.show();
+                }
+            }
+        });
 
     var isLightboxInitialized = false;
     var lightboxSwiper;

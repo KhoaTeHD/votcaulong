@@ -1,11 +1,11 @@
 jQuery(document).ready(function ($) {
     // ==== Loading & Notify ====
     function showLoading() {
-        $('body').addClass('loading');
+        $('#loading-overlay').show();
         $('#btn-checkout, #btn-checkout-with-card').prop('disabled', true);
     }
     function hideLoading() {
-        $('body').removeClass('loading');
+        $('#loading-overlay').hide();
         $('#btn-checkout, #btn-checkout-with-card').prop('disabled', false);
     }
     function siteNotify(message){
@@ -71,8 +71,11 @@ jQuery(document).ready(function ($) {
     }
     // fill select, tự động cắt mã số ward nếu removeSuffix = true
     function populateSelect($select, data, defaultOptionText, valueKey, textKey, removeSuffix = false) {
-        $select.empty().append($('<option>', { value: '', text: defaultOptionText })).prop('disabled', true);
-        if (!Array.isArray(data) || data.length === 0) return;
+        $select.empty().append($('<option>', { value: '', text: defaultOptionText }));
+        if (!Array.isArray(data) || data.length === 0) {
+            $select.prop('disabled', true);
+            return;
+        }
         data.forEach(item => {
             let displayText = item[textKey] || item;
             if (removeSuffix && displayText.includes('-')) {
@@ -97,7 +100,16 @@ jQuery(document).ready(function ($) {
                 return false;
             }
         });
+        if (found) {
+            $select.trigger('change'); // Notify Select2 to update its display
+        }
         return found;
+    }
+    function getCartTotal(){
+        const cartItems = getCart();
+        let total = 0;
+        cartItems.forEach(item => {total+=parseFloat(item.price)});
+        return total;
     }
 
     function loadShippingMethodsAndCost(addressData) {
@@ -114,36 +126,43 @@ jQuery(document).ready(function ($) {
                 nonce: ThemeVarsCheckout.vcl_checkout_nonce,
                 address_line1: addressData.address_line1,
                 custom_address_location: addressData.custom_address_location,
-                custom_ward: addressData.custom_ward
+                custom_ward: addressData.custom_ward,
+                cart_total: $('#cartPage-subtotal .subtotal-value').data('value'),
+            },
+            beforeSend:function(){
+              showLoading();
             },
             success: function(res) {
                 if (res.success && res.data && res.data.shipping_cost) {
                     let shipping_cost = res.data.shipping_cost;
                     let html = '';
-                    let first = false;
                     let firstMethod = '', firstFee = 0;
+                    let isFirst = true;
                     Object.entries(shipping_cost).forEach(([method, fee]) => {
                         html += `
                         <label class="me-3 mb-2">
-                            <input type="radio" name="shipping_service" value="${method}" ${first ? 'checked' : ''}>
+                            <input type="radio" name="shipping_service" value="${method}" ${isFirst ? 'checked' : ''}>
                             <span class="fw-bold">${method}</span>
                             <span class="text-primary ms-1">${fee.toLocaleString('vi-VN')} đ</span>
                         </label>
                     `;
-                        if (first) { firstMethod = method; firstFee = fee; }
-                        first = false;
+                        if (isFirst) { firstMethod = method; firstFee = fee; isFirst = false; }
                     });
                     $list.html(html || '<div class="text-danger p-2">Không có phương thức vận chuyển khả dụng!</div>');
 
                     // Update shipping fee với phương thức đầu tiên
-                    updateShippingTotal(firstMethod, firstFee);
+                    if (firstMethod) {
+                        updateShippingTotal(firstMethod, firstFee);
+                    }
 
                 } else {
                     $list.html('<div class="text-danger p-2">Không thể lấy phí vận chuyển!</div>');
                 }
+                hideLoading();
             },
             error: function() {
                 $('#shipping-method-cost-list').html('<div class="text-danger p-2">Lỗi kết nối khi lấy phí vận chuyển!</div>');
+                hideLoading();
             }
         });
     }
@@ -171,12 +190,16 @@ jQuery(document).ready(function ($) {
     function initLocationAndWard($locationSelect, $wardSelect, savedLocation, savedWard, onReady) {
         loadLocations(function(locations) {
             populateSelect($locationSelect, locations, '-- Chọn Tỉnh/Thành phố --', 'name', 'name');
+            $locationSelect.select2(); // Initialize Select2
             let hasSetLocation = false;
             if (savedLocation && selectOptionByText($locationSelect, savedLocation)) {
                 hasSetLocation = true;
                 loadWards(savedLocation, function(wards) {
                     populateSelect($wardSelect, wards, '-- Chọn Phường/Xã --', 'name', 'ward', true);
-                    if (savedWard) selectOptionByText($wardSelect, savedWard);
+                    if (savedWard) {
+                        selectOptionByText($wardSelect, savedWard);
+                    }
+                    $wardSelect.select2(); // Initialize Select2
                     if (typeof onReady === 'function') onReady();
                 });
             }
@@ -186,9 +209,13 @@ jQuery(document).ready(function ($) {
         $locationSelect.off('change').on('change', function() {
             const selectedLocationCode = $(this).val();
             $wardSelect.empty().append('<option value="">-- Chọn Phường/Xã --</option>').prop('disabled', true);
+            if ($wardSelect.hasClass('select2-hidden-accessible')) {
+                $wardSelect.select2('destroy'); // Destroy Select2 before repopulating
+            }
             if (selectedLocationCode) {
                 loadWards(selectedLocationCode, function(wards) {
                     populateSelect($wardSelect, wards, '-- Chọn Phường/Xã --', 'name', 'ward', true);
+                    $wardSelect.select2(); // Re-initialize Select2
                 });
             }
             // KHÔNG load phí ship ở đây!
@@ -202,12 +229,19 @@ jQuery(document).ready(function ($) {
         $('.shipping-line .cartpageTotal-value').html(`${shippingFee.toLocaleString('vi-VN')}<sup>₫</sup>`);
 
         // Lấy subtotal hiện tại từ dòng total-line
-        let subtotalText = $('#cartPage-subtotal .subtotal-value').text().replace(/[^\d]/g, '');
+        let subtotalText = $('#cartPage-subtotal .subtotal-value').data('value');
+        let allDiscount = 0;
+        $('#cartPage-total .orderPromotions').each(function(){
+            let value = $(this).data('value');
+            allDiscount += parseInt(value);
+        });
+        // let discountText = $('#cartPage-total .cartpageTotal-value.promotionValue').text().replace(/[^\d]/g, '');
         let subtotal = parseInt(subtotalText, 10) || 0;
 
-        let total = subtotal + shippingFee;
+        let total = subtotal + shippingFee - allDiscount;
 
         $('.total-line .cartpageTotal-value').html(`${total.toLocaleString('vi-VN')}<sup>₫</sup>`);
+        // console.log('total:',discountText,' ship:',shippingFee);
     }
 
     $('#shipping-method-cost-list').on('change', 'input[name="shipping_service"]', function() {
@@ -218,28 +252,14 @@ jQuery(document).ready(function ($) {
     });
     // Gọi khởi tạo dropdown ERP location/ward ngay khi trang tải
     // initLocationAndWard(locationSelect, wardSelectNew, prefillCityName, prefillWardName);
-    initLocationAndWard(locationSelect, wardSelectNew, prefillCityName, prefillWardName, function(){
-        // callback khi đã load xong location/ward (cả khi có prefill hay không)
-        if ($('input[name="shipping_method"]:checked').val() === 'delivery') {
-            let address_line1 = $('#street').val() || '';
-            let custom_address_location = $('#shipping_location option:selected').text() || '';
-            let custom_ward = $('#shipping_ward_new').val() || '';
-            if (address_line1 && custom_address_location && custom_ward) {
-                loadShippingMethodsAndCost({
-                    address_line1,
-                    custom_address_location,
-                    custom_ward
-                });
-            }
-        }
-    });
+    initLocationAndWard(locationSelect, wardSelectNew, prefillCityName, prefillWardName);
     let shippingCostTimeout = null;
     $('#shipping_ward_new, #street').on('change blur', function() {
         clearTimeout(shippingCostTimeout);
         shippingCostTimeout = setTimeout(function() {
             if ($('input[name="shipping_method"]:checked').val() === 'delivery') {
                 let address_line1 = $('#street').val() || '';
-                let custom_address_location = $('#shipping_location option:selected').text() || '';
+                let custom_address_location = $('#shipping_location option:selected').val() || '';
                 let custom_ward = $('#shipping_ward_new').val() || '';
                 if (address_line1 && custom_address_location && custom_ward) {
                     loadShippingMethodsAndCost({
@@ -296,11 +316,14 @@ jQuery(document).ready(function ($) {
             }
             let addressData = {
                 address_line1: $('#street').val() || '',
-                custom_address_location: $('#shipping_location option:selected').text() || '',
+                custom_address_location: $('#shipping_location option:selected').val() || '',
                 custom_ward: $('#shipping_ward_new').val() || ''
             };
+            if (addressData.custom_address_location && addressData.custom_ward){
+                loadShippingMethodsAndCost(addressData);
+            }
             // Gọi hàm lấy phí ship:
-            loadShippingMethodsAndCost(addressData);
+
         }
     });
 
@@ -324,6 +347,157 @@ jQuery(document).ready(function ($) {
         } else {
             companyInvoiceInfo.slideUp();
         }
+    });
+
+
+    function get_checkout_order() {
+        const $selectedService = $('#shipping-method-cost-list input[name="shipping_service"]:checked');
+        const orderData = {
+            customer_info: {
+                gender: $('input[name="gender"]:checked').val(),
+                fullname: $('#fullname').val(),
+                phone_number: $('#phone_number').val(),
+                email: $('#email').val(),
+            },
+            shipping_total: parseInt($selectedService.siblings('.text-primary').text().replace(/[^\d]/g, ''), 10) || 0,
+            voucher_code : '',
+            order_rule: '',
+            loyalty_point: 0,
+            cart: getCart(),
+            items_rule: []
+        };
+
+        if ($('#input_voucher_code').val()){
+            orderData.voucher_code = $('#input_voucher_code').val();
+        }
+        if ($('input[name="order_pricing_rule"]:checked').val()){
+            orderData.order_rule =$('input[name="order_pricing_rule"]:checked').val();
+        }
+        if (parseInt($('#input_redeem_loyalty').val())){
+            orderData.loyalty_point= parseInt($('#input_redeem_loyalty').val());
+        }
+
+        $('#cartPage-items .cartPage-item').each(function (){
+            let $item = $(this);
+            let $item_code = $item.data('variation-sku') || $item.data('sku');
+            let $item_promotions = $item.find('.item-promotions');
+            if ($item_promotions.length) {
+                let $item_pricing_rule = $item_promotions.find('input[name="item_pricing_rule"]:checked').val();
+                if($item_pricing_rule){
+                    orderData.items_rule.push({item_code: $item_code, pricing_rule: $item_pricing_rule});
+                }
+            }
+        });
+
+        // ✅ RETURN the ajax call so we can wait for it
+        return jQuery.ajax({
+            url: ThemeVars.ajaxurl,
+            method: "POST",
+            data: {
+                action: "refresh_checkout",
+                order_data: orderData,
+                nonce: ThemeVars.nonce,
+            },
+            beforeSend: function () {
+                showLoading();
+            },
+            success: function (response) {
+                if (response.success) {
+                    let order_rules = '';
+                    jQuery("#shoppingCart-page #cartPage-items").html(response.data.html);
+                    jQuery("#shoppingCart-page #cartPage-subtotal").html(response.data.subtotal_html);
+                    jQuery("#shoppingCart-page #cartPage-total").html(response.data.total_html);
+
+                    if (response.data.order_rules) {
+                        jQuery(response.data.order_rules).each(function(idx, rule){
+                            order_rules += `<input type="radio" style="display: none;" ${orderData.order_rule===rule.pricing_rule ? 'checked' : ''} name="order_pricing_rule" id="${rule.pricing_rule}" value="${rule.pricing_rule}"><label class="btn btn-outline-danger select_order_rules" role="button" for="${rule.pricing_rule}"><i class="bi bi-ticket-detailed"></i> ${rule.description}</label>`;
+                        });
+                        jQuery('#order_pricing_rule').html(order_rules);
+                    }
+
+                    if (orderData.voucher_code){
+                        let voucher_applied = `<div class="voucher_applied discounts_applied"><span><i class="bi bi-ticket-detailed"></i> ${orderData.voucher_code} <i class="bi bi-x-lg ms-1 remove" role="button"></i></span></div>`;
+                        apply_discount_item('#apply_voucher_button', voucher_applied);
+                    }
+                    if (orderData.loyalty_point) {
+                        let points_redeem  = `<div class="loyalty_applied discounts_applied"><span><i class="bi bi-ticket-detailed"></i> ${orderData.loyalty_point} <i class="bi bi-x-lg ms-1 remove" role="button"></i></span></div>`;
+                        apply_discount_item('#redeem_loyalty_section', points_redeem);
+                    }
+                } else {
+                    console.error("Lỗi:", response.data);
+                    siteNotify(response.data);
+                }
+            },
+            error: function (error) {
+                console.error("Lỗi khi tải thông tin sản phẩm:", error);
+                jQuery("#shoppingCart-page").html(`<p>${translations.cart_error}</p>`);
+            },
+            complete: function () {
+                hideLoading();
+            }
+        });
+    }
+    get_checkout_order().then(function () {
+        const address_line1 = $('#street').val() || '';
+        const custom_address_location = $('#shipping_location option:selected').val() || '';
+        const custom_ward = $('#shipping_ward_new').val() || '';
+        if (address_line1 && custom_address_location && custom_ward) {
+            loadShippingMethodsAndCost({
+                address_line1,
+                custom_address_location,
+                custom_ward
+            });
+        }
+    });
+    function apply_discount_item(form_wrapper,item_html){
+        const $wrapper = $(form_wrapper);
+        const $applied_wrapper = $('#order_discounts_applied');
+        const $newItem = $(item_html);
+
+        let type;
+        if ($newItem.hasClass('voucher_applied')) {
+            type = 'voucher_applied';
+        } else if ($newItem.hasClass('loyalty_applied')) {
+            type = 'loyalty_applied';
+        } else {
+            console.warn('Unknown discount type, skipping apply');
+            return;
+        }
+        if ($applied_wrapper.find('.' + type).length > 0) {
+            return;
+        }
+
+        $applied_wrapper.append($newItem);
+        $wrapper.find('input').prop('disabled', true);
+        $wrapper.hide();
+    }
+    function remove_discount_item($btn) {
+        const $thisDiscount = $btn.closest('.discounts_applied');
+        let $wrapper;
+        if ($thisDiscount.hasClass('voucher_applied')) {
+            $wrapper = $('#apply_voucher_button');
+        } else if ($thisDiscount.hasClass('loyalty_applied')) {
+            $wrapper = $('#redeem_loyalty_section');
+        } else {
+            console.warn('Unknown discount type, skipping removal');
+            return;
+        }
+        $thisDiscount.remove();
+        $wrapper.find('input[type="text"]').prop('disabled', false).val('');
+        $wrapper.show();
+        get_checkout_order();
+    }
+    $('#order_discounts_applied').on('click','.discounts_applied .remove',function (){
+        remove_discount_item($(this));
+    });
+
+    $('#order_pricing_rule').on('change','input[name="order_pricing_rule"]',function(){
+        get_checkout_order();
+    });
+
+    $('.refresh-checkout, #button-apply-voucher, #button-redeem-loyalty').on('click',function(){
+        get_checkout_order();
+        return false;
     });
 
     // --- Place Order Button ---
@@ -354,13 +528,32 @@ jQuery(document).ready(function ($) {
             how_to_use: $('#how_to_use').is(':checked'),
             company_invoice: null,
             voucher_code: $('#input_voucher_code').val(),
+            loyalty_point: parseInt($('#input_redeem_loyalty').val()),
+            order_pricing_rule : null,
             payment_method: paymentMethodValue,
             payment_method_title: paymentMethodTitle,
             shipping_service: null,
             shipping_total: null,
-            cart: getCart()
+            cart: getCart(),
+            items_rule: []
         };
-
+        let items_rule = [];
+        if ($('input[name="order_pricing_rule"]:checked').val()){
+            orderData.order_pricing_rule =$('input[name="order_pricing_rule"]:checked').val();
+        }
+        //get items pricing rule
+        $('#cartPage-items .cartPage-item').each(function (){
+           let $item = $(this);
+           let $item_code = $item.data('variation-sku')||$item.data('sku');
+           let $item_item_promotions = $item.find('.item-promotions')||null;
+           if ($item_item_promotions) {
+               let $item_pricing_rule = $item_item_promotions.find('input[name="item_pricing_rule"]:checked').val();
+               if($item_pricing_rule){
+                   orderData.items_rule.push({item_code:$item_code,pricing_rule:$item_pricing_rule});
+               }
+           }
+        });
+        // console.log(items_rule);
         let isValid = true;
         if (orderData.shipping_method === 'delivery') {
             orderData.shipping_address = {
@@ -418,6 +611,7 @@ jQuery(document).ready(function ($) {
             }
         }
         if (!isValid) { return; }
+
         let ajaxAction = '';
         switch (paymentMethodValue) {
             case 'cod':
@@ -464,7 +658,5 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-    $(document).on('change','#shoppingCart-page #cartPage-total',function(){
-        console.log('Total change');
-    });
+
 });

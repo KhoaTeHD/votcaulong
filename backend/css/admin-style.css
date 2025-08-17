@@ -32,3 +32,15 @@
 #adminmenu .opensub .wp-submenu li.current a, #adminmenu .wp-submenu li.current, #adminmenu .wp-submenu li.current a, #adminmenu .wp-submenu li.current a:focus, #adminmenu .wp-submenu li.current a:hover, #adminmenu a.wp-has-current-submenu:focus+.wp-submenu li.current a {
     color: var(--active-menu);
 }
+.order-details-table .order-items .product-name span{
+    display: block;
+    padding-left: 10px;
+    font-size: 0.9em;
+}
+.order-details-table  .text-end{
+    text-align: right;
+}
+.order-notes-list .status-noted {
+    font-weight: 600;
+    padding: 5px;
+}

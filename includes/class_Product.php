@@ -24,7 +24,7 @@ class Product {
     private $combo_products;
     private $description_raw; // Raw description from data
     private $features_raw;    // Raw features from data
-	private $has_variants, $data_variants, $base_url, $free_item_data;
+	private $has_variants, $data_variants, $base_url, $free_item_data,$select_pricing_rules, $out_of_stock;
 
     // --- Lazy loaded properties ---
     // Khởi tạo là null trong constructor
@@ -66,9 +66,11 @@ class Product {
         $this->video_url = $data['custom_video'] ?? '';
         $this->combo_products = $data['combo_products'] ?? [];
         $this->description_raw = $data['description'] ?? '';
-        $this->features_raw = $data['specification'] ?? '';
+        $this->features_raw = $data['specifications'] ?? '';
 		$this->has_variants = (boolean)$data['has_variants'];
 		$this->free_item_data = $data['free_item_data']??null;
+		$this->select_pricing_rules = $data['select_pricing_rules']??null;
+		$this->out_of_stock = $data['out_of_stock'] ?? null;
 	    $erp_API_config = get_field('erp_api','options');
 	    if ($erp_API_config){
 		    $this->base_url = $erp_API_config['domain'];
@@ -106,12 +108,7 @@ class Product {
         // --- QUERY OPTIMIZATION (Reiterated) ---
         // Searching by title using 's' is inefficient. If possible, use ID or slug.
         // Given the current structure, perform the search ONCE and cache.
-	    $brand_detail = [
-		    'name' => null,
-		    'id' => null,
-		    'image' =>null, // Lấy thumbnail URL
-		    'url' => null,           // Lấy permalink
-	    ];
+	    $brand_detail = [];
         if ($this->brand) {
              $brand_posts = get_posts([
                  'post_type' => 'brands',
@@ -170,6 +167,13 @@ class Product {
     public function getDiscount(): ?float { return is_numeric($this->discount) ? (float)$this->discount : null; }
 
     public function getImageUrl(): ?string {
+	    if (!$this->image_url) {
+		    return null;
+	    }
+
+	    if (!defined('SERVER_IMAGE_URL') || SERVER_IMAGE_URL === true) {
+		    return $this->image_url;
+	    }
 		return filter_var($this->image_url, FILTER_VALIDATE_URL)?$this->image_url:$this->erp_image($this->image_url);
     }
 	public function getGallery(): ?array {
@@ -577,7 +581,23 @@ class Product {
         return $html;
     }
 	public function stock_status(){
-		return $this->hasStock($this->stock);
+		return $this->list_item_stock();
+	}
+	public function list_item_stock() : bool{
+		if (!$this->hasVariations()){
+			return !(boolean)$this->out_of_stock;
+		}else{
+//			my_debug($this);
+			$variations = $this->data_variants ?? $this->variations;
+			if ($variations){
+				foreach ($variations as $variation){
+					if (!$variation['out_of_stock']){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 	private function hasStock($stockData): bool {
 		if (is_numeric($stockData)) {
@@ -645,10 +665,14 @@ class Product {
         }*/
         return ($images);
     }
-	public function erp_image($img_url){
-		if ($img_url) {
-			return $this->base_url.$img_url;
+	public function erp_image($img_url) {
+		if (!$img_url) {
+			return null;
 		}
+		if (!defined('SERVER_IMAGE_URL') || SERVER_IMAGE_URL === true) {
+			return $img_url;
+		}
+		return $this->base_url . $img_url;
 	}
 
     public function hasComboProducts(): bool { return !empty($this->combo_products); }
@@ -737,8 +761,9 @@ class Product {
     public function getDescription(): string {
          // --- LAZY LOADING & CACHING ---
         if ($this->lazy_description_processed !== null) {
-            return $this->lazy_description_processed;
+           // return $this->lazy_description_processed;
         }
+//		return $this->description_raw.'-----LIONDK';
         // --- END LAZY LOADING & CACHING ---
 	    $processed = wpautop(do_shortcode(wp_kses_post($this->description_raw ?? '')));
         $this->lazy_description_processed = $processed; // Cache
@@ -754,8 +779,8 @@ class Product {
 		    $processed = wpautop(do_shortcode(wp_kses_post($this->features_raw ?? '')));
 	    }else{
 			$processed = '<ul class="color-list">';
-			foreach ($this->features_raw as $feature_key => $value){
-				$processed .='<li class="col-list-item">'.$feature_key.': '.esc_html($value).'</li>';
+			foreach ($this->features_raw as $feature){
+				$processed .='<li class="col-list-item">'.$feature['specification'].': '.esc_html($feature['specification_value']).'</li>';
 			}
 		    $processed .= '</ul>';
 	    }
@@ -976,14 +1001,14 @@ class Product {
 	}
 
 	public function getFreeItems(){
-		if (!$this->free_item_data) return;
+		if (!$this->select_pricing_rules) return;
 		$return = [];
-		foreach ($this->free_item_data as $free_item) {
+		foreach ($this->select_pricing_rules as $free_item) {
 			$return[] = [
-				'sku' => $free_item['item_code'],
-				'title' => $free_item['item_name'],
-				'qty' => $free_item['qty'],
-				'desc' => $free_item['description'],
+				'sku' => $free_item['pricing_rule'],
+				'title' => $free_item['description'],
+//				'qty' => $free_item['qty'],
+//				'desc' => $free_item['description'],
 			];
 		}
 		return $return;

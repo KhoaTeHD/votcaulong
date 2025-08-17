@@ -4,6 +4,9 @@ jQuery(document).ready(function ($) {
     setInterval(checkLoginStatus, 300000);
     //---------- Shopping cart -----------------------------
     loadCart();
+    if (jQuery("#shoppingCart-page").length > 0) {
+        cartPageLoad();
+    }
     const shoppingCartCanvas = new bootstrap.Offcanvas("#shoppingCartCanvas");
     $(document).on("click",".addCart", function () {
         // Lấy phần tử cha chứa thông tin sản phẩm
@@ -34,6 +37,74 @@ jQuery(document).ready(function ($) {
     handleCartActions();
     
 
+    // --- Share Cart Logic ---
+    $('.btn-share-cart').on('click', function() {
+        let currentCart = getCart();
+        if (currentCart.length === 0) {
+            siteNotify('Giỏ hàng của bạn đang trống. Không thể chia sẻ.', 'error');
+            return;
+        }
+
+        let $shareLinkInput = $('#share-cart-link');
+        let $shareMessage = $('#share-cart-message');
+        let $shareModal = $('#shareCartModal');
+        let $cartShareon = $('.cart-shareon');
+
+        $shareLinkInput.val('');
+        $shareMessage.addClass('d-none').text('');
+
+        $.ajax({
+            url: ThemeVars.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'vcl_share_cart',
+                nonce: ThemeVars.nonce,
+                cart_data: JSON.stringify(currentCart)
+            },
+            beforeSend: function() {
+                // Optionally show a spinner in the modal
+                $shareMessage.removeClass('d-none alert-info alert-danger').addClass('alert-warning').text('Đang tạo liên kết...');
+            },
+            success: function(response) {
+                if (response.success) {
+                    $shareLinkInput.val(response.data.share_url);
+                    $cartShareon.data('url',response.data.share_url);
+                    $shareMessage.removeClass('alert-warning').addClass('alert-info').text(response.data.message);
+                } else {
+                    $shareMessage.removeClass('alert-warning').addClass('alert-danger').text(response.data.message || 'Có lỗi xảy ra khi chia sẻ giỏ hàng.');
+                }
+            },
+            error: function() {
+                $shareMessage.removeClass('alert-warning').addClass('alert-danger').text('Lỗi kết nối máy chủ khi chia sẻ giỏ hàng.');
+            }
+        });
+    });
+
+    $('#copy-share-link-btn').on('click', function() {
+        let $shareLinkInput = $('#share-cart-link');
+        $shareLinkInput.select();
+        document.execCommand('copy');
+        siteNotify('Đã sao chép liên kết!');
+    });
+
+    // --- Handle incoming shared cart link errors ---
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('share_error')) {
+        const errorType = urlParams.get('share_error');
+        let errorMessage = '';
+        if (errorType === 'no_id') {
+            errorMessage = 'Liên kết chia sẻ giỏ hàng không hợp lệ.';
+        } else if (errorType === 'expired_or_invalid') {
+            errorMessage = 'Giỏ hàng được chia sẻ đã hết hạn hoặc không tồn tại.';
+        }
+        if (errorMessage) {
+            siteNotify(errorMessage, 'error');
+            // Remove the error parameter from URL to prevent re-showing on refresh
+            urlParams.delete('share_error');
+            window.history.replaceState({}, document.title, window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : ''));
+        }
+    }
+
 });
 function checkLoginStatus() {
     isLoggedIn(function (loggedIn) {
@@ -41,9 +112,9 @@ function checkLoginStatus() {
             userLoggedIn = loggedIn;
             if (userLoggedIn) {
                 handleUserLogin();
-            } else {
-                updateCartUI(getCart());
             }
+        } else {
+            updateCartUI(getCart());
         }
     });
 }
@@ -182,8 +253,9 @@ function updateCartUI(cart) {
                 product_attr += `<div>${key}: ${value}</div>`;
             }
         }
+        // console.log(product);
         cartItems.append(`
-          <li class="cart-item">
+          <li class="cart-item" data-id="${product.id}">
                   <img src="${product.image}" alt="${
             product.name
         }" width="50" height="50" style="object-fit: cover;">
@@ -191,9 +263,14 @@ function updateCartUI(cart) {
                     <p class="cart-item-name">${product.name}</p>
                     <p class="cart-item-sku">${product.sku}</p>
                     <div class="cart-item-attrs">${product_attr}</div>
-                    <p class="cart-item-price">${product.price.toLocaleString()}<sup>₫</sup> x ${
-            product.quantity
-        } = <span class="line-total">${lineTotal.toLocaleString()}<sup>₫</sup></span></p>
+                    <div class="d-flex justify-content-between">
+                        <div class="minicart-qty cartItem-qtyBox">
+                            <button class="qty-btn qty-minus" role="button"><i class="bi bi-dash-lg"></i></button>
+                            <input class="item-qty form-control border-0" value="${product.quantity}">
+                            <button class="qty-btn qty-plus" role="button"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                        <div class="cart-item-total">${lineTotal.toLocaleString()}<sup>₫</sup></div>
+                    </div>
                   </div>
                   <button class="remove-from-cart btn btn-danger btn-sm" data-product-id="${
             product.id
@@ -212,7 +289,7 @@ function updateCartUI(cart) {
         shoppingCart.fadeIn();
     }
     if (jQuery("#shoppingCart-page").length > 0) {
-        cartPageLoad();
+        // cartPageLoad();
     }
 }
 function loadCart() {
@@ -256,6 +333,9 @@ function loadCart() {
 }
 
 function cartPageLoad() {
+    if (!jQuery("#shoppingCart-page").length) {
+        return;
+    }
     const cart = getCart();
     if (cart.length === 0) {
         jQuery("#shoppingCart-page").html(`<p>${translations.cart_no_item}</p>`);
@@ -274,9 +354,19 @@ function cartPageLoad() {
         },
         success: function (response) {
             if (response.success) {
+                let order_rules='';
                 jQuery("#shoppingCart-page #cartPage-items").html(response.data.html);
                 jQuery("#shoppingCart-page #cartPage-subtotal").html(response.data.subtotal_html);
                 jQuery("#shoppingCart-page #cartPage-total").html(response.data.total_html);
+                let isFirst = true;
+                if (response.data.order_rules) {
+                    jQuery(response.data.order_rules).each(function(idx,rule){
+                        // console.log(rule.pricing_rule);
+                        order_rules += `<input type="radio" style="display: none;" ${isFirst ? 'checked' : ''} name="order_pricing_rule" id="${rule.pricing_rule}" value="${rule.pricing_rule}"><label class="btn btn-outline-danger select_order_rules" role="button" for="${rule.pricing_rule}"><i class="bi bi-ticket-detailed"></i> ${rule.description}</label>`;
+                        if (isFirst) {  isFirst = false; }
+                    })
+                    jQuery('#order_pricing_rule').html(order_rules);
+                }
             } else {
                 console.error("Lỗi:", response.data);
                 jQuery("#shoppingCart-page").html(`<p>${translations.cart_error}</p>`);
@@ -316,9 +406,6 @@ function loadCartUI(cart) {
                 jQuery("#shoppingCart-page #cartPage-subtotal").html(
                     response.data.subtotal_html
                 );
-
-
-
                 jQuery(".remove-from-cart").on("click", function () {
                     const productId = jQuery(this).data("product-id");
                     removeCartItem(productId);
@@ -397,10 +484,21 @@ function handleCartActions() {
         const productId = $thisItem.data('variation-sku') || $thisItem.data('id');
         updateCartQuantity(productId, qty);
         updateCartItemTotal(jQuery(this).closest(".cartPage-item"));
+        cartPageLoad();
     });
     jQuery(document).on("click", ".remove-from-cart", function () {
         const productId = jQuery(this).data("product-id");
         removeCartItem(productId);
+        cartPageLoad();
     });
-
+    jQuery(document).on("change", ".minicart-qty .item-qty", function () {
+        const $thisItem = jQuery(this).closest('.cart-item');
+        let qty = parseInt(jQuery(this).val());
+        if (qty < 1) {
+            jQuery(this).val(1);
+            qty = 1;
+        }
+        const productId = $thisItem.data('id');
+        updateCartQuantity(productId, qty);
+    });
 }

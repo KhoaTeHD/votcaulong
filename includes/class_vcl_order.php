@@ -9,7 +9,8 @@ class VCL_Order {
     private $orders_table;
     private $order_items_table;
     private $order_meta_table;
-    private $wpdb;
+    private $wpdb,$order_prefix;
+	static $order_meta_table_name;
 
     public function __construct( $order_id = 0 ) {
         global $wpdb;
@@ -17,6 +18,7 @@ class VCL_Order {
         $this->orders_table = $this->wpdb->prefix . 'custom_orders';
         $this->order_items_table = $this->wpdb->prefix . 'custom_order_items';
         $this->order_meta_table = $this->wpdb->prefix . 'custom_order_meta';
+		self::$order_meta_table_name = $this->order_meta_table;
 
         if ( $order_id ) {
             $this->order_id = absint( $order_id );
@@ -354,7 +356,7 @@ class VCL_Order {
 
         // TODO: Trigger actions/emails based on status change
 
-        return (bool) $updated;
+        return true;
     }
 
     /**
@@ -463,12 +465,26 @@ class VCL_Order {
 
         // Query the database to get all items for the order
         $items = $this->wpdb->get_results( $this->wpdb->prepare(
-            "SELECT * FROM {$this->order_items_table} WHERE order_id = %d ORDER BY order_item_id ASC",
-            $order_id
+            "SELECT * FROM {$this->order_items_table} WHERE order_id = %d AND order_item_type = %s ORDER BY order_item_id ASC",
+            $order_id, 'line_item'
         ) );
 
         return $items ? $items : [];
     }
+	public function get_order_discounts( $order_id) {
+		$order_id = absint( $order_id );
+		if ( ! $order_id ) {
+			return [];
+		}
+
+		// Query the database to get all items for the order
+		$items = $this->wpdb->get_results( $this->wpdb->prepare(
+			"SELECT * FROM {$this->order_items_table} WHERE order_id = %d AND order_item_type != %s AND line_total < 0 ORDER BY order_item_id ASC",
+			$order_id, 'line_item'
+		) );
+
+		return $items ? $items : [];
+	}
 
     /**
      * Retrieves meta data for a given order ID.
@@ -542,24 +558,15 @@ class VCL_Order {
 
         $order_data->fullname = $order_data->billing_first_name . ' ' . $order_data->billing_last_name;
         $order_data->order_link =home_url('/tai-khoan-tab.orders.id'.$order_id) ;
-        // Get all meta data for the order
-        // Use $single = false to get arrays of values for each key
         $all_meta = $this->get_order_meta( $order_id, '', false );
 
         if ( ! empty( $all_meta ) && is_array( $all_meta ) ) {
             foreach ( $all_meta as $meta_key => $meta_values ) {
-                // Add the meta key as a property to the order object.
-                // Use the first value from the array returned by get_order_meta.
-                // Remove leading underscore often used for internal meta keys for cleaner access.
                 $property_key = ltrim( $meta_key, '_' );
                 if ( ! empty( $meta_values ) && isset( $meta_values[0] ) ) {
-                    // Only add if the property doesn't already exist from the main table query
-                    // to avoid overwriting core fields like 'status' if a meta key happens to be named 'status'.
-                    // Also check if the cleaned property key is not empty (in case meta_key was just '_')
                     if ( ! empty($property_key) && ! property_exists( $order_data, $property_key ) ) {
                          $order_data->$property_key = $meta_values[0];
                     } elseif ( property_exists( $order_data, $property_key ) ) {
-                        // Optionally log a warning if a meta key conflicts with a table column name
                         // error_log("VCL_Order::get_order_with_meta - Meta key '{$meta_key}' conflicts with existing property on Order ID: {$order_id}");
                     }
                 }
@@ -684,15 +691,191 @@ class VCL_Order {
 	public function get_order_by_erp_name($erp_name) {
 		if (empty($erp_name)) return false;
 		$erp_name = sanitize_text_field($erp_name);
-
+		$erp_name_like = '%' . $erp_name;
 		$order_id = $this->wpdb->get_var($this->wpdb->prepare(
 			"SELECT order_id FROM {$this->order_meta_table}
          WHERE meta_key = %s AND meta_value = %s
          LIMIT 1",
-			'_erp_order_code', $erp_name
+			'_erp_order_code', $erp_name_like
 		));
 
-		return $order_id ? intval($order_id) : false;
+		return $order_id ? (int) $order_id : false;
+	}
+
+	/**
+	 * Creates a new order in the custom tables from ERP data.
+	 *
+	 * @param array $erp_order_data Data from the ERP API, including a 'more_info' key.
+	 * @return int|WP_Error|false Order ID on success, WP_Error on error, false if data is invalid.
+	 */
+	public function create_order_from_erp( $erp_order_data, $init_status ) {
+		// 1. Validate input and check for existing order
+		if ( empty( $erp_order_data['name'] ) ) {
+			return new WP_Error('invalid_data', 'ERP order data is missing a name.');
+		}
+
+		$erp_order_code = sanitize_text_field( $erp_order_data['name'] );
+		$existing_order_id = $this->get_order_by_erp_name( $erp_order_code );
+		if ( $existing_order_id ) {
+			// Maybe update the existing order in the future, for now just return its ID.
+			return $existing_order_id;
+		}
+
+		// 2. Find corresponding WordPress user
+		$user_id = get_current_user_id();
+
+
+		// 3. Prepare data for wp_custom_orders table
+		$more_info = $erp_order_data['more_info'] ?? [];
+		$customer_info = $more_info['customer_info'] ?? [];
+		$shipping_address = $more_info['shipping_address'] ?? [];
+
+		$transaction_date = current_time( 'Y-m-d H:i:s' );
+		$date_gmt = get_gmt_from_date( $transaction_date );
+
+		// Calculate subtotal from items
+		$subtotal = array_reduce($erp_order_data['items'], function($carry, $item) {
+			if (isset($item['is_free_item']) && $item['is_free_item'] == false) {
+				return $carry + (float) $item['amount'];
+			}
+			return $carry;
+		}, 0.00);
+		$recipient_phone = $more_info['other_recipient']['phone_number'] ?? '';
+		$recipient_name = $more_info['other_recipient']['name'] ?? '';
+		$recipient_gender = $more_info['other_recipient']['title'] ?? '';
+		$order_insert_data = [
+			'user_id'              => $user_id ?: null,
+			'order_key'            => 'vcl-' . wp_generate_password( 12, false ) . time(),
+			'status'               => sanitize_key( $init_status??'pending' ),
+			'currency'             => '₫',
+			'payment_method'       => sanitize_key( $more_info['payment_method'] ?? 'erp_sync' ),
+			'payment_method_title' => sanitize_text_field( $more_info['payment_method_title'] ?? 'Synced from ERP' ),
+			'customer_ip_address'  => $this->get_ip_address(),
+			'customer_user_agent'  => $_SERVER['HTTP_USER_AGENT'] ?? '',
+			'customer_note'        => sanitize_textarea_field( $more_info['order_note'] ?? '' ),
+			'billing_first_name'   => sanitize_text_field( $customer_info['first_name'] ?? '' ),
+			'billing_last_name'    => sanitize_text_field( $customer_info['last_name'] ?? '' ),
+			'billing_email'        => sanitize_email( $customer_info['email'] ?? '' ),
+			'billing_phone'        => sanitize_text_field( $customer_info['phone_number'] ?? '' ),
+			'shipping_first_name'  => sanitize_text_field( $recipient_gender ?? $customer_info['first_name'] ),
+			'shipping_last_name'   => sanitize_text_field( $recipient_name ?? $customer_info['last_name'] ),
+			'shipping_address_1'   => sanitize_text_field( $shipping_address['street'] ?? '' ),
+			'shipping_city'        => sanitize_text_field( $shipping_address['city_name'] ?? '' ),
+			'shipping_state'       => sanitize_text_field( $shipping_address['ward_name'] ?? '' ),
+			'shipping_phone'       => sanitize_text_field( $recipient_phone ?? $customer_info['phone_number']  ),
+			'date_created'         => $transaction_date,
+			'date_created_gmt'     => $date_gmt,
+			'date_modified'        => $transaction_date,
+			'date_modified_gmt'    => $date_gmt,
+			'total_amount'         => (float) ( $erp_order_data['outstanding_amount'] ?? 0.00 ),
+			'subtotal_amount'      => $subtotal,
+			'shipping_total'       => (float) ( $erp_order_data['total_taxes_and_charges'] ?? 0.00 ),
+			'tax_total'            => 0.00,
+		];
+
+		// 4. Insert into wp_custom_orders table
+		$inserted = $this->wpdb->insert( $this->orders_table, $order_insert_data );
+
+		if ( ! $inserted ) {
+			error_log( 'Failed to insert order from ERP into ' . $this->orders_table . ': ' . $this->wpdb->last_error );
+			return new WP_Error('db_insert_error', 'Could not insert order into the database.');
+		}
+
+		$this->order_id = $this->wpdb->insert_id;
+
+		// 5. Save order items (products) to wp_custom_order_items
+		foreach ( $erp_order_data['items'] as $item ) {
+			$item_code = $item_code = explode('-', $item['item_code'] ?? '')[0];
+			$attrs=[];
+			foreach ($more_info['cart'] as $cart_item) {
+				if ($cart_item['id'] === $item['item_code'] && $cart_item['attributes'] ) {
+					foreach ($cart_item['attributes'] as $attribute_name => $attribute_value) {
+						$attrs[] = '<span>'.$attribute_name . ' : ' . $attribute_value.'</span>';
+					}
+				}
+			}
+			$item_data = [
+				'order_id'        => $this->order_id,
+				'order_item_name' => sanitize_text_field( $item['item_name'] ).($attrs?implode("\n", $attrs):''),
+				'order_item_type' => 'line_item',
+				'product_id'      => sanitize_text_field($item_code),
+				'variation_id'    => sanitize_text_field( $item['item_code'] ),
+				'quantity'        => absint( $item['qty'] ),
+				'unit_price'      => (float) $item['rate'],
+				'line_subtotal'   => (float) $item['amount'],
+				'line_total'      => (float) $item['amount'],
+				'line_tax'        => 0.00,
+			];
+			$this->wpdb->insert( $this->order_items_table, $item_data );
+		}
+
+		// 6. Save discount, coupon, and loyalty as separate order items
+		if ( ! empty( $erp_order_data['coupon_discount_amount'] ) && (float) $erp_order_data['coupon_discount_amount'] > 0 ) {
+			$coupon_code = sanitize_text_field( $more_info['voucher_code'] ?? '' );
+			$this->wpdb->insert( $this->order_items_table, [
+				'order_id'        => $this->order_id,
+				'order_item_name' => sprintf( __( 'Coupon Code: [%s]', LANG_ZONE ), strtoupper($coupon_code) ),
+				'order_item_type' => 'coupon',
+				'line_total'      => -1 * abs( (float) $erp_order_data['coupon_discount_amount'] ),
+			] );
+		}
+
+		if ( ! empty( $erp_order_data['loyalty_amount'] ) && (float) $erp_order_data['loyalty_amount'] > 0 ) {
+			$this->wpdb->insert( $this->order_items_table, [
+				'order_id'        => $this->order_id,
+				'order_item_name' => __( 'Loyalty Points Used', LANG_ZONE ),
+				'order_item_type' => 'loyalty',
+				'line_total'      => -1 * abs( (float) $erp_order_data['loyalty_amount'] ),
+			] );
+		}
+
+		$total_discount_from_erp = isset($erp_order_data['discount_amount']) ? (float) $erp_order_data['discount_amount'] : 0.0;
+		$coupon_discount_applied = isset($erp_order_data['coupon_discount_amount']) ? (float) $erp_order_data['coupon_discount_amount'] : 0.0;
+		if ($total_discount_from_erp > $coupon_discount_applied) {
+			$additional_discount = $total_discount_from_erp - $coupon_discount_applied;
+			if ($additional_discount > 0) {
+				$this->wpdb->insert(
+					$this->order_items_table,
+					[
+						'order_id'        => $this->order_id,
+						'order_item_name' => __( 'Additional Discount', LANG_ZONE ),
+						'order_item_type' => 'discount',
+						'line_total'      => -1 * $additional_discount,
+					]
+				);
+			}
+		}
+		$payoo_config = get_field('payoo_api', 'option');
+
+		if ( !empty($payoo_config) ) {
+			$is_production = !empty($payoo_config['current_use']);
+			$this->order_prefix = !$is_production ? 'sb'.current_time('His'):'';
+		}
+
+
+
+
+		// 7. Save additional meta data from more_info
+		$this->add_or_update_meta( $this->order_id, '_erp_order_code', $this->order_prefix.$erp_order_code );
+		if ( ! empty( $erp_order_data['customer'] ) ) {
+			$this->add_or_update_meta( $this->order_id, '_erp_customer_code', sanitize_text_field( $erp_order_data['customer'] ) );
+		}
+		if ( ! empty( $more_info['shipping_method'] ) ) {
+			$this->add_or_update_meta( $this->order_id, '_shipping_method', $more_info['shipping_method'] );
+		}
+		if ( ! empty( $more_info['shipping_service'] ) ) {
+			$this->add_or_update_meta( $this->order_id, '_shipping_service', $more_info['shipping_service'] );
+		}
+		/*if ( ! empty( $more_info['voucher_code'] ) ) {
+			$this->add_or_update_meta( $this->order_id, '_voucher_code', $more_info['voucher_code'] );
+		}*/
+		if ( ! empty( $shipping_address ) ) {
+			$this->add_or_update_meta( $this->order_id, '_shipping_address_details', $shipping_address );
+		}
+		// Store the full ERP payload for debugging
+		$this->add_or_update_meta( $this->order_id, '_erp_raw_data', $erp_order_data );
+		$this->update_order_meta( $this->order_id, $more_info );
+		return $this->order_id;
 	}
 
 	/**
@@ -707,4 +890,96 @@ class VCL_Order {
 		if (!$order_id) return false;
 		return $this->update_status($order_id, $new_status);
 	}
+	static function get_erp_order_id($erp_name) {
+		global $wpdb;
+		if (empty($erp_name)) {
+			return null;
+		}
+
+		// Define the table name safely within the static method
+		$order_meta_table = $wpdb->prefix . 'custom_order_meta';
+		$erp_name = ($erp_name);
+
+		$order_id = $wpdb->get_var($wpdb->prepare(
+			"SELECT order_id FROM {$order_meta_table}
+			 WHERE meta_key = %s AND meta_value LIKE %s
+			 LIMIT 1",
+			'_erp_order_code', '%'.$erp_name
+		));
+
+		return $order_id ? (int) $order_id : null;
+	}
+
+    /**
+     * Checks if an order can be cancelled based on its current status.
+     *
+     * @param int $order_id The ID of the order.
+     * @return bool True if the order can be cancelled, false otherwise.
+     */
+    public function can_cancel_order( $order_id ) {
+        $order_id = absint( $order_id );
+        if ( ! $order_id ) {
+            return false;
+        }
+
+        $current_status = $this->get_order_status( $order_id );
+
+        // Define statuses that allow cancellation
+        $cancellable_statuses = apply_filters( 'vcl_cancellable_order_statuses', [
+            'pending',
+            'processing',
+            'on-hold',
+	        'pending-payment'
+        ] );
+
+        return in_array( $current_status, $cancellable_statuses, true );
+    }
+
+    /**
+     * Cancels an order if its status allows it.
+     *
+     * @param int    $order_id      The ID of the order to cancel.
+     * @param string $customer_note Optional. The reason provided by the customer for cancellation.
+     * @return bool True on successful cancellation, false otherwise.
+     */
+    public function cancel_order( $order_id, $customer_note = '', $actor_type = 'customer' ) {
+		global $order_statuses;
+        $order_id = absint( $order_id );
+        if ( ! $order_id ) {
+            return false;
+        }
+
+        // First, check if the order can be cancelled
+        if ( ! $this->can_cancel_order( $order_id ) ) {
+            error_log( "VCL_Order::cancel_order - Order ID {$order_id} cannot be cancelled due to its current status." );
+            return false;
+        }
+        $updated = $this->update_status( $order_id, 'cancelled' );
+
+        if ( $updated ) {
+            // Add a note about the cancellation, including the customer's reason if provided
+            $note_content = __('Status changed: ', LANG_ZONE ).'<span class="status-noted">'.$order_statuses['cancelled'].'</span>';
+
+            // Determine who cancelled the order for the note content
+            if ( $actor_type === 'customer' ) {
+                $note_content .=  __( ' by: <b>Customer</b>', LANG_ZONE );
+            } elseif ( $actor_type === 'admin' ) {
+                $note_content .=  __( ' by: <b>Admin</b>', LANG_ZONE );
+            } else {
+                $note_content .=  __( ' by: <b>System</b>', LANG_ZONE ); // Fallback
+            }
+
+            if ( ! empty( $customer_note ) ) {
+                $note_content .= '<br>'.__('Reason: ',LANG_ZONE) . sanitize_textarea_field( $customer_note );
+            }
+            $this->add_order_note( $note_content, true ); // Make note visible to customer
+
+            // TODO: Trigger any necessary actions after cancellation (e.g., stock adjustments, ERP sync)
+            do_action( 'vcl_order_cancelled', $order_id, $customer_note );
+        } else {
+            error_log( "VCL_Order::cancel_order - Failed to update status to 'cancelled' for Order ID {$order_id}." );
+        }
+
+        return $updated;
+    }
 } // End of VCL_Order class

@@ -72,24 +72,20 @@ function is_active_menu($menu_slug){
                             <ul class="account-nav nav flex-column">
                                 <li class="nav-item"><a class="nav-link <?php is_active_menu('orders')  ?>" href="<?php echo addParamToUrl($page_url,'orders')  ?>"><i class="bi bi-receipt"></i> <?php _e('Orders', LANG_ZONE)  ?></a></li>
                                 <li class="nav-item"><a class="nav-link <?php is_active_menu('your-favorite')  ?>" href="<?php echo addParamToUrl($page_url,'your-favorite')  ?>"><i class="bi bi-heart"></i> <?php _e('Favorites',LANG_ZONE)  ?></a></li>
-                                <li class="nav-item"><a class="nav-link <?php is_active_menu('loyalty-member')  ?>" href="<?php echo addParamToUrl($page_url,'loyalty-member')  ?>"><i class="bi bi-box2-heart"></i> <?php _e('Loyalty',LANG_ZONE)  ?></a></li>
-                                <!-- <li class="nav-item">
-                                    <a class="nav-link dropdown-toggle" href="#"  data-bs-toggle="collapse" data-bs-target="#your-favorite" aria-controls="your-favorite" aria-expanded="false" aria-label="Toggle navigation">
-                                        <i class="bi bi-heart"></i>
-                                        Sở thích của bạn</a>
-                                    <ul class="sub-nav collapse" id="your-favorite" >
-                                        <li class="nav-item"><a class="nav-link dropdown-item" href="#">Action</a></li>
-                                        <li class="nav-item"><a class="nav-link dropdown-item" href="#">Another action</a></li>
-                                        <li><a class="nav-link dropdown-item" href="#">Something else here</a></li>
-                                        <li><a class="nav-link dropdown-item" href="#">Separated link</a></li>
+                                <li class="nav-item">
+                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#loyalty" aria-controls="loyalty" aria-expanded="false" aria-label="Toggle navigation"><i class="bi bi-box2-heart"></i> <?php _e('Loyalty',LANG_ZONE)  ?></a>
+                                    <ul class="sub-nav collapse show" id="loyalty" >
+                                        <li class="nav-item <?php is_active_menu('loyalty-member')  ?>"><a class="nav-link <?php is_active_menu('loyalty-member')  ?>" href="<?php echo addParamToUrl($page_url,'loyalty-member')  ?>"><i class="bi bi-box2-heart"></i> <?php _e('My rank',LANG_ZONE)  ?></a></li>
+                                        <li class="nav-item <?php is_active_menu('loyalty-gift')  ?>"><a class="nav-link dropdown-item <?php is_active_menu('loyalty-gift')  ?>" href="<?php echo addParamToUrl($page_url,'loyalty-gift')  ?>"><i class="bi bi-gift"></i> <?php _e('Loyalty gift',LANG_ZONE)  ?></a></li>
                                     </ul>
-                                </li> -->
+                                </li>
                                 <li class="nav-item">
                                     
                                     <a class="nav-link dropdown-toggle"  data-bs-toggle="collapse" data-bs-target="#my-account" aria-controls="my-account" aria-expanded="false" aria-label="Toggle navigation">
                                         <i class="bi bi-person-vcard"></i> <?php _e('My profile', LANG_ZONE)  ?></a>
                                     <ul class="sub-nav collapse show" id="my-account" >
                                         <li class="nav-item <?php is_active_menu('edit-profile')  ?>"><a class="nav-link <?php is_active_menu('edit-profile')  ?>" href="<?php echo addParamToUrl($page_url,'edit-profile')  ?>"><?php _e('My profile',LANG_ZONE);  ?></a></li>
+                                        <li class="nav-item <?php is_active_menu('change-password')  ?>"><a class="nav-link <?php is_active_menu('change-password')  ?>" href="<?php echo addParamToUrl($page_url,'change-password')  ?>"><?php _e('Change password',LANG_ZONE);  ?></a></li>
                                         <li class="nav-item <?php is_active_menu('address')  ?>"><a class="nav-link <?php is_active_menu('address')  ?>" href="<?php echo addParamToUrl($page_url,'address')  ?>"><?php _e('Address book',LANG_ZONE);  ?></a></li>
                                     </ul>
                                 </li>

@@ -15,10 +15,15 @@ $query = new WP_Query($args);
 <div class="container">
     <div class="section-header">
         <h3 class="title"><?php echo the_title() ?></h3>
+        <div class="brand_search">
+            <input id="quickSearch_brand_input" class="form-control" type="text" placeholder="<?php _e('Quick search...', LANG_ZONE)  ?>">
+            <div id="quickSearch_brand_results"></div>
+        </div>
     </div>
     <div class="bg-white p-3">
         <div class="post-content "><?php the_content();  ?></div>
         <div class="brands-listing-wrapper">
+
             <div class="brands-listing">
                 <?php if ($query->have_posts()) : while ($query->have_posts()) : $query->the_post(); ?>
                     <div class="brand-item">

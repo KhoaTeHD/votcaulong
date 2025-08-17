@@ -1,4 +1,29 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
+if ( is_admin() ) {
+	require_once get_template_directory() . '/backend/ajax-admin.php';
+}
+// Include the orders list table class
+require_once get_template_directory() . '/backend/orders-list.php';
+
+/**
+ * Add Orders menu page.
+ */
+function vcl_add_orders_admin_menu() {
+    add_menu_page(
+        __( 'Orders', LANG_ZONE ),
+        __( 'Orders', LANG_ZONE ),
+        'manage_options', // Capability
+        'vcl-orders',     // Menu slug
+        'vcl_render_orders_admin_page', // Function to display the page
+        'dashicons-cart', // Icon
+        25                // Position
+    );
+}
+add_action( 'admin_menu', 'vcl_add_orders_admin_menu' );
+
 function my_admin_title ( $admin_title, $title ) {
 	// $all_brands = get_all_brands();
 	return $title . ' ‹ ' . get_bloginfo( 'name' ) . ' — ' . 'Admin';
@@ -31,28 +56,20 @@ add_action('admin_enqueue_scripts', function($hook) {
 		wp_enqueue_script('my-erp-sync', get_template_directory_uri().'/backend/erp_store_system.js', ['jquery'], THEME_VER, true);
 	}
 });
-add_filter('manage_store_system_posts_columns', function($columns){
-	// Thêm cột thumbnail sau checkbox
-	$columns = array_slice($columns, 0, 1, true) +
-	           ['thumbnail' => 'Thumbnail'] +
-	           array_slice($columns, 1, null, true);
 
-	// Thêm cột meta
-	$columns['store_phone'] = 'Số điện thoại';
-	$columns['store_address'] = 'Địa chỉ';
-	return $columns;
+add_action('manage_posts_extra_tablenav', function($which) {
+    if ('top' === $which && isset($_GET['post_type']) && $_GET['post_type'] === 'store_system') {
+        echo '<div class="alignleft actions">';
+        echo '<button type="button" id="sync-stores-button" class="button button-primary">' . __('Sync with ERP', LANG_ZONE) . '</button>';
+        echo '</div>';
+    }
 });
 
+
+
+
 add_action('manage_store_system_posts_custom_column', function($column, $post_id){
-	if ($column === 'thumbnail') {
-		echo get_the_post_thumbnail($post_id, [60, 60]);
-	}
-	if ($column === 'store_phone') {
-		echo esc_html(get_post_meta($post_id, 'store_phone', true));
-	}
-	if ($column === 'store_address') {
-		echo esc_html(get_post_meta($post_id, 'store_address', true));
-	}
+
 }, 10, 2);
 //--------------
 add_action('admin_enqueue_scripts', function($hook) {
@@ -62,6 +79,14 @@ add_action('admin_enqueue_scripts', function($hook) {
 	) {
 		wp_enqueue_script('my-erp-sync', get_template_directory_uri().'/backend/erp_brands.js', ['jquery'], THEME_VER, true);
 	}
+});
+
+add_action('manage_posts_extra_tablenav', function($which) {
+    if ('top' === $which && isset($_GET['post_type']) && $_GET['post_type'] === 'brands') {
+        echo '<div class="alignleft actions">';
+        echo '<button type="button" id="sync-brands-button" class="button button-primary">' . __('Sync with ERP', LANG_ZONE) . '</button>';
+        echo '</div>';
+    }
 });
 add_filter('manage_brands_posts_columns', function($columns){
 	// Thêm cột thumbnail sau checkbox
@@ -146,3 +171,85 @@ add_action('admin_notices', function() {
 });
 
 
+
+// --- Payoo Debug Log Viewer ---
+
+/**
+ * Adds the Payoo Debug Log page to the admin menu.
+ * The page will be added under the main VCL theme options page if it exists,
+ * otherwise it will be added under the "Tools" menu.
+ */
+function vcl_add_payoo_log_page() {
+    // Check if the main theme options page slug exists.
+    // This slug 'vcl-theme-options' is a placeholder. 
+    // You might need to replace it with your actual main menu page slug.
+    global $admin_page_hooks;
+    $parent_slug = 'vcl-theme-options'; // <--- CHANGE THIS if your main menu slug is different
+
+    if ( ! isset( $admin_page_hooks[ $parent_slug ] ) ) {
+        $parent_slug = 'tools.php'; // Fallback to Tools menu
+    }
+
+    add_submenu_page(
+        $parent_slug,
+        __( 'Payoo Debug Log', 'vcl' ),
+        __( 'Payoo Debug Log', 'vcl' ),
+        'manage_options',
+        'vcl-payoo-log',
+        'vcl_render_payoo_log_page'
+    );
+}
+add_action( 'admin_menu', 'vcl_add_payoo_log_page' );
+
+/**
+ * Renders the content for the Payoo Debug Log page.
+ * Displays the log content and provides a button to clear it.
+ */
+function vcl_render_payoo_log_page() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_die( __( 'You do not have sufficient permissions to access this page.', 'vcl' ) );
+    }
+
+    $upload_dir = wp_upload_dir();
+    $log_file = $upload_dir['basedir'] . '/payoo-debug.log';
+
+    // Handle clearing the log file
+    if ( isset( $_POST['vcl_clear_payoo_log'] ) && isset( $_POST['_wpnonce'] ) ) {
+        if ( wp_verify_nonce( $_POST['_wpnonce'], 'vcl_clear_payoo_log_nonce' ) ) {
+            if ( file_exists( $log_file ) ) {
+                file_put_contents( $log_file, '' );
+                echo '<div class="notice notice-success is-dismissible"><p>' . __( 'Payoo debug log has been cleared.', 'vcl' ) . '</p></div>';
+            } else {
+                echo '<div class="notice notice-warning is-dismissible"><p>' . __( 'Log file does not exist, nothing to clear.', 'vcl' ) . '</p></div>';
+            }
+        } else {
+            echo '<div class="notice notice-error is-dismissible"><p>' . __( 'Security check failed. Please try again.', 'vcl' ) . '</p></div>';
+        }
+    }
+
+    $log_content = '';
+    if ( file_exists( $log_file ) ) {
+        $log_content = file_get_contents( $log_file );
+        if ( empty( $log_content ) ) {
+            $log_content = __( 'Log file is empty.', 'vcl' );
+        }
+    } else {
+        $log_content = __( 'Log file does not exist. Enable debug logging in the Payoo API settings and perform a transaction to create it.', 'vcl' );
+    }
+    ?>
+    <div class="wrap">
+        <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+        <p><?php _e( 'This page displays the latest entries from the Payoo payment gateway debug log.', 'vcl' ); ?></p>
+        
+        <div id="log-viewer" style="background: #fff; border: 1px solid #ccd0d4; padding: 10px; max-height: 600px; overflow-y: scroll; white-space: pre-wrap; font-family: monospace; margin-bottom: 20px;">
+            <?php echo esc_textarea( $log_content ); ?>
+        </div>
+
+        <form method="post">
+            <?php wp_nonce_field( 'vcl_clear_payoo_log_nonce' ); ?>
+            <input type="hidden" name="vcl_clear_payoo_log" value="1">
+            <?php submit_button( __( 'Clear Log', 'vcl' ), 'delete' ); ?>
+        </form>
+    </div>
+    <?php
+}

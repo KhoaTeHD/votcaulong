@@ -1,14 +1,15 @@
 <?php global $product_info;
 if (isset($args['product']) && is_object($args['product'])){
 	$product = $args['product'];
-}elseif (is_array($args['product_data'])){
+}elseif (isset($args['product_data']) && is_array($args['product_data'])){
 //	$product = get_product($product_info['item_code'],0,false);
 	$product = new Product($args['product_data']);
-//    my_debug($product);
-}else{
-	$product = new Product($product_info);
-}
 
+}elseif(isset($product_info)){
+	$product = new Product($product_info);
+}else{
+    return false;
+}
 $compare_list = $args['compare_list']??false;
 $rand_num = rand(1,8);
 $noimg = IMG_URL.'san-pham/product_'.$rand_num.'.jpg';
@@ -16,7 +17,6 @@ $item_class = '';
 if (isset($args['class'])){
 	$item_class = $args['class'];
 }
-
 ?>
 <div class="product-item product-data flex-column <?php echo $item_class  ?>" <?php echo $product->itemMetaData()  ?>>
 	<div class="item-content flex-grow-1">
@@ -76,10 +76,18 @@ if (isset($args['class'])){
         <?php } ?>
 	</div>
 	<div class="buttons">
-	<?php if ($product->hasVariations()) { 	?>
-					<a href="<?php $product->theURL(); ?>" role="button" class="btn btn-sm btn-secondary">Chọn mua</a>
-				<?php } else {	?>
-		<button class="btn btn-sm btn-secondary addCart" >Chọn mua</button>
+	<?php
+	if ($product->list_item_stock()){
+		$addCartClass = 'addCart';
+		$btn_text = __('Buy now', LANG_ZONE);
+	}else{
+		$addCartClass = 'OutStock';
+		$btn_text = __('Out of stock', LANG_ZONE);
+	}
+    if ($product->hasVariations()) { 	?>
+					<a href="<?php $product->theURL(); ?>" role="button" class="btn btn-sm btn-secondary <?php echo $addCartClass!='addCart'?$addCartClass:''  ?>"><?php echo $btn_text  ?></a>
+    <?php } else {            ?>
+		        <button class="btn btn-sm btn-secondary <?php echo $addCartClass  ?>" ><?php echo $btn_text  ?></button>
 		<?php } ?>
         <div class="text-end">
             <div class="qty-sold text-black-50"><?php echo $product->getSold()  ?></div>

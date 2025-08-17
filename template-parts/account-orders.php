@@ -26,20 +26,29 @@ if ( ! empty( $view_order_id ) && is_numeric( $view_order_id ) ) :
 		$order_data = $vcl_order->get_order( $order_id_to_view );
 		$order_items = $vcl_order->get_order_items( $order_id_to_view );
 		$erp_order_code = $vcl_order->get_order_meta($order_id_to_view,'_erp_order_code');
-
+        $order_discounts = $vcl_order->get_order_discounts( $order_id_to_view );
 		// Security Check
+
 		if ( ! $order_data || $order_data->user_id != $current_user_id ) {
 			echo '<p>' . esc_html__( 'Invalid order or you do not have permission to view this order.', LANG_ZONE ) . '</p>';
 		} else {
 			$make_payment_btn = '';
 			if ($order_data->status == 'pending-payment') {
-				$make_payment_btn = '<button data-orderid="'.$order_id_to_view.'" class="btn btn-danger btn-sm text-white order-make-payment" >' . esc_html__('Make payment', LANG_ZONE) . '</button>';
+				$make_payment_btn = '<button data-orderid="'.$order_id_to_view.'" class="btn btn-secondary btn-sm  order-make-payment" >' . esc_html__('Make payment', LANG_ZONE) . '</button>';
 			}
+
 			?>
             <h5 class="title" data-name="<?php echo esc_attr($erp_order_code); ?>">
 				<?php printf( esc_html__( 'Order Details #%s', LANG_ZONE ), $erp_order_code ? $erp_order_code : $order_data->order_id ); ?>
             </h5>
-            <p><?php printf( esc_html__( 'Order date: %s', LANG_ZONE ), date_i18n( get_option( 'date_format' ), strtotime( $order_data->date_created ) ) ); ?></p>
+            <div class="d-flex justify-content-between align-items-center">
+                <p><?php printf( esc_html__( 'Order date: %s', LANG_ZONE ), date_i18n( get_option( 'date_format' ), strtotime( $order_data->date_created ) ) ); ?></p>
+                <?php
+                if ($vcl_order->can_cancel_order($order_id_to_view) ) {
+                    echo '<button data-orderid="'.$order_id_to_view.'" class="btn btn-danger btn-sm text-white order-make-cancel">' . esc_html__( 'Cancel Order', LANG_ZONE ) . '</button>';
+                }
+                ?>
+            </div>
             <p><?php printf( '<b>' . esc_html__('Status:', LANG_ZONE) . '</b> %s', $order_statuses[$order_data->status] ); ?> <?php echo $make_payment_btn;?></p>
             <p><?php printf( '<b>' . esc_html__('Payment method:', LANG_ZONE) . '</b> %s', esc_html($order_data->payment_method_title) ); ?></p>
 			<?php
@@ -47,9 +56,13 @@ if ( ! empty( $view_order_id ) && is_numeric( $view_order_id ) ) :
 			$shipping_method = $vcl_order->get_order_meta($order_id_to_view, '_shipping_method', true);
 			if ( isset($shipping_method) && $shipping_method === 'pickup' ) {
 				$pickup_store_id = $vcl_order->get_order_meta($order_id_to_view, '_pickup_store_id', true);
-				$pickup_store = get_store_by_id($pickup_store_id);
-				$pickup_store_address = $pickup_store['address'] ?? '';
-				$pickup_store_name = $pickup_store['name'] ?? '';
+				if ($pickup_store_id) {
+					$pickup_store         = get_store_by_id( $pickup_store_id );
+					$pickup_store_address = $pickup_store['address'] ?? '';
+					$pickup_store_name    = $pickup_store['name'] ?? '';
+				}else{
+					$pickup_store_name='';
+				}
 				if ( !empty($pickup_store_name) ) {
 					echo '<p><strong>' . esc_html__( 'Delivery method:', LANG_ZONE ) . '</strong> ' . esc_html__( 'Pick up at store', LANG_ZONE ) . '</p>';
 					echo '<p><strong>' . esc_html__( 'Store:', LANG_ZONE ) . '</strong> ' . esc_html($pickup_store_name);
@@ -86,21 +99,24 @@ if ( ! empty( $view_order_id ) && is_numeric( $view_order_id ) ) :
                             <thead>
                             <tr>
                                 <th class="product-name"><?php esc_html_e( 'Product', LANG_ZONE ); ?></th>
+                                <th class="product-qty"><?php esc_html_e( 'Quantity', LANG_ZONE ); ?></th>
                                 <th class="product-total text-end"><?php esc_html_e( 'Total', LANG_ZONE ); ?></th>
                             </tr>
                             </thead>
                             <tbody>
 							<?php if ( ! empty( $order_items ) ) : ?>
-								<?php foreach ( $order_items as $item ) :
+								<?php
+                                foreach ( $order_items as $item ) :
 									$item_name = $item->order_item_name;
 									$product_sku = $item->product_id;
-									$product_link = '#';
+									$product_link = ProductUrlGenerator::createProductUrl($item->order_item_name, $product_sku);
 									?>
                                     <tr>
                                         <td class="product-name">
-                                            <a href="<?php echo esc_url($product_link); ?>"><?php echo esc_html($item_name); ?></a>
-                                            <strong class="product-quantity">&times;&nbsp;<?php echo esc_html($item->quantity); ?></strong>
+                                            <a href="<?php echo esc_url($product_link); ?>"><?php echo (($item_name)); ?></a>
+
                                         </td>
+                                        <td class="product-quantity"><?php echo esc_html($item->quantity); ?></td>
                                         <td class="product-total text-end">
 											<?php
 											if ( function_exists('priceFormater') ) {
@@ -119,31 +135,37 @@ if ( ! empty( $view_order_id ) && is_numeric( $view_order_id ) ) :
                             <tfoot>
 							<?php if ( isset($order_data->subtotal_amount) ) { ?>
                                 <tr>
-                                    <th scope="row"><?php esc_html_e( 'Subtotal:', LANG_ZONE ); ?></th>
+                                    <th scope="row" colspan="2"><?php esc_html_e( 'Subtotal:', LANG_ZONE ); ?></th>
                                     <td class="text-end"><?php echo function_exists('priceFormater') ? priceFormater( $order_data->subtotal_amount ) : number_format( $order_data->subtotal_amount ); ?></td>
                                 </tr>
 							<?php }
+                            if ($order_discounts){
+                                foreach ($order_discounts as $order_discount){
+                                ?>
+                                <tr class="discount-line">
+                                    <td colspan="2"><?php  esc_html_e($order_discount->order_item_name) ?></td>
+                                    <td class="text-end"><?php echo function_exists('priceFormater') ? priceFormater( $order_discount->line_total ) : number_format( $order_discount->line_total ); ?></td>
+                                </tr>
+
+                                <?php
+                                }
+                            }
 							if ( isset($order_data->shipping_total) && $order_data->shipping_total > 0 ) { ?>
                                 <tr>
-                                    <th scope="row"><?php esc_html_e( 'Shipping fee:', LANG_ZONE ); ?></th>
+                                    <th scope="row" colspan="2"><?php esc_html_e( 'Shipping fee:', LANG_ZONE ); ?></th>
                                     <td class="text-end"><?php echo function_exists('priceFormater') ? priceFormater( $order_data->shipping_total, $order_data->currency ) : number_format( $order_data->shipping_total ); ?></td>
                                 </tr>
 							<?php }
 							$voucher_code = $vcl_order->get_order_meta($order_id_to_view, '_voucher_code', true);
-							if ( !empty($voucher_code) ) { ?>
-                                <tr>
-                                    <th scope="row"><?php esc_html_e( 'Discount (Voucher):', LANG_ZONE ); ?></th>
-                                    <td class="text-end"><?php echo esc_html($voucher_code); ?></td>
-                                </tr>
-							<?php }
+
 							if ( isset($order_data->tax_total) && $order_data->tax_total > 0 ) { ?>
                                 <tr>
-                                    <th scope="row"><?php esc_html_e( 'Tax:', LANG_ZONE ); ?></th>
+                                    <th scope="row" colspan="2"><?php esc_html_e( 'Tax:', LANG_ZONE ); ?></th>
                                     <td class="text-end"><?php echo function_exists('priceFormater') ? priceFormater( $order_data->tax_total ) : number_format( $order_data->tax_total ); ?></td>
                                 </tr>
 							<?php } ?>
                             <tr>
-                                <th scope="row"><?php esc_html_e( 'Grand Total:', LANG_ZONE ); ?></th>
+                                <th scope="row" colspan="2"><?php esc_html_e( 'Grand Total:', LANG_ZONE ); ?></th>
                                 <td class="text-end text-danger fw-bold"><?php echo function_exists('priceFormater') ? priceFormater( $order_data->total_amount ) : number_format( $order_data->total_amount ); ?></td>
                             </tr>
                             </tfoot>
@@ -192,6 +214,30 @@ if ( ! empty( $view_order_id ) && is_numeric( $view_order_id ) ) :
 					<?php endif; ?>
                 </section>
             </div> <!-- .order-details-wrapper -->
+
+<!-- Cancel Order Modal -->
+<div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelOrderModalLabel"><?php esc_html_e( 'Cancel Order', LANG_ZONE ); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><?php esc_html_e( 'Please provide a reason for cancelling your order:', LANG_ZONE ); ?></p>
+                <div class="mb-3">
+                    <label for="cancel-reason" class="form-label visually-hidden"><?php esc_html_e( 'Cancellation Reason', LANG_ZONE ); ?></label>
+                    <textarea class="form-control" id="cancel-reason" rows="4" placeholder="<?php esc_attr_e( 'Enter your reason here...', LANG_ZONE ); ?>" required></textarea>
+                    <div class="invalid-feedback" id="cancel-reason-feedback"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php esc_html_e( 'Close', LANG_ZONE ); ?></button>
+                <button type="button" class="btn btn-danger" id="confirmCancelOrderBtn"><?php esc_html_e( 'Confirm Cancellation', LANG_ZONE ); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
 			<?php
 		}
 	} else {
@@ -205,12 +251,42 @@ else :
 	$base_order_tab_url = function_exists('addParamToUrl') ? addParamToUrl($page_url, 'orders') : home_url('/account-tab.orders');
 	?>
     <h5 class="title"><?php esc_html_e('Your orders', LANG_ZONE); ?></h5>
-    <p><?php esc_html_e('Manage your orders', LANG_ZONE); ?></p>
+
+    <?php
+    // Get current status filter from URL
+    $current_status_filter = isset($_GET['status']) ? sanitize_key($_GET['status']) : 'all';
+
+    // Define order statuses to display in filter (you might want to customize this list)
+    $filter_statuses = [
+        'all'             => __('All', LANG_ZONE),
+    ];
+    $filter_statuses = array_merge($filter_statuses,$order_statuses);
+
+    // Get base URL for filters
+    $base_filter_url = remove_query_arg('status', $base_order_tab_url);
+    ?>
+
+    <div class="order-status-filter mb-4">
+        <ul class="nav nav-pills nav-fill">
+            <?php foreach ($filter_statuses as $status_key => $status_label) : ?>
+                <?php
+                $filter_url = ($status_key === 'all') ? $base_filter_url : add_query_arg('status', $status_key, $base_filter_url);
+                $is_active = ($status_key === $current_status_filter) ? 'active' : '';
+                ?>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo esc_attr($is_active); ?>" href="<?php echo esc_url($filter_url); ?>">
+                        <?php echo esc_html($status_label); ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
     <div class="account-orders grid">
 		<?php
 		if ( class_exists('Customer') ) {
 			$customer = get_current_customer();
-			$customer_orders = $customer->get_orders();
+			$customer_orders = $customer->get_orders( -1, 0, 'date_created', 'DESC', $current_status_filter );
 
 			if ( $customer_orders ) :
 				?>
@@ -271,8 +347,9 @@ else :
 					<?php
 					$shop_page_url = function_exists('vcl_get_shop_page') ? vcl_get_shop_page() : home_url( '/shop/' );
 					?>
-                    <a class="vcl-Button button" href="<?php echo esc_url( $shop_page_url ); ?>"><?php esc_html_e('Go to shop', LANG_ZONE); ?></a>
-					<?php esc_html_e('No orders have been made yet.', LANG_ZONE); ?>
+                    <p><?php esc_html_e('No orders have been made yet.', LANG_ZONE); ?></p>
+                    <a class="vcl-Button button btn btn-outline-primary" href="<?php echo esc_url( $shop_page_url ); ?>"><?php esc_html_e('Go to shop', LANG_ZONE); ?></a>
+
                 </div>
 			<?php
 			endif;

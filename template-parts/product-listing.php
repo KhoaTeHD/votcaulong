@@ -3,7 +3,7 @@ if (isset($args['products'])){
 	$products = $args['products'];
 	$filters = $args['filters'];
 	$total_pages = $args['total_pages'];
-	$current_page = $args['current_page'];
+	$current_page = $args['current_page']??1;
 }
  if (!$products){
 	            _e('Updating...', LANG_ZONE);
@@ -87,11 +87,7 @@ if (isset($args['products'])){
                         <div class="filter-with-image-body">
                             <ul>
                                 <?php foreach ($filters['attributes']['play_style'] as $play_style) {
-	                                if(FAKE_DATA){
-		                                $value = sanitize_title($play_style);
-	                                }else{
-		                                $value = ($play_style);
-	                                }
+                                    $value = ($play_style);
 	                                $item_id = 'attr_play_style';
                                     ?>
                                 <li class="filter-with-image-item">
@@ -103,11 +99,7 @@ if (isset($args['products'])){
                                 </li>
                                 <?php }  ?>
 	                            <?php foreach ($filters['attributes']['play_mode'] as $play_mode) {
-		                            if(FAKE_DATA){
-			                            $value = sanitize_title($play_mode);
-		                            }else{
-			                            $value = ($play_mode);
-		                            }
+                                    $value = ($play_mode);
 		                            $item_id = 'attr_play_mode';
 		                            ?>
                                     <li class="filter-with-image-item">
@@ -140,7 +132,7 @@ if (isset($args['products'])){
                             </div>
                             <div class="product-pagination-small">
                                 <button class="btn page-prev-btn"><i class="bi bi-chevron-left"></i></button>
-                                <span class="page-numbers" data-current-page="<?php echo $current_page  ?>" data-total-pages="<?php echo $total_pages??'1';  ?>"><?php echo $current_page  ?>/<?php echo $total_pages??'1';  ?></span>
+                                <span class="page-numbers" data-paged-var="<?php echo (is_page()?'paged':'page');  ?>" data-current-page="<?php echo $current_page  ?>" data-total-pages="<?php echo $total_pages??'1';  ?>"><?php echo $current_page  ?>/<?php echo $total_pages??'1';  ?></span>
                                 <button class="btn page-next-btn"><i class="bi bi-chevron-right"></i></button>
                             </div>
                             <button class="btn btn-outline-secondary btn-sm d-md-none mb-sortby-btn" type="button" id="mb-sortby-btn">
@@ -158,7 +150,13 @@ if (isset($args['products'])){
 
                         </div>
                         <div id="pagination_wrapper">
-                            <?php echo render_pagination($current_page, $total_pages, 2); ?>
+                            <?php
+                            if (is_page()){
+	                            echo render_pagination($current_page, $total_pages, 2,'?paged=');
+                            }else{
+	                            echo render_pagination($current_page, $total_pages, 2);
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>

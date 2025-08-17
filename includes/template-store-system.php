@@ -107,6 +107,7 @@ function display_store_image_list() {
  * - 'content' (string): Store post content
  */
 function get_store_by_id(int $store_id): ?array {
+    if (!$store_id) return null;
     $post = get_post($store_id);
     
     if (!$post || $post->post_type !== 'store_system') {

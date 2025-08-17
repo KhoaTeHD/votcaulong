@@ -47,9 +47,9 @@ $has_search = ( $args['has_search'] ?? '' );
                         }
 	                    if ($value=='') continue;
                         $item_id = $field_name.'_'.$value;
-                        if(FAKE_DATA){
-	                        $value = sanitize_title($value);
-                        }
+//                        if(FAKE_DATA){
+//	                        $value = sanitize_title($value);
+//                        }
                         ?>
                         <li <?php echo ($has_search ?'class="filter-item"': '') ?>>
                             <input type="checkbox" name="<?php echo $field_name ?>" id="<?php echo $item_id  ?>" value="<?php echo $value  ?>" class="filter-checkbox">

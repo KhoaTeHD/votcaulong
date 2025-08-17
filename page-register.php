@@ -36,19 +36,20 @@ $login_content = get_field('login_content');
                         <div id="login-frm-wrapper" class="frm-effect">
                             <h5 class="form-title"><?php _e('Login',LANG_ZONE)  ?></h5>
                             <form id="frm-login" action="" class="">
-                                <input class="form-control my-4" type="text" name="email_phone_number" placeholder="<?php _e('Enter phone number/Email',LANG_ZONE)  ?>" aria-label="">
+                                <input class="form-control my-4" type="text" name="email_phone_number" placeholder="<?php _e('Enter phone number/Email',LANG_ZONE)  ?>" aria-label="" tabindex="1">
                                 <div class="input-group2 custom-input-group">
-                                    <input class="form-control password-input" type="password" name="password" placeholder="<?php _e('Password',LANG_ZONE)  ?>" aria-label="">
+                                    <input class="form-control password-input" type="password" name="password" placeholder="<?php _e('Password',LANG_ZONE)  ?>" aria-label="" tabindex="2">
                                     <span class="input-group-text togglePassword"><i class="bi bi-eye-slash" role="button"></i></span>
                                 </div>
-                                <p class="text-end my-3"><a href="#"><?php _e('Forgot password ?',LANG_ZONE)  ?></a></p>
-                                <button class="btn btn-primary text-uppercase w-100" type="submit"><span class="spinner-border spinner-border-sm" style="display: none;" aria-hidden="true"></span> <?php _e('Login',LANG_ZONE)  ?></button>
+                                <p class="text-end my-3"><a href="#" id="forgot-password-link" data-bs-toggle="modal" tabindex="4" data-bs-target="#forgotPasswordModal"><?php _e('Forgot password ?',LANG_ZONE)  ?></a></p>
+                                <button class="btn btn-primary text-uppercase w-100" type="submit" tabindex="3"><span class="spinner-border spinner-border-sm" style="display: none;" aria-hidden="true"></span> <?php _e('Login',LANG_ZONE)  ?></button>
                             </form>
-                            <p class="text-center my-3"><?php _e("Don't have an account ?",LANG_ZONE)  ?> <a href="#" class="formToggle-btn"><?php _e('Register',LANG_ZONE)  ?></a></p>
+                            <p class="text-center my-3"><?php _e("Don't have an account ?",LANG_ZONE)  ?> <a href="#" class="formToggle-btn" tabindex="5"><?php _e('Register',LANG_ZONE)  ?></a></p>
                         </div>
                         <div id="register-frm-wrapper" class="frm-effect" style="display: none;">
                             <h5 class="form-title"><?php _e('Register',LANG_ZONE)  ?></h5>
                             <form id="frm-register" action="" class="">
+                                <input class="form-control my-4" type="text" name="register_fullname" placeholder="<?php _e('Your full name',LANG_ZONE)  ?>" aria-label="">
                                 <input class="form-control my-4" type="text" name="email_phone_number" placeholder="<?php _e('Enter phone number/Email',LANG_ZONE)  ?>" aria-label="">
                                 <div class="input-group2 custom-input-group my-4">
                                     <input class="form-control password-input" type="password" name="password" placeholder="<?php _e('Password',LANG_ZONE)  ?>" aria-label="">
@@ -86,6 +87,27 @@ $login_content = get_field('login_content');
             </div>
         </div>
 	</div>
+</div>
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel"><?php _e('Forgot Password', LANG_ZONE) ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="frm-forgot-password">
+                <div class="modal-body">
+                    <p><?php _e('Enter your email address or phone number to reset your password.', LANG_ZONE) ?></p>
+                    <input type="text" class="form-control" name="user_login" placeholder="<?php _e('Email or Phone Number', LANG_ZONE) ?>" required>
+                    <div class="alert alert-danger mt-3 d-none" id="forgot-password-error" role="alert"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php _e('Cancel', LANG_ZONE) ?></button>
+                    <button type="submit" class="btn btn-primary" id="btn-reset-password"><?php _e('Reset Password', LANG_ZONE) ?></button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <div class="toast-container position-fixed top-50 start-50 translate-middle p-3">
     <div id="form-noti" class="toast " role="alert" aria-live="assertive" aria-atomic="true">

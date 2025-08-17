@@ -7,6 +7,8 @@
 //my_debug($cate_list);
 
 ?>
+    <hr>
+    <button class="button button-primary" id="sync_with_erp"><?php _e('Sync with ERP', LANG_ZONE)  ?></button>
 <table id="proCate-list" class="display" style="width:100%">
     <thead>
     <tr>
@@ -30,7 +32,6 @@
 
         let table_proCate;
 
-        // Loại bỏ hàm loadProCateTable() bên ngoài, DataTables tự xử lý việc load dữ liệu
         // Khởi tạo DataTables trực tiếp khi DOM sẵn sàng
         table_proCate = $('#proCate-list').DataTable({
             "paging": true,
@@ -82,7 +83,7 @@
                 {
                     "data": null,
                     "render": function (data, type, row) {
-                        return '<button type="button" class="btn button-primary edit-cate-btn" data-procate-data=\'' + JSON.stringify(row) + '\'><?php _e('Edit', LANG_ZONE) ?></button>';
+                        return '<button type="button" class="btn button-primary edit-cate-btn" data-procate-data=\'' + JSON.stringify(row) + '\' ?><?php _e('Edit', LANG_ZONE) ?></button>';
                     }
                 }
             ],
@@ -90,6 +91,37 @@
                 { "orderable": false, "targets": [5, 6] } // Tắt sắp xếp cho cột Thumbnail và Action
             ]
         });
+
+
+        $('#sync_with_erp').on('click', function(e) {
+            e.preventDefault();
+            $(this).prop('disabled', true).text('<?php _e('Syncing...', LANG_ZONE) ?>');
+
+            $.ajax({
+                url: MyVars.ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'sync_pro_cate_from_erp',
+                    nonce: MyVars.nonce
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert('<?php _e('Synchronization successful!', LANG_ZONE) ?>');
+                        table_proCate.ajax.reload(); // Reload DataTables to show updated data
+                    } else {
+                        alert('<?php _e('Synchronization failed:', LANG_ZONE) ?> ' + response.data);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('<?php _e('AJAX Error during sync:', LANG_ZONE) ?> ' + error);
+                    console.error(xhr.responseText);
+                },
+                complete: function() {
+                    $('#sync_with_erp').prop('disabled', false).text('<?php _e('Sync with ERP', LANG_ZONE) ?>');
+                }
+            });
+        });
+            
 
 
         $(document).on('click', '.close-modal, #close-modal', function () {
@@ -113,8 +145,41 @@
                 $('#modal-cate-name').text(cate_name_for_display); // Hiển thị tên trong modal
                 tinymce.get('cate_content_editor').setContent(cate_data.description);
                 $('#edit-cate-modal').find('img.preview-img').attr('src',cate_data.thumbnail_url);
+                $('#procate-thumbnail-id').val(cate_data.pro_cate_thumbnail_id); // Set hidden ID
                 $('#edit-cate-modal').data('cate-id', cateID).fadeIn();
             }
+        });
+
+        // WordPress Media Uploader
+        let mediaUploader;
+        $('#select-media-button').on('click', function(e) {
+            e.preventDefault();
+            // If the uploader object has already been created, reopen the dialog
+            if (mediaUploader) {
+                mediaUploader.open();
+                return;
+            }
+            // Extend the wp.media object
+            mediaUploader = wp.media({
+                title: '<?php _e('Select Category Image', LANG_ZONE) ?>',
+                button: {
+                    text: '<?php _e('Use this image', LANG_ZONE) ?>'
+                },
+                multiple: false // Set to true to allow multiple files to be selected
+            });
+
+            // When a file is selected, grab the URL and set it as the text field's value
+            mediaUploader.on('select', function() {
+                let attachment = mediaUploader.state().get('selection').first().toJSON();
+                $('.cate-thumbnail-box').data('old-thumb',$('img.preview-img').attr('src'));
+                $('img.preview-img').attr('src', attachment.url);
+                $('#procate-thumbnail-id').val(attachment.id); // Store attachment ID
+                $('#procate-input').val(''); // Clear file input if media is selected
+                $('.clear-thumb').show();
+            });
+
+            // Open the uploader dialog
+            mediaUploader.open();
         });
 
         $('#procate-input').change(function(e) {
@@ -124,6 +189,7 @@
             reader.onload = function(e) {
                 $('.cate-thumbnail-box').data('old-thumb',$('img.preview-img').attr('src'));
                 $('img.preview-img').attr('src', e.target.result);
+                $('#procate-thumbnail-id').val(''); // Clear hidden ID if new file is uploaded
                 $('.clear-thumb').show();
             }
 
@@ -134,6 +200,7 @@
             e.preventDefault();
             $('img.preview-img').attr('src', $('.cate-thumbnail-box').data('old-thumb'));
             $('#procate-input').val('');
+            $('#procate-thumbnail-id').val(''); // Clear hidden ID
             $(this).hide();
         });
 
@@ -143,6 +210,7 @@
             let cateID = $('#edit-cate-modal').data('cate-id');
             let description = tinymce.get('cate_content_editor').getContent();
             let fileInput = $('#procate-input')[0];
+            let thumbnailID = $('#procate-thumbnail-id').val(); // Get attachment ID
             let formData = new FormData();
 
             formData.append('cate_id', cateID);
@@ -152,6 +220,8 @@
 
             if (fileInput.files.length > 0) {
                 formData.append('thumbnail', fileInput.files[0]);
+            } else if (thumbnailID) {
+                formData.append('thumbnail_id', thumbnailID); // Send attachment ID if selected from media
             }
 
             $.ajax({
@@ -198,8 +268,10 @@
                 <div class="cate-thumbnail-box">
                     <button class="clear-thumb" aria-label="Clear">&times;</button>
                     <img src="" class="thumbnail-image preview-img">
-                    <label class=" button button-primary" role="button" for="procate-input"><?php _e('Select', LANG_ZONE)  ?></label>
+                    <label class=" button button-primary" role="button" for="procate-input"><?php _e('Upload New', LANG_ZONE)  ?></label>
                     <input type="file" class="form-control d-none" name="procate-image" id="procate-input">
+                    <button type="button" class="button button-secondary" id="select-media-button"><?php _e('Select from Media', LANG_ZONE) ?></button>
+                    <input type="hidden" id="procate-thumbnail-id" name="procate_thumbnail_id" value="">
                 </div>
             </div>
             <form id="cate-edit-form">

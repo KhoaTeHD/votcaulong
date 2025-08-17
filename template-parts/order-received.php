@@ -144,16 +144,19 @@ if (isset($_GET['payoo_status']) && $_GET['payoo_status'] === '0' && isset($_GET
 								$shipping_method = $order_data->shipping_method;
 								if (isset($order_data->shipping_method) && $shipping_method === 'pickup') {
 									$pickup_store_id = $order_data->pickup_store_id;
-									$pickup_store = get_store_by_id($pickup_store_id);
-									$pickup_store_address = $pickup_store['address'] ?? '';
-									$pickup_store_name = $pickup_store['name'] ?? '';
-									if (!empty($pickup_store_name)) {
-										echo '<li><strong>' . esc_html__('Delivery method:', LANG_ZONE) . '</strong> ' . esc_html__('Pick up at store', LANG_ZONE);
-										echo '<span><br><strong>' . esc_html__('Store:', LANG_ZONE) . '</strong> ' . esc_html($pickup_store_name);
-										if (!empty($pickup_store_address)) {
-											echo '<br>' . esc_html__('Address:', LANG_ZONE) . ' ' . nl2br(esc_html($pickup_store_address));
-										}
-										echo '</span></li>';
+                                    if($pickup_store_id){
+	                                    $pickup_store = get_store_by_id($pickup_store_id);
+	                                    $pickup_store_address = $pickup_store['address'] ?? '';
+	                                    $pickup_store_name = $pickup_store['name'] ?? '';
+	                                    if (!empty($pickup_store_name)) {
+		                                    echo '<li><strong>' . esc_html__('Delivery method:', LANG_ZONE) . '</strong> ' . esc_html__('Pick up at store', LANG_ZONE);
+		                                    echo '<span><br><strong>' . esc_html__('Store:', LANG_ZONE) . '</strong> ' . esc_html($pickup_store_name);
+		                                    if (!empty($pickup_store_address)) {
+			                                    echo '<br>' . esc_html__('Address:', LANG_ZONE) . ' ' . nl2br(esc_html($pickup_store_address));
+		                                    }
+		                                    echo '</span></li>';
+                                    }
+
 									} else {
 										echo '<li><strong>' . esc_html__('Delivery method:', LANG_ZONE) . '</strong> ' . esc_html__('Pick up at store (Store details not available)', LANG_ZONE) . '</li>';
 									}

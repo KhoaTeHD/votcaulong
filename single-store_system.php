@@ -10,24 +10,29 @@ get_header();
 <?php
 if ( have_posts() ) :
     while ( have_posts() ) : the_post(); ?>
-        <div class="post-content bg-white px-3 py-5">
-            
-
-            <div class="store-content">
-                <?php //the_content(); ?>
-            </div>
-
+        <div class="post-content bg-white p-2 p-md-3">
             <div class="store-map">
                 <p><strong>Địa chỉ:</strong> <?php echo get_post_meta( get_the_ID(), 'store_address', true ); ?></p>
                 <p><strong>Số điện thoại:</strong> <?php echo get_post_meta( get_the_ID(), 'store_phone', true ); ?></p>
-                <iframe 
-                    src="<?php echo get_post_meta( get_the_ID(), 'store_google_map', true ); ?>" 
-                    width="100%" 
-                    height="300" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy">
-                </iframe>
+                <div class="store_embed_map">
+	                <?php $html = get_post_meta( get_the_ID(), 'store_google_map', true );
+
+	                $allowed = wp_kses_allowed_html( 'post' );
+	                $allowed['iframe'] = array(
+		                'src'             => true,
+		                'width'           => true,
+		                'height'          => true,
+		                'style'           => true,
+		                'frameborder'     => true,
+		                'allow'           => true,
+		                'allowfullscreen' => true,
+		                'loading'         => true,
+		                'referrerpolicy'  => true,
+	                );
+
+	                echo wp_kses( $html, $allowed ); ?>
+                </div>
+
             </div>
         </div>
     <?php

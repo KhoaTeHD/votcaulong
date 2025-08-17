@@ -10,6 +10,13 @@ if ($wishlist) {
    
 foreach ($wishlist as $pro){
 	// $pro = new Product($wl_product);
+	if ($pro->list_item_stock()){
+		$addCartClass = 'addCart';
+		$btn_text = __('Buy now', LANG_ZONE);
+	}else{
+		$addCartClass = 'OutStock';
+		$btn_text = __('Out of stock', LANG_ZONE);
+	}
 ?>
     <div class="wishlist-item g-col-3 d-flex product-item " <?php echo $pro->itemMetaData()  ?>>
         <div class="product-image me-2 position-relative">
@@ -20,7 +27,7 @@ foreach ($wishlist as $pro){
             <p class="title m-0" style="min-height: auto;"><a href="<?php echo $pro->getURL()  ?>" class="product-url" style="min-height: auto;"><?php echo $pro->getTitle()  ?></a></p>
             <p class="product-meta-text sku m-0"><?php echo $pro->getSku()  ?></p>
             <div class="price m-0"><?php echo $pro->getHTMLprice()  ?></div>
-            <a href="<?php $pro->theURL(); ?>" role="button" class="btn btn-sm btn-secondary"><?php _e('Buy now',LANG_ZONE)  ?></a>
+            <a href="<?php $pro->theURL(); ?>" role="button" class="btn btn-sm btn-secondary <?php echo $addCartClass  ?>"><?php echo $btn_text  ?></a>
         </div>
 
     </div>

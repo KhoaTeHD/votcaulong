@@ -10,12 +10,10 @@ global $erp_data_head;
 				$product_id = get_query_var('product_id');
 				$erp = new ERP_API_Client();
                 if (!is_wp_error($erp_data_head)) {
-//	                my_debug($erp_data_head);
 	                $product_data = $erp->get_product($product_id);
-//                    my_debug($product_data);
-                    if ($product_data ){
+                    if (!is_wp_error($product_data) ){
 	                    $product = new Product($product_data);
-                        if ($product->stock_status()){
+                        if ($product->list_item_stock()){
                             $stock_label = __('In stock',LANG_ZONE);
                             $stock_slug = 'in-stock';
                         }else{
@@ -68,7 +66,8 @@ global $erp_data_head;
                                             $gallery_items='';
                                             if ($gallery) {
                                                 foreach ($gallery as $g_img){
-                                                    $gallery_items .= '<div class="swiper-slide"><img src="'.$g_img.'" alt="" data-image="'.$g_img.'" class="thumbnail-item"></div>';
+
+                                                    $gallery_items .= '<div class="swiper-slide"><img src="'.($g_img).'" alt="" data-image="'.($g_img).'" class="thumbnail-item"></div>';
                                                 }
                                             }
                                             echo $gallery_items;
@@ -173,10 +172,14 @@ global $erp_data_head;
                         <div class="col-md-6">
                             <div class="single-product-box product-info bg-white p-3 shadow-sm mb-3">
                                 <div class="info-head d-flex align-items-center">
-                                    <div class="text-badge">
-                                    <?php echo $product->getBadgeHtml_detail()  ?>
-                                    </div>
-                                    <div class="brand-logo "><a href="<?php echo $productBrand['url']  ?>"><img src="<?php echo $brand_logo  ?>" alt="<?php echo $productBrand['name']  ?>"></a></div>
+                                    <?php
+                                    if ($product->getBadgeHtml_detail()) {
+                                        echo '<div class="text-badge">'.$product->getBadgeHtml_detail().'</div>';
+                                    }
+                                    ?>
+                                    <?php if ($productBrand) {?>
+                                        <div class="brand-logo "><a href="<?php echo $productBrand['url']  ?>"><img src="<?php echo $brand_logo  ?>" alt="<?php echo $productBrand['name']  ?>"></a></div>
+                                    <?php }  ?>
                                 </div>
                                 <div class="product-title-section position-relative">
                                     <h1 class="product-title"><?php $product->theTitle();  ?></h1>
@@ -184,9 +187,7 @@ global $erp_data_head;
                                 </div>
                                 <div class="product-meta">
                                     <div class="rating-wrapper">
-                                        <?php
-                                        $product->displayRatingStars();
-                                        ?>
+                                        <?php $product->displayRatingStars();?>
                                     </div>
                                     <div class="sold"><?php printf(__('Sold : %s', LANG_ZONE),(string)$product->getSold() );  ?></div>
                                     <div class="brand"><?php _e('Brand', LANG_ZONE)  ?>: <span class="brand-name"><?php echo $product->getBrand() ?></span></div>
@@ -284,12 +285,9 @@ global $erp_data_head;
                                         <button class="btn btn-danger btn-2line w-100 mb-3" id="quickBuy" data-checkout="<?php echo get_field('shopping_cart','options');  ?>" type="button"><span>Mua ngay</span><span>Giao hàng tận nơi</span></button>
                                         <div class="btn-group mb-3 w-100 column-gap-3">
                                             <button class="btn btn-primary btn-2line w-50 " id="addToCart"><span>Thêm vào giỏ hàng</span></button>
-                                            <button class="btn btn-primary btn-2line w-50 " type="button"><span>góp qua thẻ tín dụng</span><span>Visa. Master card, JCB</span></button>
+                                            <button class="btn btn-primary btn-2line w-50 " id="muaTraGop" type="button" data-checkout="<?php echo get_field('shopping_cart','options');  ?>"><span>Mua trả góp 0%</span><span>Duyệt hồ sơ trong 5 phút</span></button>
                                         </div>
-                                        <div class="btn-group mb-3 w-100 column-gap-3">
-                                            <button class="btn btn-primary btn-2line w-50 " type="button"><span>mua trả góp 0%</span><span>Duyệt hồ sơ trong 5 phút</span></button>
-                                            <button class="btn btn-primary btn-2line w-50 " type="button"><span>Tư vấn qua zalo</span></button>
-                                        </div>
+
                                     </div>
 
                                 </form>

@@ -5,7 +5,7 @@
 get_header();
 global $product_attr_name;
 $data_path = get_template_directory() . '/data';
-$erp_api = new ERP_API_Handler(FAKE_DATA);
+$erp_api = new ERP_API_Client();
 $products = $erp_api->get_all_products();
 //  
     if (!is_wp_error($products)) {

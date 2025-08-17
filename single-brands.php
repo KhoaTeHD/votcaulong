@@ -18,6 +18,10 @@ if ( have_posts() ) :
         <div class="container">
             <div class="section-header">
                 <h3 class="title"><?php echo $brand_name ?></h3>
+                <div class="brand_search">
+                    <input id="quickSearch_brand_input" class="form-control" type="text" placeholder="<?php _e('Quick search...', LANG_ZONE)  ?>">
+                    <div id="quickSearch_brand_results"></div>
+                </div>
             </div>
             <div class="post-content bg-white p-3">
                 <div class="brand1-list mb-3">

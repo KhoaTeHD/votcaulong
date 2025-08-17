@@ -62,22 +62,22 @@
             </div>
             <div class="p-3 bct-container border-2 border-bottom border-primary ">
                 <div class="bct-logo">
-                    <a href="<?php echo get_field('bct_url','options')??'#';  ?>" target="_blank" rel="nofollow"><img src="<?php the_field('logo_bct','options');  ?>" alt=""></a>
+                    <a href="<?php echo esc_url( get_field('bct_url','options') ?? '#' );  ?>" target="_blank" rel="nofollow"><img src="<?php echo esc_url( get_field('logo_bct','options') );  ?>" alt=""></a>
                 </div>
                 <div class="bct-chung-nhan">
 	                <?php the_field('business_license','options');  ?>
                 </div>
                 <div class="bct-ko-hang-gia">
-                    <a href="<?php echo get_field('bct_url_2','options')??'#';  ?>" target="_blank" rel="nofollow"><img src=" <?php the_field('logo_bct_2','options');  ?>" alt=""></a>
+                    <a href="<?php echo esc_url( get_field('bct_url_2','options') ?? '#' );  ?>" target="_blank" rel="nofollow"><img src="<?php echo esc_url( get_field('logo_bct_2','options') );  ?>" alt=""></a>
                 </div>
                 <div class="logo-ncsc">
-                    <a href="<?php echo get_field('bct_url_3','options')??'#';  ?>" target="_blank" rel="nofollow"><img src="<?php the_field('logo_bct_3','options');  ?>" alt=""></a>
+                    <a href="<?php echo esc_url( get_field('bct_url_3','options') ?? '#' );  ?>" target="_blank" rel="nofollow"><img src="<?php echo esc_url( get_field('logo_bct_3','options') );  ?>" alt=""></a>
                 </div>
             </div>
             <div class="px-3 py-2 d-flex items-justified-space-between copyright ">
                 <p class=""><?php the_field('copyright_text','options');  ?></p>
                 <div class="protected">
-                    <a href="<?php wp_kses_post(the_field('protected_url','options'));  ?>" target="_blank" rel="nofollow"><img src="<?php the_field('logo_protected','options');  ?>" alt=""> </a>
+                    <a href="<?php echo esc_url( get_field('protected_url','options') );  ?>" target="_blank" rel="nofollow"><img src="<?php echo esc_url( get_field('logo_protected','options') );  ?>" alt=""> </a>
 
                 </div>
             </div>
@@ -115,7 +115,7 @@
         </li>
     </ul>
     <div class="closecompare">
-        <a href="#" id="gotoCompare" class="prevent btn btn-primary btn-sm my-0" role="button"> <?php _e('Compare now', LANG_ZONE)  ?></a>
+        <!--<a href="#" id="gotoCompare" class="prevent btn btn-primary btn-sm my-0" role="button"> <?php _e('Compare now', LANG_ZONE)  ?></a> //-->
         <a href="#" id="quickCompare" data-bs-toggle="modal" data-bs-target="#quickCompare_modal" class="prevent btn btn-secondary btn-sm my-0" role="button"> <?php _e('Quick compare', LANG_ZONE)  ?></a>
         <a href="#" onclick="RemoveAllIdCompare()" class="txtremoveall"><?php _e('Clear all', LANG_ZONE)  ?></a>
     </div>
@@ -188,6 +188,36 @@
         </div>
         <div class="toast-body" id="siteNotifyBody">
 
+        </div>
+    </div>
+</div>
+
+<!-- Share Cart Modal -->
+<div class="modal fade" id="shareCartModal" tabindex="-1" aria-labelledby="shareCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shareCartModalLabel"><?php _e('Share Your Cart', LANG_ZONE) ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><?php _e('Copy the link below to share your cart:', LANG_ZONE) ?></p>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="share-cart-link" value="" readonly>
+                    <button class="btn btn-outline-secondary" type="button" id="copy-share-link-btn"><?php _e('Copy', LANG_ZONE) ?></button>
+                </div>
+                <div class="alert alert-info d-none" id="share-cart-message" role="alert"></div>
+                <div class="share-product d-flex items-justified-space-between align-items-center">
+                    <div class="shareon cart-shareon" data-url=''>
+                        <button class="messenger" data-fb-app-id="APP ID"></button>
+                        <button class="facebook" data-title="<?php echo get_bloginfo('name')  ?>" data-hashtags="VotCauLongShop"></button>
+                        <button class="pinterest" ></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php _e('Close', LANG_ZONE) ?></button>
+            </div>
         </div>
     </div>
 </div>

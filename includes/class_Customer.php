@@ -187,7 +187,7 @@ class Customer extends WP_User {
 		if (!empty($this->billing_address['city'])) {
 			$data['custom_address_location'] = $this->billing_address['city'];
 		}
-
+		error_log('Customer data to ERP: '.print_r($data, true) );
 		return $erp_api->update_customer($data);
 	}
 	public static function sync_to_erp_static($user_id) {
@@ -453,10 +453,10 @@ class Customer extends WP_User {
      * @param int $offset Number of orders to skip (for pagination). Default 0.
      * @param string $orderby Column to order by. Default 'date_created'.
      * @param string $order Sort order ('ASC' or 'DESC'). Default 'DESC'.
+     * @param string $status_filter Optional. Filter orders by status. Default 'all'.
      * @return array Array of order objects, empty array if none found.
      */
-    public function get_orders( $limit = -1, $offset = 0, $orderby = 'date_created', $order = 'DESC' ) {
-        // ... existing code ...
+    public function get_orders( $limit = -1, $offset = 0, $orderby = 'date_created', $order = 'DESC', $status_filter = 'all' ) {
         if ( ! $this->ID ) {
             return []; // Cannot get orders for a non-existent user
         }
@@ -470,16 +470,22 @@ class Customer extends WP_User {
             return [];
         }
 
-
         // Sanitize order parameters
         $allowed_orderby = ['order_id', 'date_created', 'date_modified', 'status', 'total_amount']; // Update valid columns
         $orderby = in_array( strtolower( $orderby ), $allowed_orderby ) ? strtolower( $orderby ) : 'date_created';
         $order = strtoupper( $order ) === 'ASC' ? 'ASC' : 'DESC';
         $limit_clause = '';
         $offset_clause = '';
+        $where_status_clause = '';
+        $query_params = [$this->ID];
+
+        if ( $status_filter !== 'all' && ! empty( $status_filter ) ) {
+            $where_status_clause = ' AND status = %s';
+            $query_params[] = sanitize_key( $status_filter );
+        }
 
         // Prepare query parts safely
-        $sql = "SELECT * FROM {$orders_table} WHERE user_id = %d ORDER BY {$orderby} {$order}";
+        $sql = "SELECT * FROM {$orders_table} WHERE user_id = %d" . $where_status_clause . " ORDER BY {$orderby} {$order}";
 
         if ( $limit > 0 ) {
             $limit_clause = $this->wpdb->prepare( " LIMIT %d", absint($limit) );
@@ -489,11 +495,9 @@ class Customer extends WP_User {
         }
 
         // Combine the query
-        $query = $this->wpdb->prepare($sql, $this->ID) . $limit_clause . $offset_clause;
-
+        $query = $this->wpdb->prepare($sql, ...$query_params) . $limit_clause . $offset_clause;
 
         $orders = $this->wpdb->get_results( $query );
-
 
         return $orders ? $orders : [];
     }
@@ -503,8 +507,7 @@ class Customer extends WP_User {
      *
      * @return int The total number of orders.
      */
-    public function get_order_count() {
-        // ... existing code ...
+    public function get_order_count( $status_filter = 'all' ) {
          if ( ! $this->ID ) {
             return 0; // Cannot get orders for a non-existent user
         }
@@ -517,13 +520,24 @@ class Customer extends WP_User {
             return 0;
         }
 
+        $where_status_clause = '';
+        $query_params = [$this->ID];
+
+        if ( $status_filter !== 'all' && ! empty( $status_filter ) ) {
+            $where_status_clause = ' AND status = %s';
+            $query_params[] = sanitize_key( $status_filter );
+        }
+
         $count = $this->wpdb->get_var( $this->wpdb->prepare(
-            "SELECT COUNT(*) FROM {$orders_table} WHERE user_id = %d",
-            $this->ID
+            "SELECT COUNT(*) FROM {$orders_table} WHERE user_id = %d" . $where_status_clause,
+            ...$query_params
         ) );
 
         return absint( $count );
     }
+     
+
+    
 
     /**
 	 * Clears the user's cart data stored in user meta.
@@ -812,7 +826,7 @@ class Customer extends WP_User {
 
         global $wpdb;
         $likes_table = $wpdb->prefix . 'product_likes';
-        $erp_api = new ERP_API_Handler(defined('FAKE_DATA') && FAKE_DATA); // Khởi tạo ERP_API_Handler
+        $erp_api = new ERP_API_Client();
 
         $limit_clause = '';
         if ($limit > 0) {

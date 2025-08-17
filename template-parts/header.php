@@ -90,24 +90,30 @@
 					</li>
 				</ul>
 				<ul class="icon-listbox text-light-blue call-center mb-0 d-none d-lg-flex">
+                    <?php if(get_field('header_hotline_1_label', 'options')) { ?>
 					<li>
 						<a href="tel:<?php the_field('header_hotline_1','options');  ?>">
 							<i class="icon vcl-icon-phone-out"></i>
 							<span><?php the_field('header_hotline_1_label', 'options');  ?></span>
 						</a>
 					</li>
+                    <?php }  ?>
+					<?php if(get_field('header_hotline_2_label', 'options')) { ?>
 					<li>
 						<a href="tel:<?php the_field('header_hotline_2','options');  ?>">
 							<i class="icon vcl-icon-phone-out"></i>
 							<span><?php the_field('header_hotline_2_label', 'options');  ?></span>
 						</a>
 					</li>
+					<?php }  ?>
+					<?php if(get_field('header_hotline_3_label', 'options')) { ?>
 					<li>
 						<a href="tel:<?php the_field('header_hotline_3','options');  ?>">
 							<i class="icon vcl-icon-phone-out"></i>
 							<span><?php the_field('header_hotline_3_label', 'options');  ?></span>
 						</a>
 					</li>
+					<?php }  ?>
 				</ul>
 			</div>
 		</div>

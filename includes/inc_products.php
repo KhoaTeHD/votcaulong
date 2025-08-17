@@ -232,9 +232,9 @@ function footer_cart_content(){
 	
 	  </ul>
 	  <p class="cart-total-line">'.__('Total:',LANG_ZONE).' <span id="cart-total"></span></p>
-	  <div class="d-flex items-justified-space-between px-2 ">
-	  	<a href="/gio-hang" id="viewShoppingCart-button" class="btn btn-sm btn-primary" role="button">'.__('Shopping cart / Checkout',LANG_ZONE).'</a>
-	
+	  <div class="d-flex justify-content-between px-2 ">
+	  	<button type="button" class="btn btn-primary btn-sm btn-share-cart" id="btn-share-cart" data-bs-toggle="modal" data-bs-target="#shareCartModal"><i class="bi bi-share-fill"></i> '.__('Share Cart', LANG_ZONE).'</button>
+	  	<a href="'.vcl_get_cart_page().'" id="viewShoppingCart-button" class="btn btn-sm btn-primary" role="button">'.__('Checkout',LANG_ZONE).'</a>
 		</div>
 	</div>
 	<div id="empty-cart" style="display: none;">'.__('There are no items in your cart.',LANG_ZONE).'</div>
